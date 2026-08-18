@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-glow: var(--glow);
+  --color-glow-soft: var(--glow-soft);
+  --color-orange-glow: var(--orange-glow);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+}
+
+:root, .dark {
+  --background: #050505;
+  --foreground: #FFFFFF;
+
+  --card: #0A0A0A;
+  --card-foreground: #FFFFFF;
+
+  --popover: #0A0A0A;
+  --popover-foreground: #FFFFFF;
+
+  --primary: #FF6B00;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #00BFFF;
+  --secondary-foreground: #050505;
+
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: #A1A1AA;
+
+  --accent: #7B2DFF;
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #ff3333;
+  --destructive-foreground: #FFFFFF;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #00BFFF;
+
+  --radius: 12px;
+
+  /* Custom Glow Tokens */
+  --glow: #00BFFF;
+  --glow-soft: rgba(0, 191, 255, 0.15);
+  --orange-glow: rgba(255, 107, 0, 0.25);
+  --purple-glow: rgba(123, 45, 255, 0.25);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-white;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Glassmorphism utility */
+  .glass-panel {
+    @apply bg-black/40 backdrop-blur-2xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)];
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-br from-white to-[var(--glow)] bg-clip-text text-transparent;
+  }
+}
