@@ -12,7 +12,7 @@ export default function Preloader() {
   useEffect(() => {
     let currentProgress = 0;
     const interval = setInterval(() => {
-      currentProgress += Math.floor(Math.random() * 15) + 5;
+      currentProgress += Math.floor(Math.random() * 20) + 15;
       if (currentProgress >= 100) {
         currentProgress = 100;
         clearInterval(interval);
@@ -23,19 +23,19 @@ export default function Preloader() {
         });
         
         tl.to(textRef.current, {
-          yPercent: -100,
+          yPercent: -50,
           opacity: 0,
-          duration: 0.8,
-          ease: "power3.inOut"
+          duration: 0.3,
+          ease: "power2.inOut"
         })
         .to(containerRef.current, {
-          yPercent: -100,
-          duration: 1.2,
-          ease: "power4.inOut"
-        }, "-=0.4");
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.inOut"
+        }, "-=0.1");
       }
       setProgress(currentProgress);
-    }, 150);
+    }, 40);
 
     return () => clearInterval(interval);
   }, []);
@@ -45,14 +45,14 @@ export default function Preloader() {
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#0A1022] overflow-hidden"
+      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050811] overflow-hidden pointer-events-none"
     >
       <div ref={textRef} className="flex flex-col items-center gap-4">
-        <div className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#FF6B00]">
+        <div className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] via-[#7B2DFF] to-[#FF6B00]">
           {progress}%
         </div>
-        <div className="text-[#B8C0D0] tracking-[0.3em] text-sm uppercase">
-          Initializing Systems
+        <div className="text-[#B8C0D0] tracking-[0.3em] text-xs font-mono uppercase">
+          Initializing Shorai Neural Systems
         </div>
       </div>
     </div>
