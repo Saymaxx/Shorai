@@ -88,24 +88,18 @@ export default function HeroSection() {
         />
       </motion.div>
 
-      {/* ── Robot canvas — full-section overlay so it can roam freely ── */}
-      <div
-        className="absolute inset-0 z-10 pointer-events-none"
-        aria-hidden="true"
-      >
-        <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
-      </div>
-
       {/* ── Main layout ───────────────────────────────────────── */}
-      <div className="max-w-[1440px] mx-auto px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-screen">
+      <div className="max-w-[1440px] mx-auto px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-screen py-16 lg:py-0">
 
-        {/* LEFT — content (z-30 so robot never occludes CTAs) */}
-        <div className="relative z-30 py-28 lg:py-0">
+        {/* LEFT — content (z-30 so content is sharp & accessible) */}
+        <div className="relative z-30 py-12 lg:py-0">
           <HeroContent />
         </div>
 
-        {/* RIGHT — empty spacer keeps grid layout */}
-        <div className="hidden lg:block" />
+        {/* RIGHT — 3D Robot Head visual composition */}
+        <div className="relative z-20 w-full h-[540px] sm:h-[620px] lg:h-[720px] flex items-center justify-center">
+          <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
+        </div>
 
       </div>
     </section>
