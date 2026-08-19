@@ -7,67 +7,105 @@ import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Small optimization: only update state if moved significantly, or use rAF, but this is fine for now
       setMousePosition({
         x: e.clientX / window.innerWidth,
         y: e.clientY / window.innerHeight,
       });
     };
-
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Track scroll to pass section state to robot
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight / 3;
+      const sections: { id: string; key: string }[] = [
+        { id: 'coding', key: 'coding' },
+        { id: 'drones', key: 'drones' },
+        { id: 'ai', key: 'ai' },
+        { id: 'programs', key: 'transformation' },
+        { id: 'robotics', key: 'robotics' },
+        { id: 'innovation-labs', key: 'robotics' },
+      ];
+      let found = 'hero';
+      for (const s of sections) {
+        const el = document.getElementById(s.id);
+        if (el && scrollPos >= el.offsetTop) {
+          found = s.key;
+          break;
+        }
+      }
+      setActiveSection(found);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section 
-      id="home" 
-      className="relative min-h-[90vh] lg:min-h-[95vh] w-full bg-[#050505] overflow-hidden flex items-center pt-24 pb-12"
+    <section
+      id="home"
+      className="relative min-h-screen w-full bg-[#050505] overflow-hidden flex items-center pt-20"
     >
-      {/* LAYER 1: Background & Cinematic Gradients (0ms load) */}
-      <motion.div 
+      {/* ── Background atmospherics ───────────────────────────────── */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.5 }}
+        transition={{ duration: 2 }}
         className="absolute inset-0 z-0 pointer-events-none"
+        aria-hidden="true"
       >
-        {/* Dark cyan/blue atmosphere (Left) */}
-        <div 
-          className="absolute top-[10%] -left-[10%] w-[50vw] h-[50vw] max-w-[800px] max-h-[800px] bg-[#00BFFF]/5 rounded-full blur-[130px] mix-blend-screen transition-transform duration-1000 ease-out"
-          style={{ transform: `translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)` }}
+        {/* Cyan atmosphere — left */}
+        <div
+          className="absolute top-[5%] -left-[15%] w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-[#00d4ff]/5 rounded-full blur-[140px]"
+          style={{ transform: `translate(${mousePosition.x * -12}px, ${mousePosition.y * -12}px)` }}
         />
-        
-        {/* Dark orange atmosphere (Right) */}
-        <div 
-          className="absolute top-[30%] -right-[10%] w-[60vw] h-[60vw] max-w-[900px] max-h-[900px] bg-[#FF6B00]/5 rounded-full blur-[150px] mix-blend-screen transition-transform duration-1000 ease-out"
-          style={{ transform: `translate(${mousePosition.x * 10}px, ${mousePosition.y * 10}px)` }}
+        {/* Orange atmosphere — right */}
+        <div
+          className="absolute top-[20%] -right-[15%] w-[60vw] h-[60vw] max-w-[900px] max-h-[900px] bg-[#FF6B00]/4 rounded-full blur-[160px]"
+          style={{ transform: `translate(${mousePosition.x * 12}px, ${mousePosition.y * 12}px)` }}
+        />
+        {/* Purple depth — center-right */}
+        <div
+          className="absolute top-[45%] right-[10%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-[#7B2DFF]/6 rounded-full blur-[130px]"
+          style={{ transform: `translate(${mousePosition.x * 18}px, ${mousePosition.y * 18}px)` }}
         />
 
-        {/* Deep electric blue glow behind student */}
-        <div 
-          className="absolute top-[50%] right-[15%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-[#7B2DFF]/10 rounded-full blur-[120px] mix-blend-screen transition-transform duration-1000 ease-out"
-          style={{ transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)` }}
+        {/* Subtle technical grid */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+          }}
         />
-        
-        {/* Subtle Star/Particle Layer */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] bg-center mix-blend-overlay" />
       </motion.div>
 
-      {/* Main 45/55 Layout */}
-      <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 flex flex-col lg:flex-row items-center h-full">
-        
-        {/* LEFT: Content & Conversion (45%) */}
-        <div className="w-full lg:w-[45%] xl:w-[42%] flex-shrink-0 relative z-20">
+      {/* ── Robot canvas — full-section overlay so it can roam freely ── */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        aria-hidden="true"
+      >
+        <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
+      </div>
+
+      {/* ── Main layout ───────────────────────────────────────── */}
+      <div className="max-w-[1440px] mx-auto px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-screen">
+
+        {/* LEFT — content (z-30 so robot never occludes CTAs) */}
+        <div className="relative z-30 py-28 lg:py-0">
           <HeroContent />
         </div>
 
-        {/* RIGHT: Immersive Visual Experience (55%) */}
-        {/* Using absolute positioning on desktop so it bleeds naturally and overlaps toward center */}
-        <div className="w-full lg:w-[55%] xl:w-[58%] lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 h-[500px] lg:h-[120%] flex items-center justify-end pointer-events-none z-10 mt-12 lg:mt-0">
-          <HeroVisual mousePosition={mousePosition} />
-        </div>
+        {/* RIGHT — empty spacer keeps grid layout */}
+        <div className="hidden lg:block" />
 
       </div>
     </section>

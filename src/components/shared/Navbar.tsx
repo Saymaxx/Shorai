@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { Menu, X, ChevronDown, Sparkles } from 'lucide-react';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
@@ -141,22 +140,40 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-black/60 backdrop-blur-xl border-b border-white/10 py-3 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8)]' 
-          : 'bg-transparent py-5'
+          ? 'py-2.5' 
+          : 'py-4'
       }`}
+      style={scrolled ? {
+        background: 'rgba(5, 7, 15, 0.75)',
+        backdropFilter: 'blur(24px)',
+        borderBottom: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
+      } : {}}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-50 text-2xl font-bold tracking-tighter text-white flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-primary/50 flex items-center justify-center shadow-[0_0_15px_rgba(255,107,0,0.4)] group-hover:shadow-[0_0_25px_rgba(255,107,0,0.6)] transition-all">
-            <Sparkles className="w-4 h-4 text-white" />
+        <Link href="/" className="relative z-50 flex items-center gap-2.5 group">
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #FF6B00 0%, #FF6B00 40%, #7B2DFF 100%)',
+              boxShadow: '0 0 18px rgba(255,107,0,0.35)'
+            }}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-white" />
           </div>
-          SHORAI<span className="text-primary">.</span>
+          <span
+            className="text-[22px] font-black tracking-[-0.03em] text-white group-hover:text-white/90 transition-colors"
+          >
+            SHORAI<span className="text-[#FF6B00]">.</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center relative">
-          <div className={`flex items-center rounded-full p-1 border transition-all duration-500 ${scrolled ? 'bg-white/5 border-white/10 backdrop-blur-md' : 'bg-transparent border-transparent'}`}>
+          <div className={`flex items-center rounded-full px-1 py-1 transition-all duration-500 ${scrolled ? 'border border-white/08' : 'border border-transparent'}`}
+            style={scrolled ? { background: 'rgba(255,255,255,0.04)' } : {}}
+          >
             {navLinks.map((link) => {
               const linkId = link.href ? link.href.replace('#', '') : link.name.toLowerCase();
               const isActive = activeSection === linkId;
@@ -166,7 +183,8 @@ export default function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-active-pill"
-                      className="absolute inset-0 bg-white/10 rounded-full"
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 0 1px rgba(0,212,255,0.2)' }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -175,7 +193,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={link.href || '#'}
-                      className={`relative z-10 px-4 py-2 text-sm font-medium transition-colors block rounded-full ${isActive ? 'text-white' : 'text-muted-foreground hover:text-white'}`}
+                      className={`relative z-10 px-4 py-2 text-[13px] font-medium transition-colors block rounded-full ${isActive ? 'text-white' : 'text-white/45 hover:text-white/80'}`}
                     >
                       {link.name}
                     </Link>
@@ -189,10 +207,19 @@ export default function Navbar() {
         {/* CTA Button */}
         <div className="hidden md:block">
           <MagneticWrapper>
-            <Button className="rounded-full h-10 px-6 font-medium bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all group">
-              Partner With Us
-              <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-            </Button>
+            <button
+              className="group relative h-9 px-5 rounded-full font-semibold text-[13px] text-white overflow-hidden transition-all duration-300"
+              style={{
+                background: 'linear-gradient(135deg, #FF6B00, #7B2DFF)',
+                boxShadow: '0 0 16px rgba(255,107,0,0.3)'
+              }}
+            >
+              <span className="relative z-10 flex items-center gap-1.5">
+                Partner With Us
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+              </span>
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
+            </button>
           </MagneticWrapper>
         </div>
 
@@ -233,9 +260,13 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <Button className="rounded-full mt-6 w-full h-12 text-base font-semibold bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.2)] group">
-                Partner With Us <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-              </Button>
+              <button
+                className="group relative rounded-full mt-6 w-full h-12 text-base font-semibold text-white overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #FF6B00, #7B2DFF)' }}
+              >
+                <span className="relative z-10">Partner With Us →</span>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
+              </button>
             </div>
           </motion.div>
         )}

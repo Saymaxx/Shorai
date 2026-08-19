@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Volume2, VolumeX, Sparkles, ChevronRight, X, MessageSquare, Compass, Play } from 'lucide-react';
-import Robot3DCanvas from './Robot3D';
+import { Bot, Volume2, VolumeX, X, ChevronRight } from 'lucide-react';
 
 interface SectionGuideContent {
   id: string;
@@ -16,254 +15,272 @@ interface SectionGuideContent {
 const SECTION_GUIDES: Record<string, SectionGuideContent> = {
   hero: {
     id: 'hero',
-    title: 'WELCOME TO SHORAI',
-    badge: 'AI & ROBOTICS GUIDE',
-    speech: "Hello! I'm Shorai-Bot, your interactive guide. We equip schools with cutting-edge 3D Robotics, AI, Drones, and Coding education for K-12 students!",
-    tips: [
-      'Interactive 3D Robotics Labs',
-      'Hands-on AI & Drone Flight Simulator',
-      'Complete School STEM Transformation'
-    ]
+    title: 'WELCOME',
+    badge: 'SYSTEM HUB',
+    speech: "Hello. I'm Shorai-1 — your AI guide. We equip schools with Robotics, AI, Drone, and Coding education for the K-12 generation.",
+    tips: ['Interactive 3D Robotics Labs', 'AI & Drone Flight Simulation', 'Complete STEM Transformation'],
   },
   robotics: {
     id: 'robotics',
-    title: 'ROBOTICS EDUCATION',
-    badge: 'HARDWARE & SENSORS',
-    speech: "In our Robotics Labs, students construct real-world robots, assemble microcontrollers, wire sensors, and write logic to solve real problems!",
-    tips: [
-      'Arduino & Raspberry Pi Kits',
-      'Bipedal & Rover Mechanics',
-      'Industrial Pick & Place Arms'
-    ]
+    title: 'ROBOTICS',
+    badge: 'HARDWARE MODULE',
+    speech: "Students construct real-world robots, assemble microcontrollers, wire sensors, and write logic to solve real engineering problems.",
+    tips: ['Arduino & Raspberry Pi Kits', 'Bipedal & Rover Mechanics', 'Industrial Automation Arms'],
   },
   ai: {
     id: 'ai',
     title: 'ARTIFICIAL INTELLIGENCE',
-    badge: 'NEURAL NETWORKS & VISION',
-    speech: "AI isn't magic—it's math and algorithms! We teach students Computer Vision, Machine Learning models, and Neural Networks with interactive 3D simulations.",
-    tips: [
-      'Computer Vision Gesture Tracking',
-      'Train Neural Nets in Real-Time',
-      'Voice Assistant & NLP Bots'
-    ]
+    badge: 'NEURAL MODULE',
+    speech: "AI is math and algorithms. We teach Computer Vision, Machine Learning, and Neural Networks with live 3D simulations.",
+    tips: ['Computer Vision Gesture Tracking', 'Real-Time Neural Net Training', 'Voice & NLP Systems'],
   },
   drones: {
     id: 'drones',
     title: 'DRONE TECHNOLOGY',
-    badge: 'AERIAL ROBOTICS & HUD',
-    speech: "Fly high with our Drone curriculum! Students learn flight aerodynamics, telemetry, autonomous GPS flight paths, and obstacle detection sensors.",
-    tips: [
-      '3D Flight Telemetry & HUD Controls',
-      'Autonomous Waypoint Navigation',
-      'LiDAR & Aerial Sensor Mapping'
-    ]
+    badge: 'AERIAL MODULE',
+    speech: "Students learn aerodynamics, telemetry, autonomous GPS navigation, and obstacle detection sensor systems.",
+    tips: ['3D Telemetry & HUD Controls', 'Autonomous Waypoint Nav', 'LiDAR & Aerial Mapping'],
   },
   coding: {
     id: 'coding',
-    title: 'CODING & SOFTWARE',
-    badge: 'LOGIC & FULL-STACK',
-    speech: "Code is the universal language of innovation! From visual block programming to Python and JavaScript, students build apps, games, and hardware scripts.",
-    tips: [
-      'Blockly to Python Progression',
-      'Interactive 3D Visual Code Execution',
-      'Real-world Algorithm Challenges'
-    ]
+    title: 'CODING',
+    badge: 'SOFTWARE MODULE',
+    speech: "From visual block programming to Python and JavaScript — students build apps, games, and hardware control systems.",
+    tips: ['Blockly → Python Progression', 'Visual Code Execution', 'Algorithm Design Challenges'],
   },
   transformation: {
     id: 'transformation',
     title: 'SCHOOL TRANSFORMATION',
-    badge: 'FUTURE-READY LABS',
-    speech: "We assist schools through 5 streamlined stages: Assess, Design, Build, Enable, and Transform. Join 100+ schools empowering the next generation!",
-    tips: [
-      'Custom Robotics Lab Setup',
-      'Comprehensive Teacher Training',
-      'Global Competition Preparation'
-    ]
-  }
+    badge: 'DEPLOYMENT',
+    speech: "5 streamlined stages: Assess, Design, Build, Enable, Transform. We've empowered 100+ schools to become future-ready.",
+    tips: ['Custom Robotics Lab Setup', 'Teacher Training Program', 'Global Competition Prep'],
+  },
 };
+
+const SECTION_TABS = [
+  { key: 'hero', label: 'HUB' },
+  { key: 'robotics', label: 'BOT' },
+  { key: 'ai', label: 'AI' },
+  { key: 'drones', label: 'FLY' },
+  { key: 'coding', label: 'CODE' },
+];
 
 export default function RobotGuideUI() {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-  const [currentTipIndex, setCurrentTipIndex] = useState<number>(0);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false); // start collapsed
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
 
-  // Detect active section based on scroll
+  // Auto-detect scroll section
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight / 3;
-      
-      const heroEl = document.getElementById('home');
-      const roboticsEl = document.getElementById('robotics') || document.getElementById('innovation-labs');
-      const aiEl = document.getElementById('ai') || document.getElementById('programs');
-      const dronesEl = document.getElementById('drones') || document.getElementById('technology');
-      const codingEl = document.getElementById('coding');
-
-      if (codingEl && scrollPos >= codingEl.offsetTop) {
-        setActiveSection('coding');
-      } else if (dronesEl && scrollPos >= dronesEl.offsetTop) {
-        setActiveSection('drones');
-      } else if (aiEl && scrollPos >= aiEl.offsetTop) {
-        setActiveSection('ai');
-      } else if (roboticsEl && scrollPos >= roboticsEl.offsetTop) {
-        setActiveSection('robotics');
-      } else {
-        setActiveSection('hero');
+      const sectionMap: { id: string; key: string }[] = [
+        { id: 'coding', key: 'coding' },
+        { id: 'drones', key: 'drones' },
+        { id: 'ai', key: 'ai' },
+        { id: 'programs', key: 'transformation' },
+        { id: 'robotics', key: 'robotics' },
+        { id: 'innovation-labs', key: 'robotics' },
+      ];
+      let found = 'hero';
+      for (const s of sectionMap) {
+        const el = document.getElementById(s.id);
+        if (el && scrollPos >= el.offsetTop) {
+          found = s.key;
+          break;
+        }
       }
+      setActiveSection(found);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const guide = SECTION_GUIDES[activeSection] || SECTION_GUIDES.hero;
+  const guide = SECTION_GUIDES[activeSection] ?? SECTION_GUIDES.hero;
 
-  // Speak speech synthesis if sound enabled
-  const speakDialogue = (text: string) => {
+  const speak = (text: string) => {
     if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.05;
-    utterance.pitch = 1.1;
-    window.speechSynthesis.speak(utterance);
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.05;
+    u.pitch = 1.1;
+    window.speechSynthesis.speak(u);
   };
 
   const toggleSound = () => {
     if (soundEnabled) {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      window.speechSynthesis?.cancel();
       setSoundEnabled(false);
     } else {
       setSoundEnabled(true);
-      speakDialogue(guide.speech);
+      speak(guide.speech);
     }
   };
 
-  const handleNextSection = (secKey: string) => {
-    setActiveSection(secKey);
-    speakDialogue(SECTION_GUIDES[secKey]?.speech || '');
+  const handleTab = (key: string) => {
+    setActiveSection(key);
+    speak(SECTION_GUIDES[key]?.speech ?? '');
   };
 
   return (
-    <>
-      {/* FLOATING BOT WIDGET (Bottom Right on Desktop) */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-auto max-w-[calc(100vw-2rem)]">
-        
-        {/* SPEECH BUBBLE MODAL */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="mb-3 w-80 sm:w-96 rounded-2xl bg-[#090D16]/95 border border-[#00BFFF]/30 backdrop-blur-xl p-5 shadow-[0_0_50px_rgba(0,191,255,0.25)] relative overflow-hidden"
-            >
-              {/* Futuristic Top Bar Accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00BFFF] via-[#FF6B00] to-[#7B2DFF]" />
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto max-w-[calc(100vw-1.5rem)]">
 
-              {/* Close Button */}
-              <button
-                onClick={() => setIsExpanded(false)}
-                className="absolute top-3 right-3 text-white/50 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
-                aria-label="Close Guide"
+      {/* ── Expanded HUD Panel ─────────────────────────────────── */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            key="guide-panel"
+            initial={{ opacity: 0, y: 16, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.94 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="mb-2.5 w-72 sm:w-80 rounded-xl overflow-hidden"
+            style={{
+              background: 'rgba(6, 10, 20, 0.92)',
+              border: '1px solid rgba(0, 212, 255, 0.25)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 0 40px rgba(0,212,255,0.12), 0 20px 40px rgba(0,0,0,0.6)',
+            }}
+          >
+            {/* Top accent bar */}
+            <div className="h-[2px] bg-gradient-to-r from-[#00d4ff] via-[#FF6B00] to-[#7B2DFF]" />
+
+            <div className="p-4">
+              {/* Header row */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded flex items-center justify-center bg-[#00d4ff]/10 border border-[#00d4ff]/30">
+                    <Bot className="w-3 h-3 text-[#00d4ff]" />
+                  </div>
+                  <div>
+                    <div className="text-[9px] font-mono font-bold tracking-[0.22em] text-[#00d4ff]/70 uppercase">
+                      {guide.badge}
+                    </div>
+                    <div className="text-[10px] font-bold tracking-wider text-white/90 uppercase leading-tight">
+                      {guide.title}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  className="text-white/30 hover:text-white/70 transition-colors p-1 rounded hover:bg-white/5"
+                  aria-label="Close guide"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Speech text */}
+              <div
+                className="mb-3 rounded-lg p-3 text-[12px] text-white/75 leading-relaxed"
+                style={{ background: 'rgba(0,212,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
               >
-                <X className="w-4 h-4" />
-              </button>
-
-              {/* Header */}
-              <div className="flex items-center gap-2 mb-3">
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-[#00BFFF]/20 text-[#00BFFF] border border-[#00BFFF]/40 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 animate-pulse" />
-                  {guide.badge}
-                </span>
-                <span className="text-[10px] font-mono text-white/40">AI ASSISTANT</span>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={guide.id}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {guide.speech}
+                  </motion.p>
+                </AnimatePresence>
               </div>
 
-              {/* Speech Text */}
-              <div className="relative mb-4 bg-black/40 border border-white/10 rounded-xl p-3 text-xs sm:text-sm text-white/90 leading-relaxed">
-                <p>{guide.speech}</p>
-              </div>
-
-              {/* Highlights / Tips Pills */}
-              <div className="space-y-1.5 mb-4">
-                <div className="text-[10px] font-mono text-white/50 uppercase tracking-widest">KEY FOCUS AREAS:</div>
-                {guide.tips.map((tip, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-white/80">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#00BFFF]" />
+              {/* Tips */}
+              <div className="space-y-1.5 mb-3">
+                <div className="text-[9px] font-mono tracking-[0.2em] text-white/35 uppercase">
+                  FOCUS AREAS
+                </div>
+                {guide.tips.map((tip, i) => (
+                  <div key={i} className="flex items-center gap-2 text-[11px] text-white/60">
+                    <ChevronRight className="w-2.5 h-2.5 text-[#00d4ff]/50 flex-shrink-0" />
                     <span>{tip}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Section Quick Switcher Tabs */}
-              <div className="grid grid-cols-5 gap-1 pt-2 border-t border-white/10 text-[10px] font-mono">
-                {[
-                  { key: 'hero', label: 'HUB' },
-                  { key: 'robotics', label: 'ROBOT' },
-                  { key: 'ai', label: 'AI' },
-                  { key: 'drones', label: 'DRONE' },
-                  { key: 'coding', label: 'CODE' }
-                ].map((item) => (
+              {/* Section tabs */}
+              <div
+                className="grid grid-cols-5 gap-1 pt-3"
+                style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+              >
+                {SECTION_TABS.map((tab) => (
                   <button
-                    key={item.key}
-                    onClick={() => handleNextSection(item.key)}
-                    className={`py-1.5 px-1 rounded text-center transition-all ${
-                      activeSection === item.key
-                        ? 'bg-[#00BFFF] text-black font-bold shadow-[0_0_10px_rgba(0,191,255,0.5)]'
-                        : 'bg-white/5 text-white/60 hover:bg-white/15 hover:text-white'
+                    key={tab.key}
+                    onClick={() => handleTab(tab.key)}
+                    className={`py-1.5 rounded text-[9px] font-mono font-bold tracking-wider transition-all ${
+                      activeSection === tab.key
+                        ? 'bg-[#00d4ff] text-black shadow-[0_0_8px_rgba(0,212,255,0.4)]'
+                        : 'bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/70'
                     }`}
                   >
-                    {item.label}
+                    {tab.label}
                   </button>
                 ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* BOTTOM TRIGGER BUTTON WITH MINI 3D CANVA EMBED */}
-        <div className="flex items-center gap-3">
-          {/* Voice Sound Toggle Button */}
-          <button
-            onClick={toggleSound}
-            className={`p-3 rounded-full border backdrop-blur-md transition-all shadow-lg ${
-              soundEnabled
-                ? 'bg-[#FF6B00]/20 border-[#FF6B00]/50 text-[#FF6B00] hover:bg-[#FF6B00]/40 shadow-[0_0_20px_rgba(255,107,0,0.3)]'
-                : 'bg-black/60 border-white/10 text-white/40 hover:text-white'
-            }`}
-            title={soundEnabled ? 'Mute AI Voice' : 'Enable AI Voice'}
-          >
-            {soundEnabled ? <Volume2 className="w-5 h-5 animate-pulse" /> : <VolumeX className="w-5 h-5" />}
-          </button>
-
-          {/* Bot Avatar Button */}
-          <button
-            onClick={() => {
-              setIsExpanded(!isExpanded);
-              if (!isExpanded) speakDialogue(guide.speech);
-            }}
-            className="group relative flex items-center gap-3 pl-3 pr-4 py-2 rounded-full bg-[#090D16] border border-[#00BFFF]/40 shadow-[0_0_30px_rgba(0,191,255,0.3)] hover:border-[#00BFFF] hover:scale-105 transition-all duration-300"
-          >
-            {/* 3D Mini Canvas Preview inside button */}
-            <div className="w-10 h-10 rounded-full bg-black/60 border border-[#00BFFF]/50 overflow-hidden relative flex-shrink-0">
-              <Robot3DCanvas activeSection={activeSection} />
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className="flex flex-col items-start">
-              <span className="text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
-                SHORAI BOT
-                <span className="w-2 h-2 rounded-full bg-[#00BFFF] animate-ping" />
-              </span>
-              <span className="text-[10px] text-[#00BFFF] font-mono">
-                {isExpanded ? 'Click to Minimize' : 'Click to Guide'}
-              </span>
-            </div>
-          </button>
-        </div>
+      {/* ── Trigger bar ──────────────────────────────────────────── */}
+      <div className="flex items-center gap-2">
+        {/* Sound toggle */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={toggleSound}
+          className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all ${
+            soundEnabled
+              ? 'bg-[#FF6B00]/15 border-[#FF6B00]/40 text-[#FF6B00] shadow-[0_0_14px_rgba(255,107,0,0.25)]'
+              : 'bg-black/50 border-white/10 text-white/30 hover:text-white/60'
+          }`}
+          title={soundEnabled ? 'Mute' : 'Enable voice'}
+        >
+          {soundEnabled
+            ? <Volume2 className="w-3.5 h-3.5" />
+            : <VolumeX className="w-3.5 h-3.5" />
+          }
+        </motion.button>
 
+        {/* Main trigger button */}
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            setIsExpanded((v) => !v);
+            if (!isExpanded) speak(guide.speech);
+          }}
+          className="flex items-center gap-2.5 pl-2.5 pr-3.5 h-10 rounded-full transition-all"
+          style={{
+            background: 'rgba(6, 10, 20, 0.90)',
+            border: `1px solid ${isExpanded ? 'rgba(0,212,255,0.5)' : 'rgba(0,212,255,0.25)'}`,
+            backdropFilter: 'blur(16px)',
+            boxShadow: isExpanded
+              ? '0 0 20px rgba(0,212,255,0.25)'
+              : '0 0 12px rgba(0,0,0,0.4)',
+          }}
+        >
+          {/* Bot avatar icon */}
+          <div className="w-6 h-6 rounded-full bg-[#00d4ff]/10 border border-[#00d4ff]/30 flex items-center justify-center flex-shrink-0">
+            <Bot className="w-3.5 h-3.5 text-[#00d4ff]" />
+          </div>
+
+          <div className="flex flex-col items-start leading-none">
+            <span className="text-[11px] font-bold text-white tracking-wide">
+              SHORAI-1
+            </span>
+            <span className="text-[9px] font-mono text-[#00d4ff]/70 mt-0.5">
+              {isExpanded ? 'CLOSE PANEL' : 'AI GUIDE ▸'}
+            </span>
+          </div>
+
+          {/* Live indicator */}
+          <div className="w-1.5 h-1.5 rounded-full bg-[#00d4ff] animate-pulse ml-0.5" />
+        </motion.button>
       </div>
-    </>
+    </div>
   );
 }

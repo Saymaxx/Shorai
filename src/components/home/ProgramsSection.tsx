@@ -1,152 +1,219 @@
 'use client';
 
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Bot, Code2, Plane } from 'lucide-react';
+import { ArrowUpRight, Cpu, Bot, Code2, Plane } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 
 const programs = [
   {
-    title: 'ARTIFICIAL INTELLIGENCE',
-    desc: 'Learn how machines think, learn and make decisions.',
+    id: 'ai-program',
+    number: '01',
+    title: 'ARTIFICIAL\nINTELLIGENCE',
+    shortTitle: 'AI',
+    desc: 'Learn how machines think, learn and make decisions with real neural networks.',
     cta: 'Explore AI',
-    color: 'from-primary/20 to-primary/5',
-    accent: 'text-primary',
-    border: 'group-hover:border-primary/50',
+    accentColor: '#00d4ff',
     icon: Cpu,
-    visual: (
-      <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-100 transition-opacity duration-700">
-        <div className="w-32 h-32 relative">
-          <div className="absolute top-0 left-1/2 w-3 h-3 bg-primary rounded-full blur-[2px] animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 bg-primary rounded-full blur-[2px] animate-pulse delay-100" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full blur-[2px] animate-pulse delay-200" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_#FF6B00]" />
-          <svg className="absolute inset-0 w-full h-full text-primary/30" viewBox="0 0 100 100">
-             <line x1="50" y1="5" x2="10" y2="90" stroke="currentColor" strokeWidth="1" />
-             <line x1="50" y1="5" x2="90" y2="90" stroke="currentColor" strokeWidth="1" />
-             <line x1="10" y1="90" x2="90" y2="90" stroke="currentColor" strokeWidth="1" />
-             <line x1="50" y1="50" x2="50" y2="5" stroke="currentColor" strokeWidth="1" />
-             <line x1="50" y1="50" x2="10" y2="90" stroke="currentColor" strokeWidth="1" />
-             <line x1="50" y1="50" x2="90" y2="90" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        </div>
-      </div>
-    )
+    image: '/assets/ai_brain_3d_1785409079051.png',
   },
   {
+    id: 'robotics-program',
+    number: '02',
     title: 'ROBOTICS',
-    desc: 'Design, build and program intelligent machines.',
+    shortTitle: 'ROBOTICS',
+    desc: 'Design, build and program intelligent machines with hands-on kits.',
     cta: 'Explore Robotics',
-    color: 'from-secondary/20 to-secondary/5',
-    accent: 'text-secondary',
-    border: 'group-hover:border-secondary/50',
+    accentColor: '#FF6B00',
     icon: Bot,
-    visual: (
-      <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-100 transition-opacity duration-700">
-        <div className="w-24 h-32 border-2 border-secondary/40 rounded-xl relative">
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-2 bg-secondary/60 rounded-full" />
-          <div className="absolute top-8 left-2 right-2 h-[1px] bg-secondary/40" />
-          <motion.div 
-            className="absolute top-12 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-secondary shadow-[0_0_15px_#00BFFF]"
-            animate={{ x: [-10, 10, -10] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          />
-        </div>
-      </div>
-    )
+    image: '/assets/robotics_3d_1785409091384.png',
   },
   {
-    title: 'CODING',
+    id: 'coding-program',
+    number: '03',
+    title: 'CODING &\nSOFTWARE',
+    shortTitle: 'CODING',
     desc: 'Turn ideas into software, systems and intelligent solutions.',
     cta: 'Explore Coding',
-    color: 'from-accent/20 to-accent/5',
-    accent: 'text-accent',
-    border: 'group-hover:border-accent/50',
+    accentColor: '#7B2DFF',
     icon: Code2,
-    visual: (
-      <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-100 transition-opacity duration-700">
-        <div className="w-32 h-24 bg-black/50 border border-accent/30 rounded-lg p-3 font-mono text-xs text-accent/70 overflow-hidden relative">
-          <motion.div
-            animate={{ y: [0, -40] }}
-            transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-          >
-            <div>function build() {'{'}</div>
-            <div className="pl-2">const future = new World();</div>
-            <div className="pl-2">future.init(AI);</div>
-            <div className="pl-2">return future;</div>
-            <div>{'}'}</div>
-            <div className="mt-2 text-accent">{'>> Executing...'}</div>
-          </motion.div>
-        </div>
-      </div>
-    )
+    image: '/assets/kids_learning_3d_1785409112448.png',
   },
   {
-    title: 'DRONE TECHNOLOGY',
-    desc: 'Understand flight, automation, sensors and aerial technology.',
+    id: 'drones-program',
+    number: '04',
+    title: 'DRONE\nTECHNOLOGY',
+    shortTitle: 'DRONES',
+    desc: 'Understand flight, automation, sensors and autonomous aerial navigation.',
     cta: 'Explore Drones',
-    color: 'from-primary/20 to-primary/5',
-    accent: 'text-primary',
-    border: 'group-hover:border-primary/50',
+    accentColor: '#FF6B00',
     icon: Plane,
-    visual: (
-      <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-100 transition-opacity duration-700">
-        <motion.div 
-          className="w-24 h-24 relative"
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-        >
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-8 bg-primary/40 rounded-full" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-8 bg-primary/40 rounded-full" />
-          <div className="absolute top-1/2 left-0 -translate-y-1/2 w-8 h-2 bg-primary/40 rounded-full" />
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 w-8 h-2 bg-primary/40 rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full shadow-[0_0_20px_#FF6B00]" />
-        </motion.div>
-      </div>
-    )
-  }
+    image: '/assets/drone_3d_1785409102213.png',
+  },
 ];
+
+function ProgramCard({ program, index }: { program: typeof programs[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
+    const y = -((e.clientY - rect.top) / rect.height - 0.5) * 14;
+    setTilt({ x, y });
+    const sx = ((e.clientX - rect.left) / rect.width) * 100;
+    const sy = ((e.clientY - rect.top) / rect.height) * 100;
+    setSpotlight({ x: sx, y: sy, opacity: 1 });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setSpotlight((s) => ({ ...s, opacity: 0 }));
+  };
+
+  return (
+    <SectionReveal delay={index * 0.1}>
+      <div
+        ref={cardRef}
+        id={program.id}
+        className="group relative h-[420px] rounded-2xl overflow-hidden cursor-pointer"
+        style={{
+          transform: `perspective(900px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
+          transition: 'transform 0.12s ease-out',
+          background: 'rgba(8,14,26,0.95)',
+          border: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Program image — revealed on hover */}
+        <div
+          className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-40 opacity-20"
+          style={{
+            backgroundImage: `url(${program.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+          }}
+        />
+
+        {/* Spotlight hover effect */}
+        <div
+          className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle 200px at ${spotlight.x}% ${spotlight.y}%, ${program.accentColor}18 0%, transparent 70%)`,
+            opacity: spotlight.opacity,
+          }}
+        />
+
+        {/* Bottom gradient for content readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-[#050810]/70 to-transparent" />
+
+        {/* Hover border accent */}
+        <div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{ border: `1px solid ${program.accentColor}35` }}
+        />
+
+        {/* Number + icon — top-left */}
+        <div className="absolute top-5 left-5 flex items-center gap-2.5">
+          <span
+            className="text-[11px] font-mono font-bold tracking-[0.25em]"
+            style={{ color: `${program.accentColor}70` }}
+          >
+            {program.number}
+          </span>
+          <div
+            className="w-px h-3 opacity-30"
+            style={{ background: program.accentColor }}
+          />
+          <div
+            className="w-7 h-7 rounded-lg flex items-center justify-center"
+            style={{
+              background: `${program.accentColor}15`,
+              border: `1px solid ${program.accentColor}30`,
+            }}
+          >
+            <program.icon className="w-3.5 h-3.5" style={{ color: program.accentColor }} />
+          </div>
+        </div>
+
+        {/* Content — bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          {/* Title */}
+          <h3
+            className="text-2xl md:text-[26px] font-black tracking-tight text-white mb-2 leading-tight whitespace-pre-line"
+          >
+            {program.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-[13px] text-white/45 leading-relaxed mb-5 max-w-[280px]">
+            {program.desc}
+          </p>
+
+          {/* CTA */}
+          <div
+            className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase transition-all duration-300 group-hover:gap-2.5"
+            style={{ color: program.accentColor }}
+          >
+            <span>{program.cta}</span>
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              style={{
+                background: `${program.accentColor}20`,
+                border: `1px solid ${program.accentColor}40`,
+              }}
+            >
+              <ArrowUpRight className="w-2.5 h-2.5" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </SectionReveal>
+  );
+}
 
 export default function ProgramsSection() {
   return (
-    <section id="programs" className="py-32 bg-background relative z-10">
+    <section id="programs" className="py-28 bg-background relative z-10">
       <div className="max-w-7xl mx-auto px-6">
+
+        {/* Section identity */}
         <SectionReveal>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-16 text-center">
-            LEARN WHAT THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">FUTURE NEEDS.</span>
-          </h2>
+          <div className="flex flex-col items-center text-center mb-16">
+            <div className="inline-flex items-center gap-2 mb-5">
+              <div className="w-6 h-px bg-[#00d4ff]/40" />
+              <span className="text-[10px] font-mono font-bold tracking-[0.3em] text-[#00d4ff]/60 uppercase">
+                04 // PROGRAMS
+              </span>
+              <div className="w-6 h-px bg-[#00d4ff]/40" />
+            </div>
+            <h2
+              className="font-black tracking-tight text-white mb-4"
+              style={{ fontSize: 'clamp(34px, 4.5vw, 56px)', lineHeight: 1.05 }}
+            >
+              LEARN WHAT THE{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] to-[#00d4ff]">
+                FUTURE NEEDS.
+              </span>
+            </h2>
+            <p className="text-white/45 text-[15px] max-w-md font-normal leading-relaxed">
+              Four disciplines. One platform. Built for the next generation of builders.
+            </p>
+          </div>
         </SectionReveal>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {programs.map((program, index) => (
-            <SectionReveal key={program.title} delay={index * 0.1}>
-              <div className={`group relative h-[400px] rounded-3xl overflow-hidden glass-panel border-white/5 transition-all duration-500 hover:-translate-y-2 ${program.border}`}>
-                {/* Background Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${program.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                
-                {/* Abstract Visuals */}
-                {program.visual}
-
-                {/* Content */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-end z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-                  <div className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <program.icon className={`w-6 h-6 ${program.accent}`} />
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-wide">
-                    {program.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-6 max-w-sm">
-                    {program.desc}
-                  </p>
-                  
-                  <div className={`inline-flex items-center font-semibold text-sm ${program.accent}`}>
-                    {program.cta}
-                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-2" />
-                  </div>
-                </div>
-              </div>
-            </SectionReveal>
+        {/* Grid */}
+        <div className="grid md:grid-cols-2 gap-5">
+          {programs.map((program, i) => (
+            <ProgramCard key={program.id} program={program} index={i} />
           ))}
         </div>
+
       </div>
     </section>
   );

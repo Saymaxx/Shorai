@@ -6,54 +6,68 @@ import TrustMetrics from './TrustMetrics';
 
 export default function HeroContent() {
   return (
-    <div className="flex flex-col items-start pt-20 lg:pt-0 z-20 relative w-full pr-0 md:pr-10">
-      
-      {/* Eyebrow */}
-      <motion.div 
-        initial={{ opacity: 0, y: 15 }}
+    <div className="flex flex-col items-start z-20 relative w-full pr-0 md:pr-8">
+
+      {/* Eyebrow badge */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 backdrop-blur-xl"
+        transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.10] mb-8 backdrop-blur-xl"
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#FF6B00]" />
-        <span className="text-[10px] font-bold tracking-[0.25em] text-white/80 uppercase">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] shadow-[0_0_10px_#FF6B00] animate-pulse" />
+        <span className="text-[10px] font-bold tracking-[0.28em] text-white/75 uppercase font-mono">
           THE FUTURE OF STEM EDUCATION
         </span>
       </motion.div>
 
       {/* Main Headline */}
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
+      <motion.h1
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="font-[900] tracking-tight leading-[1.05] mb-6 flex flex-col text-white"
-        style={{ fontSize: 'clamp(56px, 6vw, 92px)' }}
+        transition={{ duration: 0.9, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+        className="font-[900] tracking-[-0.02em] leading-[1.02] mb-7 flex flex-col text-white"
+        style={{ fontSize: 'clamp(52px, 5.8vw, 88px)' }}
       >
-        <span>BUILD THE NEXT</span>
-        <span className="flex items-center">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF2A6D] via-[#7B2DFF] to-[#00BFFF]">
+        <span className="text-white">BUILD THE NEXT</span>
+        <span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7B2DFF]">
             GENERATION
           </span>
-          <span className="ml-[0.1em]">OF</span>
+          <span className="text-white"> OF</span>
         </span>
-        <span className="flex items-center">
-          INNOVATORS
-          <span className="text-[#FF6B00] drop-shadow-[0_0_15px_rgba(255,107,0,0.8)] leading-[0.5] -translate-y-[0.05em]">.</span>
+        <span className="flex items-baseline">
+          <span className="text-white">INNOVATORS</span>
+          <span
+            className="text-[#FF6B00] ml-0.5"
+            style={{ textShadow: '0 0 18px rgba(255,107,0,0.7)' }}
+          >
+            .
+          </span>
         </span>
       </motion.h1>
 
-      {/* Supporting Text */}
-      <motion.div 
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
+      {/* Horizontal rule accent */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="w-16 h-px bg-gradient-to-r from-[#00d4ff] to-transparent mb-7 origin-left"
+      />
+
+      {/* Sub-headline */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
         className="flex flex-col gap-1.5 mb-10"
       >
-        <h3 className="text-xl md:text-[22px] font-semibold text-white/95 tracking-wide">
+        <h2 className="text-xl md:text-[21px] font-semibold text-white/92 tracking-tight">
           Future-ready STEM education for schools.
-        </h3>
-        <p className="text-[17px] text-muted-foreground/90 max-w-md leading-relaxed font-medium">
-          Hands-on learning powered by AI, Robotics, Coding & Drones.
+        </h2>
+        <p className="text-[16px] text-white/50 max-w-[400px] leading-relaxed font-normal">
+          Hands-on learning powered by AI, Robotics, Coding&nbsp;&amp; Drones —
+          built for the K-12 classroom.
         </p>
       </motion.div>
 
@@ -62,7 +76,7 @@ export default function HeroContent() {
 
       {/* Trust Metrics */}
       <TrustMetrics />
-      
+
     </div>
   );
 }
