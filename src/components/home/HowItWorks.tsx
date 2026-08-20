@@ -3,13 +3,14 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import SectionReveal from '@/components/animations/SectionReveal';
+import { Sparkles } from 'lucide-react';
 
 const steps = [
-  { num: '01', title: 'DISCOVER', desc: 'Students discover emerging technologies.' },
-  { num: '02', title: 'LEARN', desc: 'Understand the concepts behind them.' },
-  { num: '03', title: 'BUILD', desc: 'Create real projects.' },
-  { num: '04', title: 'EXPERIMENT', desc: 'Test, fail, improve and iterate.' },
-  { num: '05', title: 'INNOVATE', desc: 'Turn ideas into solutions.' },
+  { num: '01', title: 'DISCOVER', desc: 'Students discover emerging tech through hands-on curiosity.' },
+  { num: '02', title: 'LEARN', desc: 'Understand real engineering, logic & algorithmic concepts.' },
+  { num: '03', title: 'BUILD', desc: 'Assemble physical robots, sensors & neural software models.' },
+  { num: '04', title: 'EXPERIMENT', desc: 'Test, calibrate, troubleshoot and iterate independently.' },
+  { num: '05', title: 'INNOVATE', desc: 'Build working inventions for competitions and patents.' },
 ];
 
 export default function HowItWorks() {
@@ -22,56 +23,51 @@ export default function HowItWorks() {
   const lineWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="py-32 bg-[#050505] relative overflow-hidden border-t border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <SectionReveal>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-white mb-24 text-center">
-            HOW SHORAI WORKS
-          </h2>
-        </SectionReveal>
+    <section ref={containerRef} className="py-28 bg-background relative overflow-hidden border-t border-border transition-colors duration-300">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
+        
+        <div className="text-center max-w-2xl mx-auto mb-20">
+          <SectionReveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              STUDENT LEARNING CYCLE
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground">
+              HOW SHORAI <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">WORKS</span>
+            </h2>
+          </SectionReveal>
+        </div>
 
         <div className="relative">
           {/* Background Line */}
-          <div className="absolute top-8 left-0 w-full h-[2px] bg-white/10 hidden md:block" />
+          <div className="absolute top-8 left-0 w-full h-[3px] bg-muted hidden md:block rounded-full" />
           
           {/* Animated Progress Line */}
           <motion.div 
-            className="absolute top-8 left-0 h-[2px] bg-gradient-to-r from-primary via-secondary to-accent hidden md:block"
+            className="absolute top-8 left-0 h-[3px] bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hidden md:block rounded-full shadow-sm"
             style={{ width: lineWidth }}
           />
 
-          <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-4 relative">
+          <div className="flex flex-col md:flex-row justify-between gap-10 md:gap-4 relative">
             {steps.map((step, index) => {
-              // Node activation based on scroll
-              const activationPoint = index / (steps.length - 1) - 0.1;
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const nodeColor = useTransform(
-                scrollYProgress,
-                [activationPoint, activationPoint + 0.1],
-                ["rgba(255,255,255,0.1)", "rgba(255,107,0,1)"]
-              );
-
               return (
                 <div key={step.num} className="flex-1 flex flex-col md:items-center text-left md:text-center relative group">
                   
-                  {/* Vertical line for mobile */}
-                  <div className="absolute left-6 top-16 bottom-[-3rem] w-[2px] bg-white/10 md:hidden" />
-                  
                   {/* Node */}
                   <div className="relative z-10 flex items-center mb-6">
-                    <motion.div 
-                      className="w-16 h-16 rounded-full bg-[#050505] border-4 flex items-center justify-center relative shadow-[0_0_15px_rgba(0,0,0,0.8)]"
-                      style={{ borderColor: nodeColor }}
-                    >
-                      <span className="font-mono text-sm font-bold text-white">{step.num}</span>
-                    </motion.div>
+                    <div className="w-16 h-16 rounded-2xl bg-card border-2 border-primary/30 flex items-center justify-center relative shadow-md group-hover:border-primary group-hover:scale-110 transition-all">
+                      <span className="font-mono text-sm font-black text-primary">{step.num}</span>
+                    </div>
                   </div>
 
                   {/* Content */}
-                  <SectionReveal delay={index * 0.1}>
-                    <div className="pl-20 md:pl-0">
-                      <h3 className="text-xl font-bold tracking-wide text-white mb-2">{step.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed max-w-[200px] mx-auto">
+                  <SectionReveal delay={index * 0.08}>
+                    <div className="pl-4 md:pl-0">
+                      <h3 className="text-base font-bold tracking-wide text-foreground mb-2">{step.title}</h3>
+                      <p className="text-muted-foreground text-xs leading-relaxed max-w-[200px] mx-auto">
                         {step.desc}
                       </p>
                     </div>

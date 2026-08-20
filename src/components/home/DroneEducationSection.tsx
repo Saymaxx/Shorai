@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plane, Compass, Wifi, Battery, ShieldAlert, Crosshair, Navigation, Play, Zap, CheckCircle2, Sliders, LucideIcon } from 'lucide-react';
+import { Plane, Compass, Wifi, Battery, ShieldAlert, Crosshair, Navigation, Play, Zap, CheckCircle2, Sliders, LucideIcon, ArrowRight, Sparkles } from 'lucide-react';
 import Drone3D, { DroneFlightMode } from '@/components/3d/Drone3D';
 import SectionReveal from '@/components/animations/SectionReveal';
+import ContactModal from '@/components/shared/ContactModal';
+import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
 interface FlightModeOption {
   id: DroneFlightMode;
@@ -28,7 +30,7 @@ const FLIGHT_MODES: FlightModeOption[] = [
     battery: '94%',
     desc: 'GPS & Barometric lock maintains position while students inspect flight sensors and gyroscope dynamics.',
     icon: Compass,
-    color: '#00BFFF'
+    color: '#0284C7'
   },
   {
     id: 'orbit',
@@ -44,13 +46,13 @@ const FLIGHT_MODES: FlightModeOption[] = [
   {
     id: 'scan',
     title: 'LIDAR TERRAIN SCAN',
-    badge: 'GREEN LASER GRID',
+    badge: 'LASER DEPTH GRID',
     altitude: '6.5 m',
     speed: '1.2 m/s',
     battery: '81%',
     desc: 'Point-cloud depth sensor mapping terrain elevation, obstacles, and 3D architectural features.',
     icon: Crosshair,
-    color: '#00FF66'
+    color: '#10B981'
   },
   {
     id: 'takeoff',
@@ -61,210 +63,211 @@ const FLIGHT_MODES: FlightModeOption[] = [
     battery: '76%',
     desc: 'High-thrust vertical takeoff sequence testing motor ESC response and accelerometer flight limits.',
     icon: Zap,
-    color: '#7B2DFF'
+    color: '#7928CA'
   }
 ];
 
 export default function DroneEducationSection() {
-  const [flightMode, setFlightMode] = useState<DroneFlightMode>('hover');
-  const [propSpeed, setPropSpeed] = useState<number>(1.2);
-  const [laserActive, setLaserActive] = useState<boolean>(true);
+  const [activeFlightMode, setActiveFlightMode] = useState<DroneFlightMode>('hover');
+  const [propSpeed, setPropSpeed] = useState(1.0);
+  const [altitude, setAltitude] = useState(15);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const currentMode = FLIGHT_MODES.find((m) => m.id === flightMode) || FLIGHT_MODES[0];
-  const CurrentModeIcon = currentMode.icon;
+  const currentMode = FLIGHT_MODES.find(m => m.id === activeFlightMode) || FLIGHT_MODES[0];
 
   return (
-    <section id="drones" className="py-28 bg-[#03060d] relative overflow-hidden text-white border-t border-white/10">
+    <section id="drones" className="relative py-28 bg-muted/20 overflow-hidden border-t border-border transition-colors duration-300">
       
-      {/* Background Neon Atmosphere */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[20%] right-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-[#00FF66]/10 rounded-full blur-[150px]" />
-        <div className="absolute bottom-[10%] left-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-[#00BFFF]/10 rounded-full blur-[150px]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] bg-center" />
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 right-1/4 w-[40vw] h-[40vw] max-w-[600px] bg-secondary/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute bottom-1/3 left-1/4 w-[40vw] h-[40vw] max-w-[600px] bg-accent/[0.03] rounded-full blur-[140px]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <SectionReveal>
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-widest bg-[#00FF66]/10 text-[#00FF66] border border-[#00FF66]/30 inline-flex items-center gap-1.5 mb-4">
-              <Plane className="w-3.5 h-3.5" />
-              AERIAL ROBOTICS & DRONE SIMULATOR
-            </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-              MASTERING <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FF66] via-[#00BFFF] to-[#FF6B00]">DRONE TECHNOLOGY</span> IN CLASSROOMS
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg">
-              From flight physics and motor aerodynamics to LiDAR scanning and autonomous flight path programming.
-            </p>
-          </div>
-        </SectionReveal>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
 
-        {/* FLIGHT MODE ACTION TABS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-          {FLIGHT_MODES.map((mode) => {
-            const Icon = mode.icon;
-            const isActive = flightMode === mode.id;
-            return (
-              <button
-                key={mode.id}
-                onClick={() => {
-                  setFlightMode(mode.id);
-                  if (mode.id === 'scan') setLaserActive(true);
-                }}
-                className={`flex flex-col items-start p-4 rounded-2xl border transition-all duration-300 text-left relative overflow-hidden ${
-                  isActive
-                    ? 'border-[#00FF66] bg-white/10 shadow-[0_0_25px_rgba(0,255,102,0.25)] scale-[1.02]'
-                    : 'border-white/10 bg-black/40 hover:bg-white/5 text-white/60 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center justify-between w-full mb-2">
-                  <Icon className="w-5 h-5" style={{ color: mode.color }} />
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/80">
-                    {mode.badge}
-                  </span>
-                </div>
-                <div className="text-sm font-bold text-white tracking-wide">{mode.title}</div>
-              </button>
-            );
-          })}
+        {/* SECTION HEADER */}
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
+          <SectionReveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-xs font-mono font-bold text-secondary mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              AEROSPACE &amp; DRONE LAB
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
+              DRONE TECHNOLOGY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0284C7] via-[#6366F1] to-[#FF6B00]">DEMO</span>
+            </h2>
+          </SectionReveal>
+
+          <SectionReveal delay={0.15}>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              Explore aerodynamics, motor thrust curves, LiDAR terrain mapping, and autonomous waypoint flight missions on our interactive 3D quadcopter.
+            </p>
+          </SectionReveal>
+
+          {/* Mode Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+            {FLIGHT_MODES.map((mode) => {
+              const Icon = mode.icon;
+              const isActive = activeFlightMode === mode.id;
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => setActiveFlightMode(mode.id)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all ${
+                    isActive
+                      ? 'bg-card border-2 shadow-lg text-foreground scale-105'
+                      : 'bg-card/70 border border-border text-muted-foreground hover:text-foreground'
+                  }`}
+                  style={isActive ? { borderColor: mode.color } : {}}
+                >
+                  <Icon className="w-4 h-4" style={{ color: mode.color }} />
+                  <span>{mode.title}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* 3D DRONE FLIGHT SIMULATOR & HUD DISPLAY */}
-        <div className="grid lg:grid-cols-12 gap-8 items-center">
+        {/* 3D DISPLAY & CONTROL GRID */}
+        <div className="grid lg:grid-cols-12 gap-8 items-center mb-16">
           
-          {/* LEFT: 3D DRONE MODEL CANVAS WITH HUD OVERLAY (7 Cols) */}
-          <div className="lg:col-span-7 h-[480px] sm:h-[550px] bg-black/80 rounded-3xl border border-[#00FF66]/30 backdrop-blur-2xl relative overflow-hidden p-2 flex flex-col justify-between shadow-[0_0_50px_rgba(0,255,102,0.15)]">
+          {/* LEFT: 3D Canvas (7 Cols) */}
+          <div className="lg:col-span-7 h-[460px] sm:h-[540px] bg-card rounded-3xl border border-border shadow-xl relative overflow-hidden p-2 flex flex-col justify-between group">
             
-            {/* HUD TELEMETRY TOP BAR OVERLAY */}
-            <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between font-mono text-[11px] pointer-events-none">
-              <div className="flex items-center gap-3 bg-black/80 border border-white/20 px-3 py-1.5 rounded-xl">
-                <span className="flex items-center gap-1.5 text-[#00FF66] font-bold">
-                  <Wifi className="w-3.5 h-3.5 animate-pulse" />
-                  12 SATS CONNECTED
-                </span>
-                <span className="text-white/40">|</span>
-                <span className="text-white/80">MODE: {currentMode.badge}</span>
-              </div>
-
-              <div className="flex items-center gap-2 bg-black/80 border border-white/20 px-3 py-1.5 rounded-xl">
-                <Battery className="w-3.5 h-3.5 text-[#00BFFF]" />
-                <span className="text-white font-bold">{currentMode.battery}</span>
-              </div>
+            {/* Top Telemetry Overlay */}
+            <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+              <span className="px-3 py-1 rounded-xl text-[11px] font-mono font-bold bg-card/90 border border-border text-foreground flex items-center gap-2 shadow-sm">
+                <Plane className="w-3.5 h-3.5 text-secondary animate-bounce" />
+                MISSION: {currentMode.badge}
+              </span>
+              <span className="text-[10px] font-mono text-muted-foreground bg-card/80 px-2.5 py-1 rounded-lg border border-border shadow-sm">
+                DRAG TO ROTATE
+              </span>
             </div>
 
-            {/* 3D Drone Canvas */}
+            {/* 3D Drone Component */}
             <div className="w-full h-full relative">
               <Drone3D
-                flightMode={flightMode}
+                flightMode={activeFlightMode}
                 propSpeed={propSpeed}
-                laserActive={laserActive}
+                laserActive={activeFlightMode === 'scan'}
               />
             </div>
 
-            {/* HUD FLIGHT TELEMETRY READOUT BOTTOM OVERLAY */}
-            <div className="absolute bottom-4 left-4 right-4 z-20 grid grid-cols-4 gap-2 bg-black/90 border border-[#00FF66]/40 rounded-2xl p-3 text-center backdrop-blur-md">
-              <div>
-                <div className="text-[9px] font-mono text-white/50">ALTITUDE</div>
-                <div className="text-sm font-bold font-mono text-[#00FF66]">{currentMode.altitude}</div>
+            {/* Bottom HUD Telemetry Strip */}
+            <div className="absolute bottom-4 left-4 right-4 z-20 grid grid-cols-3 gap-2 bg-card/90 border border-border rounded-2xl p-3 text-center backdrop-blur-md shadow-md">
+              <div className="flex items-center justify-center gap-2">
+                <Navigation className="w-3.5 h-3.5 text-secondary" />
+                <div className="text-left">
+                  <div className="text-[9px] font-mono text-muted-foreground">ALTITUDE</div>
+                  <div className="text-xs sm:text-sm font-bold text-foreground">{altitude} m</div>
+                </div>
               </div>
-              <div>
-                <div className="text-[9px] font-mono text-white/50">GROUND SPEED</div>
-                <div className="text-sm font-bold font-mono text-[#00BFFF]">{currentMode.speed}</div>
+              <div className="flex items-center justify-center gap-2">
+                <Compass className="w-3.5 h-3.5 text-accent" />
+                <div className="text-left">
+                  <div className="text-[9px] font-mono text-muted-foreground">AIRSPEED</div>
+                  <div className="text-xs sm:text-sm font-bold text-foreground">{currentMode.speed}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-[9px] font-mono text-white/50">LIDAR SENSOR</div>
-                <div className="text-sm font-bold font-mono text-[#FF6B00]">{laserActive ? 'ONLINE' : 'OFF'}</div>
-              </div>
-              <div>
-                <div className="text-[9px] font-mono text-white/50">THROTTLE ESC</div>
-                <div className="text-sm font-bold font-mono text-[#7B2DFF]">{(propSpeed * 80).toFixed(0)}%</div>
+              <div className="flex items-center justify-center gap-2">
+                <Battery className="w-3.5 h-3.5 text-emerald-500" />
+                <div className="text-left">
+                  <div className="text-[9px] font-mono text-muted-foreground">BATTERY</div>
+                  <div className="text-xs sm:text-sm font-bold text-emerald-500">{currentMode.battery}</div>
+                </div>
               </div>
             </div>
 
           </div>
 
-          {/* RIGHT: DRONE CURRICULUM & INTERACTIVE CONTROLS (5 Cols) */}
+          {/* RIGHT: Telemetry Controls & Learning Syllabus (5 Cols) */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            
-            <div className="bg-[#090D16] border border-white/10 rounded-3xl p-6 relative overflow-hidden">
-              
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
-                  <CurrentModeIcon className="w-6 h-6 text-[#00FF66]" />
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono font-bold text-[#00FF66] tracking-wider uppercase">
-                    ACTIVE FLIGHT SEQUENCE
-                  </span>
-                  <h3 className="text-xl font-bold text-white">{currentMode.title}</h3>
-                </div>
-              </div>
-
-              <p className="text-sm text-white/70 mb-6 leading-relaxed">
-                {currentMode.desc}
-              </p>
-
-              {/* Drone Learning Modules List */}
-              <div className="space-y-2.5 mb-6">
-                {[
-                  'Aerodynamics & Thrust-to-Weight Physics',
-                  'Quad-Rotor PID Controller Tuning',
-                  'LiDAR & Optical Flow Obstacle Avoidance',
-                  'Autonomous Waypoint Mission Programming'
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-xs text-white/80">
-                    <CheckCircle2 className="w-4 h-4 text-[#00FF66] flex-shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Interactive Flight Controls */}
-              <div className="p-4 rounded-2xl bg-black/60 border border-white/10 space-y-4">
-                <div className="flex items-center justify-between text-xs font-mono font-bold text-white/80">
-                  <span className="flex items-center gap-1.5">
-                    <Sliders className="w-3.5 h-3.5 text-[#00FF66]" />
-                    PROPELLER THROTTLE (RPM)
-                  </span>
-                  <span className="text-[#00FF66]">{(propSpeed * 3000).toFixed(0)} RPM</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.4"
-                  max="2.5"
-                  step="0.1"
-                  value={propSpeed}
-                  onChange={(e) => setPropSpeed(Number(e.target.value))}
-                  className="w-full accent-[#00FF66] cursor-pointer"
-                />
-
-                <div className="flex items-center justify-between pt-2">
-                  <span className="text-xs font-mono font-bold text-white/80 flex items-center gap-1.5">
-                    <Crosshair className="w-3.5 h-3.5 text-[#00BFFF]" />
-                    LIDAR LASER BEAM
-                  </span>
-                  <button
-                    onClick={() => setLaserActive(!laserActive)}
-                    className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all ${
-                      laserActive
-                        ? 'bg-[#00FF66] text-black shadow-[0_0_10px_rgba(0,255,102,0.5)]'
-                        : 'bg-white/10 text-white/50'
-                    }`}
+            <AnimatePresence mode="wait">
+              {(() => {
+                const Icon = currentMode.icon;
+                return (
+                  <motion.div
+                    key={activeFlightMode}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-card border border-border rounded-3xl p-6 sm:p-7 relative overflow-hidden shadow-sm"
                   >
-                    {laserActive ? 'LASER ON' : 'LASER OFF'}
-                  </button>
-                </div>
-              </div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div 
+                        className="p-3 rounded-2xl shadow-sm"
+                        style={{ background: `${currentMode.color}15`, color: currentMode.color }}
+                      >
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono font-bold text-muted-foreground tracking-wider block">AVIONICS SYLLABUS</span>
+                        <h3 className="text-xl font-bold text-foreground">{currentMode.title}</h3>
+                      </div>
+                    </div>
 
-            </div>
+                    <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                      {currentMode.desc}
+                    </p>
 
+                    {/* Flight Controls */}
+                    <div className="p-4 rounded-2xl bg-muted/40 border border-border space-y-4">
+                      <div className="flex items-center justify-between text-xs font-mono font-bold text-foreground">
+                        <span>ROTOR THRUST (RPM)</span>
+                        <span className="text-secondary">{(propSpeed * 5200).toFixed(0)} RPM</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0.4"
+                        max="2.5"
+                        step="0.1"
+                        value={propSpeed}
+                        onChange={(e) => setPropSpeed(Number(e.target.value))}
+                        className="w-full accent-sky-600 cursor-pointer"
+                      />
+
+                      <div className="flex items-center justify-between text-xs font-mono font-bold text-foreground pt-1">
+                        <span>FLIGHT CEILING (ALTITUDE)</span>
+                        <span className="text-accent">{altitude} Meters</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="40"
+                        value={altitude}
+                        onChange={(e) => setAltitude(Number(e.target.value))}
+                        className="w-full accent-orange-500 cursor-pointer"
+                      />
+                    </div>
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
           </div>
 
         </div>
 
+        {/* Bottom CTA Button */}
+        <div className="text-center">
+          <MagneticWrapper>
+            <button
+              onClick={() => setIsContactOpen(true)}
+              className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <span>To know more about us contact us</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </MagneticWrapper>
+        </div>
+
       </div>
+
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </section>
   );
 }

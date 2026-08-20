@@ -28,9 +28,9 @@ export default function HeroSection() {
         { id: 'coding', key: 'coding' },
         { id: 'drones', key: 'drones' },
         { id: 'ai', key: 'ai' },
-        { id: 'programs', key: 'transformation' },
-        { id: 'robotics', key: 'robotics' },
-        { id: 'innovation-labs', key: 'robotics' },
+        { id: 'skills', key: 'transformation' },
+        { id: 'ecosystem', key: 'robotics' },
+        { id: 'technology', key: 'robotics' },
       ];
       let found = 'hero';
       for (const s of sections) {
@@ -49,55 +49,55 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full bg-[#050505] overflow-hidden flex items-center pt-20"
+      className="relative min-h-screen w-full bg-background overflow-hidden flex items-center pt-24 pb-16 transition-colors duration-300"
     >
-      {/* ── Background atmospherics ───────────────────────────────── */}
+      {/* ── Soft & Cheerful Background Atmospherics ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
+        transition={{ duration: 1.5 }}
         className="absolute inset-0 z-0 pointer-events-none"
         aria-hidden="true"
       >
-        {/* Cyan atmosphere — left */}
+        {/* Soft Violet/Purple cloud (top-left) */}
         <div
-          className="absolute top-[5%] -left-[15%] w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-[#00d4ff]/5 rounded-full blur-[140px]"
-          style={{ transform: `translate(${mousePosition.x * -12}px, ${mousePosition.y * -12}px)` }}
+          className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] max-w-[750px] max-h-[750px] bg-primary/[0.07] rounded-full blur-[140px]"
+          style={{ transform: `translate(${mousePosition.x * -15}px, ${mousePosition.y * -15}px)` }}
         />
-        {/* Orange atmosphere — right */}
+        {/* Sunny Peach/Orange glow (center-right) */}
         <div
-          className="absolute top-[20%] -right-[15%] w-[60vw] h-[60vw] max-w-[900px] max-h-[900px] bg-[#FF6B00]/4 rounded-full blur-[160px]"
+          className="absolute top-[15%] -right-[10%] w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-accent/[0.06] rounded-full blur-[150px]"
+          style={{ transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)` }}
+        />
+        {/* Sky Blue / Cyan depth (bottom-left) */}
+        <div
+          className="absolute bottom-[5%] left-[25%] w-[45vw] h-[45vw] max-w-[650px] max-h-[650px] bg-secondary/[0.06] rounded-full blur-[130px]"
           style={{ transform: `translate(${mousePosition.x * 12}px, ${mousePosition.y * 12}px)` }}
         />
-        {/* Purple depth — center-right */}
-        <div
-          className="absolute top-[45%] right-[10%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-[#7B2DFF]/6 rounded-full blur-[130px]"
-          style={{ transform: `translate(${mousePosition.x * 18}px, ${mousePosition.y * 18}px)` }}
-        />
 
-        {/* Subtle technical grid */}
+        {/* Subtle playful grid */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px)
+              linear-gradient(var(--primary) 1px, transparent 1px),
+              linear-gradient(90deg, var(--primary) 1px, transparent 1px)
             `,
-            backgroundSize: '80px 80px',
+            backgroundSize: '64px 64px',
           }}
         />
       </motion.div>
 
-      {/* ── Main layout ───────────────────────────────────────── */}
-      <div className="max-w-[1440px] mx-auto px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-screen py-16 lg:py-0">
-
-        {/* LEFT — content (z-30 so content is sharp & accessible) */}
-        <div className="relative z-30 py-12 lg:py-0">
+      {/* ── Main Hero Layout ── */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-[calc(100vh-6rem)]">
+        
+        {/* LEFT — Student-focused value proposition */}
+        <div className="relative z-30 py-8 lg:py-0">
           <HeroContent />
         </div>
 
-        {/* RIGHT — 3D Robot Head visual composition */}
-        <div className="relative z-20 w-full h-[540px] sm:h-[620px] lg:h-[720px] flex items-center justify-center">
+        {/* RIGHT — Friendly, Interactive 3D Robot Companion */}
+        <div className="relative z-20 w-full h-[520px] sm:h-[600px] lg:h-[680px] flex items-center justify-center">
           <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
         </div>
 

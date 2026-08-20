@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Bot, Heart, Cpu, Code2, Rocket } from 'lucide-react';
+import { Sparkles, Bot, Heart, Cpu, Code2, Rocket, PartyPopper } from 'lucide-react';
 import Robot3DCanvas from '@/components/3d/Robot3D';
 
 interface HeroVisualProps {
@@ -12,17 +12,17 @@ interface HeroVisualProps {
 
 const DIALOGUES = [
   "Hello! I'm Shorai-1 👋",
-  "Ready to build the future? 🚀",
-  "AI & Robotics are super fun! 🤖",
-  "Let's code something awesome! 💻",
-  "STEM learning made magical! ✨",
+  "Ready to build real robots? 🤖",
+  "Let's code our first AI model! 🧠",
+  "Fly autonomous drones today! 🚀",
+  "STEM learning is super fun! ✨",
 ];
 
 const STEM_BADGES = [
-  { label: 'AI Powered', icon: Cpu, color: '#00d4ff', x: '-42%', y: '-30%' },
-  { label: 'Robotics', icon: Bot, color: '#FF6B00', x: '42%', y: '-24%' },
-  { label: 'Coding', icon: Code2, color: '#a83aff', x: '-44%', y: '30%' },
-  { label: 'Drones', icon: Rocket, color: '#FF3D7F', x: '40%', y: '32%' },
+  { label: 'AI Projects', icon: Cpu, color: '#6366F1', bg: 'rgba(99,102,241,0.1)', x: '-42%', y: '-28%' },
+  { label: 'Robotics Lab', icon: Bot, color: '#FF6B00', bg: 'rgba(255,107,0,0.1)', x: '42%', y: '-22%' },
+  { label: 'Python & ROS 2', icon: Code2, color: '#7928CA', bg: 'rgba(121,40,202,0.1)', x: '-44%', y: '30%' },
+  { label: 'Drone Flight', icon: Rocket, color: '#0284C7', bg: 'rgba(2,132,199,0.1)', x: '40%', y: '32%' },
 ];
 
 export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) {
@@ -33,7 +33,7 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
   useEffect(() => {
     const interval = setInterval(() => {
       setDialogueIndex((prev) => (prev + 1) % DIALOGUES.length);
-    }, 5000);
+    }, 4500);
     return () => clearInterval(interval);
   }, []);
 
@@ -47,17 +47,17 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
 
   return (
     <div
-      className="relative w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[680px] flex items-center justify-center pointer-events-auto select-none"
+      className="relative w-full h-full min-h-[480px] sm:min-h-[560px] lg:min-h-[660px] flex items-center justify-center pointer-events-auto select-none"
       onClick={handleContainerClick}
     >
-      {/* ── AMBIENT NEON GLOWS ────────────────────────────────────────── */}
+      {/* ── Soft Ambient Radial Glows ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-        <div className="w-[80%] aspect-square rounded-full bg-[#00d4ff]/10 blur-[130px] animate-pulse" />
-        <div className="w-[65%] aspect-square rounded-full bg-[#FF6B00]/8 blur-[110px]" />
-        <div className="w-[50%] aspect-square rounded-full bg-[#7B2DFF]/10 blur-[90px]" />
+        <div className="w-[85%] aspect-square rounded-full bg-primary/[0.08] blur-[120px] animate-pulse" />
+        <div className="w-[70%] aspect-square rounded-full bg-secondary/[0.08] blur-[100px]" />
+        <div className="w-[55%] aspect-square rounded-full bg-accent/[0.06] blur-[90px]" />
       </div>
 
-      {/* ── SPEECH BUBBLE (Interactive AI Dialogue) ────────────────── */}
+      {/* ── SPEECH BUBBLE (Interactive Friendly Robot Greeting) ── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={dialogueIndex}
@@ -65,67 +65,71 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.94 }}
           transition={{ type: 'spring', damping: 20, stiffness: 240 }}
-          className="absolute -top-8 sm:-top-6 z-30 px-4 py-2 rounded-2xl bg-[#0b101d]/95 border border-[#00d4ff]/40 shadow-[0_0_25px_rgba(0,212,255,0.3)] backdrop-blur-xl flex items-center gap-2 pointer-events-none whitespace-nowrap"
+          className="absolute -top-6 sm:-top-4 z-30 px-4 py-2 rounded-2xl bg-card border border-border shadow-[0_10px_25px_rgba(99,102,241,0.15)] backdrop-blur-xl flex items-center gap-2 pointer-events-none whitespace-nowrap"
         >
-          <span className="w-2 h-2 rounded-full bg-[#00d4ff] animate-ping" />
-          <span className="text-xs sm:text-sm font-semibold text-white tracking-wide">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+          <span className="text-xs sm:text-sm font-bold text-foreground tracking-tight">
             {DIALOGUES[dialogueIndex]}
           </span>
-          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0b101d]/95 border-b border-r border-[#00d4ff]/40 rotate-45" />
+          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-b border-r border-border rotate-45" />
         </motion.div>
       </AnimatePresence>
 
-      {/* ── FLOATING HEARTS (on click reaction) ─────────────────────── */}
+      {/* ── FLOATING HEARTS / SPARKS (Click Interaction) ── */}
       {hearts.map((h) => (
         <motion.div
           key={h.id}
           initial={{ opacity: 1, scale: 0.6, y: 0 }}
           animate={{ opacity: 0, scale: 1.8, y: -90, x: (Math.random() - 0.5) * 60 }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="absolute z-40 pointer-events-none text-[#FF3D7F]"
+          className="absolute z-40 pointer-events-none text-rose-500"
           style={{ left: h.x, top: h.y }}
         >
-          <Heart className="w-6 h-6 fill-[#FF3D7F]" />
+          <Heart className="w-6 h-6 fill-rose-500" />
         </motion.div>
       ))}
 
-      {/* ── 3D REAL WEBGL ROBOT HEAD & CELESTIAL TECH CANVAS ────────── */}
+      {/* ── 3D ROBOT CANVAS ── */}
       <div className="absolute inset-0 z-20 w-full h-full flex items-center justify-center">
         <Robot3DCanvas activeSection={activeSection} />
       </div>
 
-      {/* ── FLOATING STEM BADGES (Orbiting outer perimeter) ─────────── */}
+      {/* ── FLOATING PLAYFUL STEM BADGES ── */}
       {STEM_BADGES.map((badge, idx) => {
         const Icon = badge.icon;
         return (
           <motion.div
             key={badge.label}
-            className="absolute z-25 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#080d1a]/85 border shadow-lg backdrop-blur-md pointer-events-none whitespace-nowrap"
+            className="absolute z-25 hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card border border-border shadow-md backdrop-blur-md pointer-events-none whitespace-nowrap"
             style={{
               top: `calc(50% + ${badge.y})`,
               left: `calc(50% + ${badge.x})`,
-              borderColor: `${badge.color}45`,
-              boxShadow: `0 0 18px ${badge.color}20`,
+              boxShadow: `0 4px 15px rgba(0,0,0,0.06)`,
             }}
             animate={{
-              y: [0, idx % 2 === 0 ? -8 : 8, 0],
-              rotate: [0, idx % 2 === 0 ? 2 : -2, 0],
+              y: [0, idx % 2 === 0 ? -7 : 7, 0],
+              rotate: [0, idx % 2 === 0 ? 1.5 : -1.5, 0],
             }}
             transition={{
               repeat: Infinity,
-              duration: 4.5 + idx * 0.6,
+              duration: 4 + idx * 0.5,
               ease: 'easeInOut',
             }}
           >
-            <Icon className="w-3 h-3" style={{ color: badge.color }} />
-            <span className="text-[10px] font-mono font-bold tracking-wider text-white/85">
+            <div 
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: badge.bg, color: badge.color }}
+            >
+              <Icon className="w-3 h-3" />
+            </div>
+            <span className="text-[11px] font-bold tracking-wide text-foreground/90">
               {badge.label}
             </span>
           </motion.div>
         );
       })}
 
-      {/* ── HUD CORNER LABELS ────────────────────────────────────────── */}
+      {/* ── HUD CORNER LABELS ── */}
       <motion.div
         className="absolute inset-0 z-10 pointer-events-none"
         initial={{ opacity: 0 }}
@@ -134,24 +138,17 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
         aria-hidden="true"
       >
         {/* Top-right: SYSTEM ONLINE badge */}
-        <div className="absolute top-[4%] right-[2%] flex items-center gap-2">
-          <div className="flex flex-col items-end">
-            <span className="text-[9px] font-mono font-bold tracking-[0.25em] text-white/40 uppercase">
-              SHORAI-AI
-            </span>
-            <span className="text-[11px] font-bold tracking-widest text-[#00d4ff] uppercase flex items-center gap-1">
-              <Sparkles className="w-2.5 h-2.5 text-[#00d4ff]" /> ONLINE
-            </span>
-          </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-[#00d4ff] shadow-[0_0_8px_#00d4ff] animate-ping" />
+        <div className="absolute top-[4%] right-[2%] flex items-center gap-2 px-3 py-1 rounded-full bg-card border border-border shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[10px] font-mono font-bold text-foreground/80 tracking-wider">
+            AI ROBOT ONLINE
+          </span>
         </div>
 
-        {/* Bottom-right: STATUS badge */}
-        <div className="absolute bottom-[6%] right-[2%] flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] shadow-[0_0_8px_#FF6B00] animate-pulse" />
-          <span className="text-[9px] font-mono text-white/40 tracking-widest uppercase">
-            3D CORE ACTIVE
-          </span>
+        {/* Bottom-right: Interactive hint */}
+        <div className="absolute bottom-[6%] right-[2%] flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-mono font-bold shadow-sm">
+          <Sparkles className="w-3 h-3 animate-spin" />
+          <span>CLICK ME TO CHAT</span>
         </div>
       </motion.div>
     </div>

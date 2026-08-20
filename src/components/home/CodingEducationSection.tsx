@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code2, Terminal, Play, RotateCcw, CheckCircle2, Sparkles, Cpu, Bot, Plane, Layers, LucideIcon } from 'lucide-react';
+import { Code2, Terminal, Play, RotateCcw, CheckCircle2, Sparkles, Cpu, Bot, Plane, Layers, LucideIcon, ArrowRight } from 'lucide-react';
 import Coding3D from '@/components/3d/Coding3D';
 import SectionReveal from '@/components/animations/SectionReveal';
+import ContactModal from '@/components/shared/ContactModal';
+import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
 type CodeLanguage = 'blocks' | 'python' | 'javascript';
 
@@ -36,8 +38,8 @@ const AVAILABLE_BLOCKS: LogicBlock[] = [
     category: 'ai',
     pythonCode: 'predictions = ai.detect(camera=0)',
     jsCode: 'const predictions = await ai.detect(0);',
-    color: '#00BFFF',
-    borderColor: 'border-[#00BFFF]/40',
+    color: '#0284C7',
+    borderColor: 'border-[#0284C7]/40',
     icon: Cpu
   },
   {
@@ -46,269 +48,260 @@ const AVAILABLE_BLOCKS: LogicBlock[] = [
     category: 'drone',
     pythonCode: 'drone.takeoff(target_altitude=10.0)',
     jsCode: 'await drone.takeoff({ altitude: 10 });',
-    color: '#00FF66',
-    borderColor: 'border-[#00FF66]/40',
+    color: '#10B981',
+    borderColor: 'border-[#10B981]/40',
     icon: Plane
   },
   {
     id: 'b4',
-    name: 'if obstacle_detected: drone.avoid()',
+    name: 'if obstacle: robot.evade_left()',
     category: 'drone',
-    pythonCode: 'if robot.has_obstacle():\n    drone.evade_left()',
-    jsCode: 'if (robot.hasObstacle()) {\n    await drone.evadeLeft();\n}',
-    color: '#7B2DFF',
-    borderColor: 'border-[#7B2DFF]/40',
+    pythonCode: 'if robot.has_obstacle():\n    robot.turn_left(angle=45)',
+    jsCode: 'if (robot.hasObstacle()) {\n    await robot.turnLeft(45);\n}',
+    color: '#7928CA',
+    borderColor: 'border-[#7928CA]/40',
+    icon: Bot
+  },
+  {
+    id: 'b5',
+    name: 'while True: stream_telemetry()',
+    category: 'ai',
+    pythonCode: 'while True:\n    cloud.publish(robot.get_state())',
+    jsCode: 'while (true) {\n    await cloud.publish(robot.state);\n}',
+    color: '#6366F1',
+    borderColor: 'border-[#6366F1]/40',
     icon: Layers
   }
 ];
 
 export default function CodingEducationSection() {
-  const [language, setLanguage] = useState<CodeLanguage>('blocks');
-  const [selectedBlocks, setSelectedBlocks] = useState<LogicBlock[]>([
-    AVAILABLE_BLOCKS[0],
-    AVAILABLE_BLOCKS[1],
-    AVAILABLE_BLOCKS[2]
-  ]);
-  const [isExecuting, setIsExecuting] = useState<boolean>(false);
-  const [terminalLogs, setTerminalLogs] = useState<string[]>([
-    '>> Shorai 3D Code Environment v2.5 Ready.',
-    '>> Drag or click logic blocks to assemble sequence.'
-  ]);
+  const [selectedBlocks, setSelectedBlocks] = useState<string[]>(['b1', 'b2', 'b3']);
+  const [activeLanguage, setActiveLanguage] = useState<CodeLanguage>('python');
+  const [isRunning, setIsRunning] = useState(false);
+  const [executionOutput, setExecutionOutput] = useState<string[]>([]);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const handleAddBlock = (block: LogicBlock) => {
-    setSelectedBlocks((prev) => [...prev, block]);
-    setTerminalLogs((prev) => [...prev, `+ Appended logic block: ${block.name}`]);
+  const toggleBlock = (id: string) => {
+    if (selectedBlocks.includes(id)) {
+      if (selectedBlocks.length > 1) {
+        setSelectedBlocks(selectedBlocks.filter(b => b !== id));
+      }
+    } else {
+      setSelectedBlocks([...selectedBlocks, id]);
+    }
   };
 
-  const handleRemoveBlock = (index: number) => {
-    setSelectedBlocks((prev) => prev.filter((_, i) => i !== index));
-    setTerminalLogs((prev) => [...prev, `- Removed block at index [${index}]`]);
-  };
-
-  const handleRunProgram = () => {
-    setIsExecuting(true);
-    setTerminalLogs([
-      '>> INITIATING PROGRAM COMPILATION...',
-      `>> TARGET: SHORAI HARDWARE SUITE (${selectedBlocks.length} INSTRUCTIONS)`,
-      '------------------------------------------------',
-      '>> [1/3] Validating hardware pins...',
-      '>> [2/3] Compiling syntax tree to byte-code...',
-      '>> [3/3] Executing in 3D WebGL simulator...'
-    ]);
+  const handleRunCode = () => {
+    setIsRunning(true);
+    setExecutionOutput(['>> Compiling logic pipeline...', '>> Connecting to 3D Robot & Drone runtime...']);
 
     setTimeout(() => {
-      setTerminalLogs((prev) => [
+      setExecutionOutput(prev => [
         ...prev,
-        '>> [SUCCESS] Program executed with 0 errors.',
-        '>> Output: Robot & Drone mission completed!'
+        '>> [SYS_OK] Sensors initialized (Ultrasonic + LiDAR).',
+        '>> [AI_OK] YOLOv8 Neural Camera feed online.',
+        '>> [ROBOT_OK] Motors engaged, waypoint navigation active!'
       ]);
-      setIsExecuting(false);
-    }, 2800);
+      setIsRunning(false);
+    }, 1200);
+  };
+
+  const resetPipeline = () => {
+    setSelectedBlocks(['b1', 'b2', 'b3']);
+    setExecutionOutput([]);
   };
 
   return (
-    <section id="coding" className="py-28 bg-[#03060f] relative overflow-hidden text-white border-t border-white/10">
+    <section id="coding" className="relative py-28 bg-background overflow-hidden border-t border-border transition-colors duration-300">
       
-      {/* Background Neon Atmosphere */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[10%] left-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-[#7B2DFF]/10 rounded-full blur-[150px]" />
-        <div className="absolute bottom-[10%] right-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-[#00FF66]/10 rounded-full blur-[150px]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] bg-center" />
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/3 w-[45vw] h-[45vw] max-w-[650px] bg-primary/[0.03] rounded-full blur-[140px]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <SectionReveal>
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-widest bg-[#7B2DFF]/10 text-[#7B2DFF] border border-[#7B2DFF]/30 inline-flex items-center gap-1.5 mb-4">
-              <Code2 className="w-3.5 h-3.5" />
-              INTERACTIVE 3D CODING WORKSPACE
-            </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-              BUILDING <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7B2DFF] via-[#00BFFF] to-[#00FF66]">SOFTWARE & LOGIC</span> FOR TOMORROW
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg">
-              From visual drag-and-drop block logic to real Python and JavaScript hardware scripts.
-            </p>
-          </div>
-        </SectionReveal>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
 
-        {/* LANGUAGE SELECTOR SWITCHER */}
-        <div className="flex justify-center gap-3 mb-10">
-          {[
-            { id: 'blocks', label: 'VISUAL LOGIC BLOCKS' },
-            { id: 'python', label: 'PYTHON HARDWARE SCRIPT' },
-            { id: 'javascript', label: 'JAVASCRIPT / NODE.JS' }
-          ].map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setLanguage(item.id as CodeLanguage)}
-              className={`px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all border ${
-                language === item.id
-                  ? 'bg-[#7B2DFF] border-[#7B2DFF] text-white shadow-[0_0_20px_rgba(123,45,255,0.4)]'
-                  : 'bg-black/40 border-white/10 text-white/60 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        {/* SECTION HEADER */}
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
+          <SectionReveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              PYTHON &bull; ROS 2 &bull; BLOCK CODING
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
+              INTERACTIVE CODING <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SANDBOX</span>
+            </h2>
+          </SectionReveal>
+
+          <SectionReveal delay={0.15}>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              Drag and drop visual logic blocks, inspect compiled Python and ROS 2 hardware commands, and watch the 3D machine execute your code in real-time.
+            </p>
+          </SectionReveal>
+
+          {/* Language Selector */}
+          <div className="flex items-center gap-2 mt-6 p-1.5 rounded-2xl bg-muted/60 border border-border">
+            {(['blocks', 'python', 'javascript'] as CodeLanguage[]).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setActiveLanguage(lang)}
+                className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all uppercase font-mono ${
+                  activeLanguage === lang
+                    ? 'bg-card text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* WORKSPACE GRID: 3D MODEL & CODE ASSEMBLY PANEL */}
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+        {/* MAIN SANDBOX GRID */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start mb-16">
           
-          {/* LEFT: 3D HOLOGRAPHIC CODING MODEL (5 Cols) */}
-          <div className="lg:col-span-5 h-[480px] sm:h-[550px] bg-black/80 rounded-3xl border border-[#7B2DFF]/40 backdrop-blur-2xl relative overflow-hidden p-2 flex flex-col justify-between shadow-[0_0_50px_rgba(123,45,255,0.2)]">
-            
-            {/* Header overlay */}
-            <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
-              <span className="px-3 py-1 rounded-lg text-[10px] font-mono font-bold bg-black/80 border border-white/20 text-[#7B2DFF] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                3D SYNTAX MATRIX
+          {/* LEFT: Logic Block Palette (5 Cols) */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            <div className="flex items-center justify-between px-2">
+              <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
+                AVAILABLE LOGIC MODULES
               </span>
-              <span className="text-[10px] font-mono text-white/50 bg-black/60 px-2 py-1 rounded border border-white/10">
-                {isExecuting ? 'COMPILING & RUNNING...' : 'READY'}
-              </span>
+              <button
+                onClick={resetPipeline}
+                className="text-xs font-mono text-primary flex items-center gap-1 hover:underline"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset
+              </button>
             </div>
 
-            {/* 3D Canvas */}
-            <div className="w-full h-full relative">
-              <Coding3D isExecuting={isExecuting} language={language} />
-            </div>
-
-            {/* Terminal Output Logs */}
-            <div className="absolute bottom-4 left-4 right-4 z-20 bg-black/95 border border-white/15 rounded-2xl p-3 font-mono text-[10px] text-emerald-400 max-h-28 overflow-y-auto backdrop-blur-md">
-              <div className="flex items-center gap-2 text-[9px] text-white/40 mb-1 border-b border-white/10 pb-1">
-                <Terminal className="w-3 h-3 text-[#00FF66]" />
-                SHORAI EMBEDDED CONSOLE TERMINAL
-              </div>
-              {terminalLogs.map((log, idx) => (
-                <div key={idx} className="leading-tight py-0.5">{log}</div>
-              ))}
-            </div>
-
-          </div>
-
-          {/* RIGHT: INTERACTIVE CODE ASSEMBLY & RUNNER (7 Cols) */}
-          <div className="lg:col-span-7 bg-[#080D1A] border border-white/10 rounded-3xl p-6 flex flex-col justify-between relative">
-            
-            <div>
-              {/* Header & Run Button */}
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <Code2 className="w-5 h-5 text-[#7B2DFF]" />
-                  <span className="text-base font-bold text-white tracking-wide">
-                    {language === 'blocks' ? 'PROGRAM SEQUENCE BUILDER' : language === 'python' ? 'MAIN.PY SCRIPT' : 'APP.JS SCRIPT'}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setSelectedBlocks([])}
-                    className="p-2 rounded-xl bg-white/5 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-                    title="Clear Blocks"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={handleRunProgram}
-                    disabled={isExecuting || selectedBlocks.length === 0}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs font-mono transition-all duration-300 ${
-                      isExecuting
-                        ? 'bg-emerald-500/50 text-white cursor-wait'
-                        : 'bg-[#00FF66] text-black hover:bg-emerald-400 shadow-[0_0_20px_rgba(0,255,102,0.4)] scale-105'
+            <div className="space-y-3">
+              {AVAILABLE_BLOCKS.map((block) => {
+                const Icon = block.icon;
+                const isSelected = selectedBlocks.includes(block.id);
+                return (
+                  <motion.div
+                    key={block.id}
+                    onClick={() => toggleBlock(block.id)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
+                      isSelected
+                        ? 'bg-card border-primary/60 shadow-md shadow-primary/5'
+                        : 'bg-card/60 border-border hover:border-primary/30 opacity-70'
                     }`}
                   >
-                    <Play className="w-4 h-4 fill-current" />
-                    <span>{isExecuting ? 'EXECUTING...' : 'RUN PROGRAM'}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* ACTIVE CODE SEQUENCE CONTAINER */}
-              <div className="mb-6 space-y-2.5 min-h-[160px] bg-black/50 border border-white/10 rounded-2xl p-4">
-                <div className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-2">
-                  EXECUTABLE LOGIC SEQUENCE ({selectedBlocks.length} STEPS):
-                </div>
-
-                {selectedBlocks.length === 0 ? (
-                  <div className="text-xs text-white/30 font-mono py-8 text-center">
-                    No logic blocks selected. Click blocks below to assemble your program!
-                  </div>
-                ) : (
-                  selectedBlocks.map((block, idx) => {
-                    const BlockIcon = block.icon;
-                    return (
-                      <motion.div
-                        key={`${block.id}-${idx}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className={`flex items-center justify-between p-3 rounded-xl border bg-black/80 font-mono text-xs ${block.borderColor}`}
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                        style={{ background: `${block.color}15`, color: block.color }}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="text-[10px] text-white/40 font-bold">{idx + 1}.</span>
-                          <BlockIcon className="w-4 h-4" style={{ color: block.color }} />
-                          <span className="text-white font-bold">
-                            {language === 'python' ? block.pythonCode : language === 'javascript' ? block.jsCode : block.name}
-                          </span>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-mono font-bold text-foreground">
+                          {block.name}
                         </div>
+                        <div className="text-[10px] font-mono text-muted-foreground">
+                          CATEGORY: {block.category.toUpperCase()}
+                        </div>
+                      </div>
+                    </div>
 
-                        <button
-                          onClick={() => handleRemoveBlock(idx)}
-                          className="text-white/40 hover:text-red-400 transition-colors text-xs font-bold px-2 py-0.5 rounded hover:bg-white/10"
-                        >
-                          ✕
-                        </button>
-                      </motion.div>
-                    );
-                  })
-                )}
+                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                      isSelected ? 'bg-primary border-primary text-white' : 'border-border'
+                    }`}>
+                      {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Run Button */}
+            <button
+              onClick={handleRunCode}
+              disabled={isRunning}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01] mt-2"
+            >
+              <Play className="w-4 h-4 fill-white" />
+              <span>{isRunning ? 'EXECUTING PIPELINE...' : 'EXECUTE CODE ON 3D ROBOT'}</span>
+            </button>
+          </div>
+
+          {/* RIGHT: Code Editor & 3D Execution Canvas (7 Cols) */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            
+            {/* Code Output Window */}
+            <div className="rounded-3xl bg-card border border-border shadow-md overflow-hidden">
+              <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-muted/40 text-xs font-mono">
+                <div className="flex items-center gap-2 text-foreground font-bold">
+                  <Terminal className="w-4 h-4 text-primary" />
+                  <span>COMPILED SCRIPT ({activeLanguage.toUpperCase()})</span>
+                </div>
+                <span className="text-[10px] text-emerald-500 font-bold">SYNTAX VERIFIED</span>
               </div>
 
-              {/* AVAILABLE LOGIC BLOCKS PALETTE */}
-              <div>
-                <div className="text-[10px] font-mono text-white/50 uppercase tracking-widest mb-3">
-                  AVAILABLE HARDWARE INSTRUCTION BLOCKS (CLICK TO ADD):
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {AVAILABLE_BLOCKS.map((block) => {
-                    const BlockIcon = block.icon;
+              <div className="p-5 font-mono text-xs text-foreground/90 bg-muted/10 overflow-x-auto max-h-[160px]">
+                <pre>
+                  {selectedBlocks.map((bId) => {
+                    const block = AVAILABLE_BLOCKS.find(b => b.id === bId);
+                    if (!block) return null;
                     return (
-                      <button
-                        key={block.id}
-                        onClick={() => handleAddBlock(block)}
-                        className={`flex items-center gap-3 p-3 rounded-xl border bg-black/40 hover:bg-white/10 transition-all text-left font-mono text-xs text-white/90 ${block.borderColor}`}
-                      >
-                        <BlockIcon className="w-4 h-4 flex-shrink-0" style={{ color: block.color }} />
-                        <span className="truncate">{block.name}</span>
-                      </button>
+                      <div key={bId} className="leading-relaxed">
+                        <span className="text-primary font-bold"># {block.name}</span>
+                        {'\n'}
+                        <span className="text-foreground">
+                          {activeLanguage === 'python' ? block.pythonCode : block.jsCode}
+                        </span>
+                        {'\n'}
+                      </div>
                     );
                   })}
-                </div>
-              </div>
-
-            </div>
-
-            {/* Curriculum Summary Bar */}
-            <div className="mt-8 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-white/60">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#7B2DFF]" />
-                <span>K-12 Block to Text Transition Curriculum</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#00FF66]" />
-                <span>Direct Microcontroller Code Flashing</span>
+                </pre>
               </div>
             </div>
+
+            {/* 3D Simulation Canvas */}
+            <div className="h-[300px] sm:h-[340px] rounded-3xl bg-card border border-border shadow-xl relative overflow-hidden p-2">
+              <Coding3D isExecuting={isRunning} language={activeLanguage} />
+            </div>
+
+            {/* Console Log Terminal */}
+            {executionOutput.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-2xl bg-card border border-border font-mono text-xs text-muted-foreground space-y-1 shadow-sm"
+              >
+                {executionOutput.map((log, i) => (
+                  <div key={i} className="text-foreground/80">{log}</div>
+                ))}
+              </motion.div>
+            )}
 
           </div>
 
         </div>
 
+        {/* Bottom CTA Button */}
+        <div className="text-center">
+          <MagneticWrapper>
+            <button
+              onClick={() => setIsContactOpen(true)}
+              className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <span>To know more about us contact us</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </MagneticWrapper>
+        </div>
+
       </div>
+
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </section>
   );
 }

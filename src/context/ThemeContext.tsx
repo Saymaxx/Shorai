@@ -13,19 +13,16 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check localStorage or system preference
+    // Default to 'light' for energetic, friendly, student-focused design
     const savedTheme = localStorage.getItem('shorai-theme') as Theme | null;
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      setThemeState(savedTheme);
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-      document.documentElement.classList.toggle('light', savedTheme === 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
+    const initialTheme: Theme = savedTheme === 'dark' ? 'dark' : 'light';
+    setThemeState(initialTheme);
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(initialTheme);
     setMounted(true);
   }, []);
 
@@ -37,7 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
   };
 

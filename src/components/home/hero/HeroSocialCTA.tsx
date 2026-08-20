@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Users } from 'lucide-react';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
 
-// High-fidelity vector brand icons
 function LinkedInIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
@@ -47,10 +46,9 @@ const socialLinks = [
     tag: 'Careers & Insights',
     icon: LinkedInIcon,
     url: 'https://linkedin.com',
-    color: '#00d4ff',
-    accentGlow: 'rgba(0, 212, 255, 0.35)',
-    borderHover: 'hover:border-[#00d4ff]/60',
-    bgHover: 'group-hover:bg-[#00d4ff]/15',
+    color: '#0A66C2',
+    bg: 'rgba(10, 102, 194, 0.1)',
+    borderHover: 'hover:border-[#0A66C2]/60',
   },
   {
     name: 'YouTube',
@@ -58,10 +56,9 @@ const socialLinks = [
     tag: 'Robotics & AI Demos',
     icon: YouTubeIcon,
     url: 'https://youtube.com',
-    color: '#FF0055',
-    accentGlow: 'rgba(255, 0, 85, 0.35)',
-    borderHover: 'hover:border-[#FF0055]/60',
-    bgHover: 'group-hover:bg-[#FF0055]/15',
+    color: '#FF0000',
+    bg: 'rgba(255, 0, 0, 0.1)',
+    borderHover: 'hover:border-[#FF0000]/60',
   },
   {
     name: 'Instagram',
@@ -69,10 +66,9 @@ const socialLinks = [
     tag: 'Student Inventions',
     icon: InstagramIcon,
     url: 'https://instagram.com',
-    color: '#FF2A85',
-    accentGlow: 'rgba(255, 42, 133, 0.35)',
-    borderHover: 'hover:border-[#FF2A85]/60',
-    bgHover: 'group-hover:bg-[#FF2A85]/15',
+    color: '#E1306C',
+    bg: 'rgba(225, 48, 108, 0.1)',
+    borderHover: 'hover:border-[#E1306C]/60',
   },
   {
     name: 'Facebook',
@@ -81,48 +77,37 @@ const socialLinks = [
     icon: FacebookIcon,
     url: 'https://facebook.com',
     color: '#1877F2',
-    accentGlow: 'rgba(24, 119, 242, 0.35)',
+    bg: 'rgba(24, 119, 242, 0.1)',
     borderHover: 'hover:border-[#1877F2]/60',
-    bgHover: 'group-hover:bg-[#1877F2]/15',
   },
 ];
 
 export default function HeroSocialCTA() {
   return (
-    <section className="relative z-20 w-full py-12 px-6 overflow-hidden bg-[#050505] border-y border-white/[0.06]">
-      {/* Background ambient lighting */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[40vw] h-[150px] bg-[#00d4ff]/[0.03] rounded-full blur-[100px]" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[40vw] h-[150px] bg-[#FF6B00]/[0.03] rounded-full blur-[100px]" />
-      </div>
-
+    <section className="relative z-20 w-full py-10 px-4 sm:px-6 overflow-hidden bg-background border-y border-border transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto">
-        <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-          {/* Subtle top laser line */}
-          <div className="absolute -top-px left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[#00d4ff]/50 to-transparent" />
-
+        <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-card border border-border shadow-sm">
+          
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
             
-            {/* Left Info / CTA message */}
+            {/* Left Info */}
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left max-w-xl">
               <SectionReveal>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 mb-3 backdrop-blur-md">
-                  <Sparkles className="w-3.5 h-3.5 text-[#00d4ff] animate-pulse" />
-                  <span className="text-[10px] font-mono font-bold tracking-[0.25em] text-white/80 uppercase">
-                    CONNECT WITH SHORAI
-                  </span>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  CONNECT WITH SHORAI
                 </div>
               </SectionReveal>
 
               <SectionReveal delay={0.1}>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white mb-2">
-                  JOIN OUR GLOBAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00d4ff] via-[#8B5CF6] to-[#FF6B00]">STEM COMMUNITY.</span>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-foreground mb-2">
+                  JOIN OUR GLOBAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">STEM COMMUNITY.</span>
                 </h3>
               </SectionReveal>
 
               <SectionReveal delay={0.15}>
-                <p className="text-sm sm:text-base text-white/60 leading-relaxed">
-                  Follow our live robotics labs, watch student AI projects, and receive weekly STEM innovation updates across our official channels.
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                  Follow our live student robotics builds, watch AI project demos, and receive weekly STEM innovation updates.
                 </p>
               </SectionReveal>
             </div>
@@ -132,43 +117,31 @@ export default function HeroSocialCTA() {
               {socialLinks.map((social, idx) => {
                 const Icon = social.icon;
                 return (
-                  <SectionReveal key={social.name} delay={0.1 + idx * 0.08}>
+                  <SectionReveal key={social.name} delay={0.08 * idx}>
                     <MagneticWrapper>
                       <a
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        data-cursor="button"
-                        data-cursor-text={social.name}
-                        className={`group relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 ${social.borderHover} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-full sm:w-[150px] lg:w-[160px] min-h-[140px] overflow-hidden`}
-                        style={{
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                        }}
+                        className={`group relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg w-full sm:w-[150px] lg:w-[160px] min-h-[135px] overflow-hidden`}
                       >
-                        {/* Hover glow background */}
-                        <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                          style={{
-                            background: `radial-gradient(circle at center, ${social.accentGlow} 0%, transparent 70%)`,
-                          }}
-                        />
-
                         {/* Top icon and link arrow */}
                         <div className="flex items-center justify-between w-full relative z-10">
                           <div
-                            className={`w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${social.bgHover}`}
+                            className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm"
+                            style={{ background: social.bg }}
                           >
                             <Icon className="w-5 h-5 transition-colors duration-300" style={{ color: social.color }} />
                           </div>
-                          <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                          <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                         </div>
 
                         {/* Bottom handle & title */}
                         <div className="relative z-10 mt-3 text-left">
-                          <h4 className="text-sm font-bold text-white tracking-wide group-hover:text-white transition-colors">
+                          <h4 className="text-sm font-bold text-foreground tracking-wide group-hover:text-primary transition-colors">
                             {social.name}
                           </h4>
-                          <span className="text-[11px] font-mono text-white/50 block group-hover:text-white/80 transition-colors truncate">
+                          <span className="text-[11px] font-mono text-muted-foreground block truncate">
                             {social.handle}
                           </span>
                         </div>
