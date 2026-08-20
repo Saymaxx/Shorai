@@ -1,5 +1,6 @@
 import React from 'react';
 import HeroSection from '@/components/home/hero/HeroSection';
+import HeroSocialCTA from '@/components/home/hero/HeroSocialCTA';
 import TrustImpactStrip from '@/components/home/TrustImpactStrip';
 import InnovationLabs from '@/components/home/InnovationLabs';
 import AIEducationSection from '@/components/home/AIEducationSection';
@@ -25,6 +26,7 @@ export default function App() {
       <GlobalMouseFollower />
       <RobotGuideUI />
       <HeroSection />
+      <HeroSocialCTA />
       <TrustImpactStrip />
       <InnovationLabs />
       <AIEducationSection />
