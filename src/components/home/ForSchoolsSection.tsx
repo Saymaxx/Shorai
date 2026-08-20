@@ -1,86 +1,112 @@
 'use client';
 
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Brain, Wrench, Microscope, Briefcase } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Brain, Wrench, Microscope, Briefcase, Sparkles, CheckCircle2 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
+import ContactModal from '@/components/shared/ContactModal';
+import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
 const features = [
   {
     title: 'AI LABS',
-    desc: 'Build intelligent learning environments.',
+    desc: 'Turnkey computer vision & AI workspaces equipped with intelligent learning tools.',
     icon: Brain,
-    color: 'text-secondary',
+    color: '#7928CA',
   },
   {
     title: 'ROBOTICS LABS',
-    desc: 'Hands-on engineering and automation.',
+    desc: 'Hands-on hardware engineering, microcontrollers, servos and programmable kits.',
     icon: Wrench,
-    color: 'text-primary',
+    color: '#FF6B00',
   },
   {
     title: 'STEM PROGRAMS',
-    desc: 'Project-based future skills.',
+    desc: 'NEP 2020 aligned project-based curriculum spanning Grade 1 to 12.',
     icon: Microscope,
-    color: 'text-accent',
+    color: '#00D4FF',
   },
   {
     title: 'INDUSTRY EXPOSURE',
-    desc: 'Connect students with real-world technology.',
+    desc: 'Connect students with real engineers, hackathons, and national STEM Olympiads.',
     icon: Briefcase,
-    color: 'text-white',
+    color: '#10B981',
   },
 ];
 
 export default function ForSchoolsSection() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
-    <section id="schools" className="py-32 bg-background relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+    <section id="schools" className="py-28 bg-background relative overflow-hidden border-t border-border">
+      {/* Background ambient lighting */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[140px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
           {/* Left Text */}
-          <div className="flex flex-col items-start">
+          <div className="lg:col-span-5 flex flex-col items-start">
             <SectionReveal>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white mb-6">
-                MAKE YOUR SCHOOL <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">FUTURE-READY.</span>
-              </h2>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
+                <Sparkles className="w-3.5 h-3.5" />
+                INSTITUTIONAL PARTNERSHIP
+              </div>
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-lg">
-                SHORAI partners with schools to create technology-driven learning environments that prepare students for tomorrow&apos;s opportunities.
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-6 leading-tight">
+                MAKE YOUR SCHOOL <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
+                  FUTURE-READY.
+                </span>
+              </h2>
+            </SectionReveal>
+
+            <SectionReveal delay={0.15}>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8 max-w-lg">
+                SHORAI (by SEG Academy) partners with progressive schools to establish technology-driven learning environments that empower students to build real robots, code AI models, and compete on national platforms.
               </p>
             </SectionReveal>
 
             <SectionReveal delay={0.2}>
-              <Button className="h-14 px-8 rounded-full bg-white text-black hover:bg-gray-200 font-semibold group transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                Bring SHORAI to Your School
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <MagneticWrapper>
+                <button
+                  onClick={() => setIsContactOpen(true)}
+                  className="h-13 px-8 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center gap-2 transition-all hover:scale-105"
+                >
+                  <span>To know more about us contact us</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </MagneticWrapper>
             </SectionReveal>
           </div>
 
           {/* Right Features */}
-          <div className="grid sm:grid-cols-2 gap-6 relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent blur-3xl -z-10" />
-            
-            {features.map((feature, index) => (
-              <SectionReveal key={feature.title} delay={0.1 + index * 0.1}>
-                <div className="glass-panel p-8 rounded-3xl border border-white/5 hover:border-white/20 transition-colors duration-300 h-full flex flex-col items-start group">
-                  <div className="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <feature.icon className={`w-6 h-6 ${feature.color}`} />
+          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-5 relative">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <SectionReveal key={feature.title} delay={0.08 + index * 0.08}>
+                  <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col items-start group">
+                    <div 
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-sm"
+                      style={{ background: `${feature.color}15`, color: feature.color }}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-base font-bold text-foreground mb-2">{feature.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{feature.desc}</p>
                   </div>
-                  <h3 className="text-lg font-bold tracking-wide text-white mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{feature.desc}</p>
-                </div>
-              </SectionReveal>
-            ))}
+                </SectionReveal>
+              );
+            })}
           </div>
+
         </div>
       </div>
+
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </section>
   );
 }
