@@ -1,135 +1,209 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
-import Image from 'next/image';
-import TextReveal from '@/components/animations/TextReveal';
+import { Star, Quote, Sparkles, Building2, GraduationCap, Users, LucideIcon } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 
-const testimonials = [
+interface Testimonial {
+  id: number;
+  name: string;
+  role: string;
+  institution: string;
+  badge: string;
+  badgeIcon: LucideIcon;
+  image: string;
+  quote: string;
+  rating: number;
+  tags: string[];
+}
+
+const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Dr. Elena Rostova",
-    role: "Lead AI Researcher at NexaTech",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
-    quote: "Shorai’s curriculum is simply unmatched. Our newest recruits from their programs are deploying neural networks in production within their first month.",
+    name: "Dr. Sunita Kulkarni",
+    role: "Principal",
+    institution: "National Public School, Bengaluru",
+    badge: "SCHOOL LEADERSHIP",
+    badgeIcon: Building2,
+    image: "/images/testimonials/principal_sunita.jpg",
+    quote: "Partnering with Shorai and SEG Academy transformed our academic perception. Our students from Grade 6 onwards are now designing autonomous rovers and coding AI models with genuine confidence.",
     rating: 5,
+    tags: ["Turnkey AI Labs", "NEP 2020 Aligned"]
   },
   {
     id: 2,
-    name: "Marcus Chen",
-    role: "Senior Robotics Engineer",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
-    quote: "The hands-on experience with industrial actuators and embedded systems gave me the edge I needed to transition into autonomous vehicle development.",
+    name: "Rajesh Nair",
+    role: "Head of STEM & Robotics Lab",
+    institution: "Modern Academy, Delhi NCR",
+    badge: "STEM FACULTY",
+    badgeIcon: GraduationCap,
+    image: "/images/testimonials/mentor_rajesh.jpg",
+    quote: "The turnkey lab setup and master trainer enablement are exceptional. Unlike vendors who just drop hardware boxes, Shorai provides year-round lesson plans, rubrics, and faculty mentoring.",
     rating: 5,
+    tags: ["Teacher Enablement", "Robotics Kits"]
   },
   {
     id: 3,
-    name: "Sarah Jenkins",
-    role: "Founder, AeroDrones",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop",
-    quote: "I learned more about swarm intelligence and flight control algorithms in 6 months at Shorai than I did during my entire master's degree.",
+    name: "Pooja Agarwal",
+    role: "Parent of Grade 9 Student & Tech Lead",
+    institution: "Whitefield, Bengaluru",
+    badge: "PARENT PERSPECTIVE",
+    badgeIcon: Users,
+    image: "/images/testimonials/parent_pooja.jpg",
+    quote: "Seeing my daughter showcase her computer vision drone at the campus innovation day was breathtaking. Shorai is instilling applied engineering skills that traditional schools usually miss.",
     rating: 5,
+    tags: ["Drone Technology", "Applied Coding"]
   },
   {
     id: 4,
-    name: "David Park",
-    role: "IoT Systems Architect",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop",
-    quote: "Building full-stack IoT solutions from sensor to cloud is rarely taught comprehensively. Shorai nails it perfectly. Absolutely game changing.",
+    name: "Dr. Vikram Singh Rathore",
+    role: "Managing Director & Trustee",
+    institution: "Heritage International Academy, Jaipur",
+    badge: "INSTITUTIONAL TRUSTEE",
+    badgeIcon: Building2,
+    image: "/images/testimonials/director_vikram.jpg",
+    quote: "Shorai's 360° ecosystem gave our institution a distinct competitive edge. Parent trust has soared, and our innovation lab has become the absolute crown jewel of our campus.",
     rating: 5,
-  },
-  {
-    id: 5,
-    name: "Amara Okonkwo",
-    role: "Product Lead, Quantum Core",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
-    quote: "The emphasis on ethical AI and safety mechanisms inside the curriculum ensures that Shorai students build responsibly from day one.",
-    rating: 5,
+    tags: ["Campus Transformation", "Future Skills"]
   }
 ];
 
 export default function Testimonials() {
-  // Duplicate array for infinite scroll loop
-  const doubledTestimonials = [...testimonials, ...testimonials];
+  // Double items for seamless marquee
+  const doubled = [...testimonials, ...testimonials];
 
   return (
-    <SectionReveal id="testimonials" className="relative bg-[#050814] overflow-hidden py-32 md:py-48 border-t border-white/5">
-       {/* Background Ambience */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+    <section id="testimonials" className="relative py-24 sm:py-32 px-4 sm:px-6 bg-muted/20 overflow-hidden border-t border-border">
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32">
-        <div className="text-center max-w-3xl mx-auto">
-          <TextReveal 
-            className="text-4xl md:text-6xl font-semibold tracking-tighter text-white mb-6"
-          >
-            Don't just take our word for it.
-          </TextReveal>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-muted-foreground font-light"
-          >
-            Hear from industry leaders and alumni who are shaping the future.
-          </motion.p>
-        </div>
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-secondary/[0.03] rounded-full blur-[140px]" />
       </div>
 
-      {/* Infinite Carousel */}
-      <div className="relative w-full overflow-hidden flex z-10">
+      <div className="max-w-[1440px] mx-auto relative z-10">
         
-        {/* Left/Right Gradient Masks to fade edges smoothly */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-r from-[#050814] to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-l from-[#050814] to-transparent z-20 pointer-events-none" />
-
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 35 }}
-          className="flex gap-6 w-max"
-        >
-          {doubledTestimonials.map((testimonial, idx) => (
-            <div 
-              key={idx} 
-              className="w-[320px] md:w-[450px] shrink-0 p-8 md:p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-xl relative group hover:bg-white/[0.04] hover:border-white/10 transition-colors duration-500 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.5)]"
-            >
-              {/* Subtle Quote Icon */}
-              <Quote className="absolute top-8 right-8 w-12 h-12 text-white/5 group-hover:text-primary/10 transition-colors duration-500" />
-              
-              {/* Rating */}
-              <div className="flex gap-1.5 mb-6">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,107,0,0.4)]" />
-                ))}
-              </div>
-
-              {/* Review Text */}
-              <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10 font-light italic">
-                "{testimonial.quote}"
-              </p>
-
-              {/* Author Info */}
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="relative w-14 h-14 shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-lg">
-                  <Image 
-                    src={testimonial.image} 
-                    alt={`${testimonial.name} avatar`}
-                    fill
-                    sizes="56px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-white font-semibold text-lg">{testimonial.name}</span>
-                  <span className="text-sm text-primary tracking-wide font-medium">{testimonial.role}</span>
-                </div>
-              </div>
+        {/* Section Header */}
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <SectionReveal>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>INSTITUTIONAL VOICES &amp; EXPERIENCES</span>
             </div>
-          ))}
-        </motion.div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
+              WHAT EDUCATORS &amp; PARENTS <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
+                SAY ABOUT SHORAI
+              </span>
+            </h2>
+          </SectionReveal>
+
+          <SectionReveal delay={0.15}>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              Real feedback from Indian school leaders, STEM educators, and parents experiencing the transformative impact of Shorai Innovation Labs.
+            </p>
+          </SectionReveal>
+        </div>
+
+        {/* ── Continuous Marquee Carousel (Light-Mode Aesthetic) ── */}
+        <div className="relative w-full overflow-hidden">
+          
+          {/* Edge Gradient Masks for Smooth Fade */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
+
+          {/* Marquee Track */}
+          <div 
+            className="flex gap-6 w-max hover:[animation-play-state:paused]"
+            style={{
+              animation: 'testimonialMarquee 42s linear infinite',
+              willChange: 'transform',
+            }}
+          >
+            {doubled.map((item, idx) => {
+              const BadgeIcon = item.badgeIcon;
+              return (
+                <div
+                  key={`${item.id}-${idx}`}
+                  className="w-[330px] sm:w-[420px] flex-shrink-0 p-7 sm:p-8 rounded-3xl bg-card border border-border/90 shadow-lg hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    {/* Card Top: Reviewer Badge + 5 Stars */}
+                    <div className="flex items-center justify-between gap-2 mb-5">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-mono font-bold text-primary">
+                        <BadgeIcon className="w-3 h-3" />
+                        <span>{item.badge}</span>
+                      </div>
+
+                      {/* 5-Star Rating */}
+                      <div className="flex items-center gap-1">
+                        {[...Array(item.rating)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className="w-4 h-4 fill-amber-400 text-amber-400 drop-shadow-sm" 
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Review Quote with subtle quote icon */}
+                    <div className="relative mb-6">
+                      <Quote className="w-8 h-8 text-primary/15 absolute -top-2 -left-1 pointer-events-none" />
+                      <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed relative z-10 pl-2">
+                        &ldquo;{item.quote}&rdquo;
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {item.tags.map((tag, tIdx) => (
+                        <span 
+                          key={tIdx}
+                          className="px-2.5 py-0.5 rounded-lg bg-muted/60 text-[11px] font-semibold text-muted-foreground border border-border/60"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Reviewer Profile */}
+                    <div className="pt-4 border-t border-border flex items-center gap-3.5">
+                      <div className="relative w-13 h-13 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-sm flex-shrink-0">
+                        <img
+                          src={item.image}
+                          alt={`${item.name} portrait`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <h4 className="text-sm font-black text-foreground truncate">
+                          {item.name}
+                        </h4>
+                        <div className="text-xs font-bold text-primary truncate">
+                          {item.role}
+                        </div>
+                        <div className="text-[11px] font-medium text-muted-foreground truncate">
+                          {item.institution}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+
       </div>
 
-    </SectionReveal>
+    </section>
   );
 }
