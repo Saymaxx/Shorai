@@ -78,35 +78,9 @@ export default function HomeContactCTASection() {
             </SectionReveal>
 
             <SectionReveal delay={0.12}>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-md">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md">
                 Have questions or ready to launch an AI &amp; Robotics innovation lab on your campus? Reach out to our STEM team today.
               </p>
-            </SectionReveal>
-
-            {/* Designer Feature Pills */}
-            <SectionReveal delay={0.16}>
-              <div className="space-y-3 w-full max-w-sm">
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border shadow-sm">
-                  <div className="w-8 h-8 rounded-xl bg-primary/15 text-primary flex items-center justify-center flex-shrink-0">
-                    <Rocket className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-foreground">Turnkey Robotics &amp; AI Lab Setup</span>
-                </div>
-
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border shadow-sm">
-                  <div className="w-8 h-8 rounded-xl bg-secondary/15 text-secondary flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-foreground">Accredited Master Trainer Enablement</span>
-                </div>
-
-                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border shadow-sm">
-                  <div className="w-8 h-8 rounded-xl bg-accent/15 text-accent flex items-center justify-center flex-shrink-0">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold text-foreground">NEP 2020 Aligned K-12 Curriculum</span>
-                </div>
-              </div>
             </SectionReveal>
           </div>
 
