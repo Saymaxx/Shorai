@@ -23,7 +23,6 @@ import {
   School
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
-import FinalCTA from '@/components/home/FinalCTA';
 import Footer from '@/components/shared/Footer';
 
 const purposeOptions = [
@@ -567,10 +566,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── 4. Closing CTA Banner ───────────────────────────────────── */}
-      <FinalCTA />
-
-      {/* ── 5. Full Footer with All Details ─────────────────────────── */}
+      {/* ── 4. Full Footer with All Details ─────────────────────────── */}
       <Footer />
 
     </div>
