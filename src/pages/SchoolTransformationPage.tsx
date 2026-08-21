@@ -14,6 +14,7 @@ import {
   GraduationCap
 } from 'lucide-react';
 import InteractiveTechnology from '@/components/home/InteractiveTechnology';
+import ForSchoolsSection from '@/components/home/ForSchoolsSection';
 import HowItWorks from '@/components/home/HowItWorks';
 import Testimonials from '@/components/home/Testimonials';
 import Footer from '@/components/shared/Footer';
@@ -60,6 +61,9 @@ export default function SchoolTransformationPage() {
           </SectionReveal>
         </div>
       </section>
+
+      {/* Make Your School Future-Ready Proposition */}
+      <ForSchoolsSection />
 
       {/* 5-Step Methodology Section */}
       <InteractiveTechnology />

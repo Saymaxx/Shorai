@@ -5,15 +5,8 @@ import HeroSection from '@/components/home/hero/HeroSection';
 import HeroSocialCTA from '@/components/home/hero/HeroSocialCTA';
 import WhatIsShoraiSection from '@/components/home/WhatIsShoraiSection';
 import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
-import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
-import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
 import InnovationLabs from '@/components/home/InnovationLabs';
-import InteractiveTechnology from '@/components/home/InteractiveTechnology';
-import ForSchoolsSection from '@/components/home/ForSchoolsSection';
 import ProjectShowcase from '@/components/home/ProjectShowcase';
-import FutureStudentSection from '@/components/home/FutureStudentSection';
-import ImpactSection from '@/components/home/ImpactSection';
-import FinalCTA from '@/components/home/FinalCTA';
 import Footer from '@/components/shared/Footer';
 import GlobalMouseFollower from '@/components/shared/GlobalMouseFollower';
 import RobotGuideUI from '@/components/3d/RobotGuideUI';
@@ -108,33 +101,16 @@ export default function App() {
       {/* 3. What is Shorai Section */}
       <WhatIsShoraiSection />
 
-      {/* 4. Why Schools Need Shorai (Data Grid, NEP 2020 & 6 Institutional Outcomes) */}
+      {/* 4. Why Schools Need Shorai */}
       <WhySchoolsNeedShorai />
 
-      {/* 5. Shorai 360° Education Ecosystem (8 Interactive Pillars) */}
-      <Shorai360Ecosystem />
-
-      {/* 6. Future Skills Ecosystem (12 Modern Tech Domains) */}
-      <FutureSkillsEcosystem />
-
-      {/* 7. Shorai Innovation Labs (Turnkey Robotics & AI Lab Infrastructure) */}
+      {/* 5. Shorai Innovation Labs (Turnkey Robotics & AI Lab Infrastructure) */}
       <InnovationLabs />
 
-      {/* 8. 5-Step School Transformation Roadmap */}
-      <InteractiveTechnology />
-
-      {/* 10. Institutional School Partnership Proposition */}
-      <ForSchoolsSection />
-
-      {/* 11. Real Student Inventions & Career Horizons */}
+      {/* 6. Real Student Inventions & Showcase */}
       <ProjectShowcase />
-      <FutureStudentSection />
-      <ImpactSection />
 
-      {/* 12. High-Impact Closing Call To Action */}
-      <FinalCTA />
-
-      {/* 13. Comprehensive Footer with Verified Address, Phone & Interactive Google Map */}
+      {/* 7. Comprehensive Footer */}
       <Footer />
     </main>
   );

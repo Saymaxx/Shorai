@@ -13,6 +13,8 @@ import {
   GraduationCap
 } from 'lucide-react';
 import AboutSEGAcademy from '@/components/home/AboutSEGAcademy';
+import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
+import InteractiveTechnology from '@/components/home/InteractiveTechnology';
 import ImpactSection from '@/components/home/ImpactSection';
 import Testimonials from '@/components/home/Testimonials';
 import Footer from '@/components/shared/Footer';
@@ -77,8 +79,14 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Main About SEG Academy Content (Timeline, Stats, Legacy) */}
+      {/* Main About SEG Academy Content (Timeline, Legacy & Philosophy) */}
       <AboutSEGAcademy />
+
+      {/* Shorai 360° Education Ecosystem */}
+      <Shorai360Ecosystem />
+
+      {/* How Shorai Transforms Schools (5-Step Roadmap) */}
+      <InteractiveTechnology />
 
       {/* Institutional Impact Strip */}
       <ImpactSection />

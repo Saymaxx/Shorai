@@ -438,68 +438,6 @@ export default function Shorai360Ecosystem() {
 
         </div>
 
-        {/* What Makes It Powerful + Promise Box */}
-        <SectionReveal delay={0.2}>
-          <div className="rounded-3xl p-8 sm:p-12 bg-card border border-border shadow-sm mb-16">
-            <div className="grid lg:grid-cols-12 gap-8 items-center">
-              
-              <div className="lg:col-span-7">
-                <span className="text-xs font-mono font-bold tracking-[0.2em] text-primary uppercase block mb-2">
-                  WHAT MAKES IT POWERFUL?
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-4 leading-tight">
-                  Complete End-to-End School Transformation
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                  Unlike fragmented vendors who sell disconnected kits or software, Shorai takes 360° responsibility for school transformation: from curriculum and lab hardware to certified teacher training, AI platform management, and national hackathon participation.
-                </p>
-
-                <div className="grid sm:grid-cols-2 gap-3 text-xs font-semibold text-foreground/90">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    <span>NEP 2020 Compliant STEM Curriculum</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    <span>Safety Certified Robotics Hardware</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    <span>Continuous Faculty Support</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    <span>Regular Parent &amp; Student Exhibitions</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-5 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-primary/10 via-secondary/10 to-transparent border border-primary/20 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-primary font-mono font-bold text-xs uppercase tracking-wider mb-3">
-                    <Sparkles className="w-4 h-4" />
-                    OUR PROMISE
-                  </div>
-                  <p className="text-base sm:text-lg font-bold text-foreground leading-snug mb-6">
-                    &ldquo;Empowering schools with a unified ecosystem that inspires innovation, nurtures talent, and prepares every student for the future.&rdquo;
-                  </p>
-                </div>
-
-                <MagneticWrapper>
-                  <button
-                    onClick={() => setIsContactOpen(true)}
-                    className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs tracking-wide shadow-md flex items-center justify-center gap-2 transition-all"
-                  >
-                    <span>To know more about us contact us</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </MagneticWrapper>
-              </div>
-
-            </div>
-          </div>
-        </SectionReveal>
-
       </div>
 
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />

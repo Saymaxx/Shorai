@@ -41,11 +41,10 @@ export default function WhyShoraiPage() {
 
       {/* ── Key Why Shorai Sections ──────────────────────────────────── */}
       <WhySchoolsNeedShorai />
-      <Shorai360Ecosystem />
       <FutureSkillsEcosystem />
       <InnovationLabs />
 
-      {/* ── Closing CTA & Footer ─────────────────────────────────────── */}
+      {/* ── Closing CTA (The Future Won't Build Itself) & Footer ─── */}
       <FinalCTA />
       <Footer />
 
