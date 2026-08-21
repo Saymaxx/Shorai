@@ -52,13 +52,17 @@ export default function Navbar() {
     return pathname.startsWith(href);
   };
 
+  const isSchoolsPage = pathname === '/schools' || pathname === '/transformation';
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           scrolled 
-            ? 'py-2.5 bg-background/85 backdrop-blur-2xl border-b border-border shadow-md' 
-            : 'py-4 bg-transparent'
+            ? 'py-2.5 bg-background/90 backdrop-blur-2xl border-b border-border shadow-md' 
+            : isSchoolsPage
+              ? 'py-3.5 bg-background/50 backdrop-blur-xl border-b border-border/40'
+              : 'py-4 bg-background/20 backdrop-blur-md'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
@@ -85,7 +89,7 @@ export default function Navbar() {
 
           {/* Desktop Nav Links (Pages Only) */}
           <nav className="hidden lg:flex items-center">
-            <div className="flex items-center rounded-full p-1 bg-muted/60 border border-border backdrop-blur-md gap-1">
+            <div className="flex items-center rounded-full p-1 bg-card/80 dark:bg-muted/70 border border-border/80 backdrop-blur-xl gap-1 shadow-sm">
               {navPages.map((page) => {
                 const active = isPageActive(page.href);
                 const Icon = page.icon;
@@ -95,7 +99,7 @@ export default function Navbar() {
                     {active && (
                       <motion.div
                         layoutId="nav-page-active-pill"
-                        className="absolute inset-0 rounded-full bg-card shadow-sm border border-border"
+                        className="absolute inset-0 rounded-full bg-primary/10 dark:bg-primary/20 border border-primary/30"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -123,7 +127,7 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              className="w-9 h-9 rounded-xl bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/80 hover:text-foreground transition-all shadow-sm group"
+              className="w-9 h-9 rounded-xl bg-card/80 hover:bg-card border border-border flex items-center justify-center text-foreground/80 hover:text-foreground transition-all shadow-sm group backdrop-blur-md"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {theme === 'dark' ? (
@@ -150,7 +154,7 @@ export default function Navbar() {
               </AnimatePresence>
             </button>
 
-            {/* "To Know More About Us Contact Us" CTA */}
+            {/* "Contact Us" CTA */}
             <div className="hidden sm:block">
               <MagneticWrapper>
                 <Link
@@ -171,7 +175,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden relative z-50 text-foreground p-2 rounded-xl bg-muted border border-border"
+              className="lg:hidden relative z-50 text-foreground p-2 rounded-xl bg-card/80 border border-border backdrop-blur-md"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle navigation menu"
