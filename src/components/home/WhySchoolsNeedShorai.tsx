@@ -306,78 +306,38 @@ export default function WhySchoolsNeedShorai() {
               </div>
 
               {/* Text Explaining Why Schools Need Modern STEM on the Right (6 Cols) */}
-              <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
+              <div className="lg:col-span-6 flex flex-col justify-between space-y-8">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
-                    <ShieldCheck className="w-3.5 h-3.5" />
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
+                    <ShieldCheck className="w-4 h-4" />
                     FUTURE-PROOF PEDAGOGY
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-3 leading-tight">
+                  
+                  <h3 className="text-3xl sm:text-4xl font-black text-foreground mb-6 leading-tight">
                     Why Modern Schools Need Robotics, AI, Coding &amp; Drones.
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                    By 2030, over 85% of high-growth careers will require fluencies in automation, intelligent systems, and computational problem-solving. SHORAI brings these four critical pillars into your campus:
-                  </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-left">
-                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-primary/40 transition-colors group">
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <div className="w-7 h-7 rounded-lg bg-primary/15 text-primary flex items-center justify-center flex-shrink-0">
-                          <Bot className="w-4 h-4" />
-                        </div>
-                        <h4 className="text-xs font-bold text-foreground">Robotics Education</h4>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Hands-on mechanical design, sensors, wiring, and microcontrollers.
-                      </p>
-                    </div>
-
-                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-secondary/40 transition-colors group">
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <div className="w-7 h-7 rounded-lg bg-secondary/15 text-secondary flex items-center justify-center flex-shrink-0">
-                          <Cpu className="w-4 h-4" />
-                        </div>
-                        <h4 className="text-xs font-bold text-foreground">Artificial Intelligence</h4>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Applied neural network models, computer vision &amp; smart decision engines.
-                      </p>
-                    </div>
-
-                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-accent/40 transition-colors group">
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <div className="w-7 h-7 rounded-lg bg-accent/15 text-accent flex items-center justify-center flex-shrink-0">
-                          <Code2 className="w-4 h-4" />
-                        </div>
-                        <h4 className="text-xs font-bold text-foreground">Coding &amp; Algorithms</h4>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Computational logic progression from visual blocks to Python &amp; C++.
-                      </p>
-                    </div>
-
-                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-emerald-500/40 transition-colors group">
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-500 flex items-center justify-center flex-shrink-0">
-                          <Plane className="w-4 h-4" />
-                        </div>
-                        <h4 className="text-xs font-bold text-foreground">Drone Technology</h4>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Aerodynamics, telemetry, spatial navigation, and flight safety.
-                      </p>
-                    </div>
+                  {/* Big Highlighted Statement */}
+                  <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 border border-primary/20 backdrop-blur-sm">
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground leading-snug tracking-tight">
+                      By 2030, over <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">85% of high-growth careers</span> will require fluencies in automation, intelligent systems, and computational problem-solving.
+                    </p>
+                    <p className="text-base sm:text-lg font-bold text-foreground/90 mt-4 leading-relaxed">
+                      SHORAI brings these four critical pillars into your campus.
+                    </p>
                   </div>
                 </div>
 
                 <div className="pt-2">
-                  <button
-                    onClick={() => setIsContactOpen(true)}
-                    className="inline-flex items-center gap-2 text-xs font-mono font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group"
-                  >
-                    <span>Request an on-campus lab consultation</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                  </button>
+                  <MagneticWrapper>
+                    <button
+                      onClick={() => setIsContactOpen(true)}
+                      className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA] text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-105 transition-all inline-flex items-center gap-2"
+                    >
+                      <span>Request an On-Campus Lab Consultation</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </MagneticWrapper>
                 </div>
               </div>
 
@@ -385,30 +345,34 @@ export default function WhySchoolsNeedShorai() {
           </div>
         </SectionReveal>
 
-        {/* 4 By The Numbers Metrics Grid */}
+        {/* 4 By The Numbers Metrics Grid - DATA-DRIVEN INSIGHTS */}
         <div className="mb-24">
-          <div className="text-center mb-10">
-            <span className="text-xs font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
-              DATA-DRIVEN INSIGHTS
-            </span>
-            <h3 className="text-2xl font-black text-foreground mt-1">
-              By The Numbers
-            </h3>
+          <div className="text-center mb-12">
+            <SectionReveal>
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-tight">
+                DATA-DRIVEN <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">INSIGHTS</span>
+              </h3>
+            </SectionReveal>
+            <SectionReveal delay={0.1}>
+              <p className="text-base sm:text-lg text-muted-foreground mt-3 max-w-2xl mx-auto font-medium">
+                Key national metrics showing why hands-on AI and Robotics labs are now essential for modern institutions.
+              </p>
+            </SectionReveal>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {numbersData.map((item, idx) => (
               <SectionReveal key={item.label} delay={0.08 * idx}>
-                <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm transition-all duration-300 flex flex-col justify-between h-full group">
+                <div className="p-7 sm:p-8 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group">
                   <div>
                     <div 
-                      className="text-4xl sm:text-5xl font-black mb-3 tracking-tight"
+                      className="text-5xl sm:text-6xl font-black mb-4 tracking-tight"
                       style={{ color: item.color }}
                     >
                       {item.stat}
                     </div>
-                    <h4 className="text-base font-bold text-foreground mb-2">{item.label}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <h4 className="text-lg sm:text-xl font-black text-foreground mb-3 leading-snug">{item.label}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed font-medium">{item.desc}</p>
                   </div>
                 </div>
               </SectionReveal>
