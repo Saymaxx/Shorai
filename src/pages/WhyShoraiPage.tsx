@@ -4,10 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck, Zap, Award, Target, Users, BookOpen } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
-import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
-import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
 import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
-import InnovationLabs from '@/components/home/InnovationLabs';
 import FinalCTA from '@/components/home/FinalCTA';
 import Footer from '@/components/shared/Footer';
 
@@ -40,9 +37,7 @@ export default function WhyShoraiPage() {
       </section>
 
       {/* ── Key Why Shorai Sections ──────────────────────────────────── */}
-      <WhySchoolsNeedShorai />
       <FutureSkillsEcosystem />
-      <InnovationLabs />
 
       {/* ── Closing CTA (The Future Won't Build Itself) & Footer ─── */}
       <FinalCTA />
