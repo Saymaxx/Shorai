@@ -8,9 +8,6 @@ import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
 import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
 import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
 import InnovationLabs from '@/components/home/InnovationLabs';
-import AIEducationSection from '@/components/home/AIEducationSection';
-import DroneEducationSection from '@/components/home/DroneEducationSection';
-import CodingEducationSection from '@/components/home/CodingEducationSection';
 import InteractiveTechnology from '@/components/home/InteractiveTechnology';
 import ForSchoolsSection from '@/components/home/ForSchoolsSection';
 import ProjectShowcase from '@/components/home/ProjectShowcase';
@@ -123,12 +120,7 @@ export default function App() {
       {/* 7. Shorai Innovation Labs (Turnkey Robotics & AI Lab Infrastructure) */}
       <InnovationLabs />
 
-      {/* 8. Interactive 3D Technology Sandboxes */}
-      <AIEducationSection />
-      <DroneEducationSection />
-      <CodingEducationSection />
-
-      {/* 9. 5-Step School Transformation Roadmap */}
+      {/* 8. 5-Step School Transformation Roadmap */}
       <InteractiveTechnology />
 
       {/* 10. Institutional School Partnership Proposition */}
