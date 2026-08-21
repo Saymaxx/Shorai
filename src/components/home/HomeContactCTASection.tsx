@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 
 export default function HomeContactCTASection() {
   const [formData, setFormData] = useState({
@@ -22,21 +23,29 @@ export default function HomeContactCTASection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        contact: '',
-        schoolName: '',
-        purpose: 'School Innovation Lab Setup',
-        message: '',
-      });
-    }, 800);
+
+    await submitLeadToGoogleSheet({
+      name: formData.name,
+      email: formData.email,
+      contact: formData.contact,
+      organisation: formData.schoolName,
+      purpose: formData.purpose,
+      message: formData.message,
+    });
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    setFormData({
+      name: '',
+      email: '',
+      contact: '',
+      schoolName: '',
+      purpose: 'School Innovation Lab Setup',
+      message: '',
+    });
   };
 
   return (

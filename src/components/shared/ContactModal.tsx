@@ -17,6 +17,7 @@ import {
   Bot
 } from 'lucide-react';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ interface ContactModalProps {
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     school: '',
@@ -34,13 +36,25 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    await submitLeadToGoogleSheet({
+      name: formData.name,
+      email: formData.email,
+      contact: formData.phone,
+      organisation: formData.school,
+      purpose: formData.program,
+      message: formData.message,
+    });
+
+    setLoading(false);
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
       onClose();
-    }, 3000);
+    }, 2500);
   };
 
   return (

@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import Footer from '@/components/shared/Footer';
+import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 
 const purposeOptions = [
   'School Lab Setup (AI & Robotics)',
@@ -47,15 +48,21 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate clean dispatch
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 800);
+    await submitLeadToGoogleSheet({
+      name: formData.name,
+      email: formData.email,
+      contact: formData.contact,
+      organisation: formData.schoolName,
+      purpose: formData.purpose,
+      message: formData.message,
+    });
+
+    setLoading(false);
+    setSubmitted(true);
   };
 
   const handleReset = () => {
