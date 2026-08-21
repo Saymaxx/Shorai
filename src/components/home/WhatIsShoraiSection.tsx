@@ -104,6 +104,77 @@ export default function WhatIsShoraiSection() {
           </SectionReveal>
         </div>
 
+        {/* ── Featured Visual Showcase: Indian Students in STEM Innovation Lab ── */}
+        <SectionReveal delay={0.12}>
+          <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-sm mb-16 p-4 sm:p-6 lg:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Image Container with Interactive Floating Badges (7 Cols) */}
+              <div className="lg:col-span-7 relative rounded-2xl overflow-hidden group shadow-md">
+                <img
+                  src="/images/indian_students_stem_lab.jpg"
+                  alt="Indian students in modern school innovation lab learning AI, drones, coding and robotics"
+                  className="w-full h-auto object-cover rounded-2xl transition-transform duration-700 group-hover:scale-[1.02]"
+                />
+                
+                {/* Floating Interactive Pill 1: AI & Python */}
+                <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>AI &amp; Neural Code Lab</span>
+                </div>
+
+                {/* Floating Interactive Pill 2: Autonomous Drone */}
+                <div className="absolute bottom-4 right-4 z-10 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                  <Bot className="w-3.5 h-3.5 text-primary" />
+                  <span>Autonomous Robotics &amp; Drones</span>
+                </div>
+              </div>
+
+              {/* Showcase Description & Key Value Points (5 Cols) */}
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-accent/10 border border-accent/20 text-xs font-mono font-bold text-accent mb-3">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    EXPERIENTIAL CLASSROOMS
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-3 leading-tight">
+                    Where Indian Students Build the Future.
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                    From soldering microcontrollers and configuring sensor telemetry to training computer vision AI models and launching drones, SHORAI turns passive students into fearless technological creators.
+                  </p>
+
+                  <div className="space-y-3 text-xs sm:text-sm font-semibold text-foreground">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                      <span>Hands-on Robotics kits with real microcontrollers</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span>Live autonomous drone flight &amp; aerodynamics</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
+                      <CheckCircle2 className="w-4 h-4 text-secondary flex-shrink-0" />
+                      <span>Python, AI Neural Networks &amp; Computer Vision</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    href="/schools"
+                    className="inline-flex items-center gap-2 text-xs font-mono font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group"
+                  >
+                    <span>Discover how our school labs work</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </SectionReveal>
+
         {/* 4 Core Pillars Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16">
           {pillars.map((pillar, idx) => {
