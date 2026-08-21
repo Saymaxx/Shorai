@@ -9,10 +9,11 @@ import {
   Sun, 
   Moon, 
   ArrowRight, 
-  FlaskConical, 
   Home, 
   Building2, 
-  Rocket 
+  Sparkles, 
+  School, 
+  Phone 
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useRouter } from '@/context/RouterContext';
@@ -21,9 +22,10 @@ import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
 const navPages = [
   { name: 'Home', href: '/', icon: Home },
-  { name: 'Shorai Labs', href: '/labs', icon: FlaskConical },
-  { name: 'About Us', href: '/about', icon: Building2 },
-  { name: 'Transformation', href: '/transformation', icon: Rocket },
+  { name: 'About us', href: '/about', icon: Building2 },
+  { name: 'Why shorai', href: '/why-shorai', icon: Sparkles },
+  { name: 'Shorai for schools', href: '/schools', icon: School },
+  { name: 'Contact', href: '/contact', icon: Phone },
 ];
 
 export default function Navbar() {
@@ -151,19 +153,19 @@ export default function Navbar() {
             {/* "To Know More About Us Contact Us" CTA */}
             <div className="hidden sm:block">
               <MagneticWrapper>
-                <button
-                  onClick={() => setIsContactModalOpen(true)}
+                <Link
+                  href="/contact"
                   className="group relative h-9 px-4 sm:px-5 rounded-full font-bold text-xs text-white overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(99,102,241,0.35)] hover:shadow-[0_6px_25px_rgba(99,102,241,0.5)] flex items-center gap-1.5"
                   style={{
                     background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
                   }}
                 >
                   <span className="relative z-10 flex items-center gap-1.5 whitespace-nowrap">
-                    To know more about us contact us
+                    Contact Us
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                   <div className="absolute inset-0 bg-white/0 group-hover:bg-white/15 transition-colors duration-300" />
-                </button>
+                </Link>
               </MagneticWrapper>
             </div>
 
@@ -214,19 +216,17 @@ export default function Navbar() {
                   );
                 })}
 
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setIsContactModalOpen(true);
-                  }}
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="rounded-xl mt-4 w-full h-12 text-sm font-bold text-white flex items-center justify-center gap-2 shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
                   }}
                 >
-                  <span>To know more about us contact us</span>
+                  <span>Contact Us</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           )}

@@ -2,12 +2,17 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Award, 
-  Users, 
-  BookOpen, 
-  Rocket, 
-  Sparkles, 
+import {
+  Award,
+  Users,
+  BookOpen,
+  Rocket,
+  CheckCircle2,
+  Calendar,
+  GraduationCap,
+  Cpu,
+  Handshake,
+  Sparkles,
   ArrowRight,
   Quote
 } from 'lucide-react';
@@ -50,6 +55,58 @@ const stats = [
   },
 ];
 
+const timelineSteps = [
+  {
+    year: '2020',
+    title: 'Established with Vision',
+    desc: 'Founded to transform education through industry-oriented practical training.',
+    icon: Calendar,
+    color: '#7928CA',
+  },
+  {
+    year: '2021',
+    title: 'Career & Skill Programs',
+    desc: 'Launched specialized technical training and professional skill development.',
+    icon: GraduationCap,
+    color: '#6366F1',
+  },
+  {
+    year: '2022',
+    title: 'Technology Education',
+    desc: 'Introduced hands-on AI, Robotics, Coding & STEM learning initiatives.',
+    icon: Cpu,
+    color: '#00D4FF',
+  },
+  {
+    year: '2023',
+    title: 'Teacher Training',
+    desc: 'Upskilling hundreds of school educators for modern digital classrooms.',
+    icon: Users,
+    color: '#10B981',
+  },
+  {
+    year: '2024',
+    title: 'Industry Collaboration',
+    desc: 'Partnered with technology experts, robotics industries & institutions.',
+    icon: Handshake,
+    color: '#F59E0B',
+  },
+  {
+    year: '2025',
+    title: 'Launch of SHORAI',
+    desc: 'Dedicated initiative to build complete future-ready school innovation labs.',
+    icon: Sparkles,
+    color: '#FF6B00',
+  },
+  {
+    year: '2026+',
+    title: 'Future Schools Mission',
+    desc: 'Empowering millions of young learners across India with future skills.',
+    icon: Rocket,
+    color: '#EC4899',
+  },
+];
+
 export default function AboutSEGAcademy() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -62,13 +119,13 @@ export default function AboutSEGAcademy() {
       </div>
 
       <div className="max-w-[1440px] mx-auto relative z-10">
-        
+
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
               <Sparkles className="w-3.5 h-3.5" />
-              LEGACY & EXCELLENCE
+              LEGACY &amp; EXCELLENCE
             </div>
           </SectionReveal>
 
@@ -96,13 +153,13 @@ export default function AboutSEGAcademy() {
               <SectionReveal key={stat.label} delay={0.1 + idx * 0.08}>
                 <div className="relative p-6 sm:p-7 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
                   <div className="flex items-center justify-between mb-4">
-                    <div 
+                    <div
                       className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm"
                       style={{ background: `${stat.color}15`, color: stat.color }}
                     >
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span 
+                    <span
                       className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
                       style={{ background: `${stat.color}10`, color: stat.color }}
                     >
@@ -121,6 +178,44 @@ export default function AboutSEGAcademy() {
               </SectionReveal>
             );
           })}
+        </div>
+
+        {/* Journey of Impact Timeline */}
+        <div className="rounded-3xl p-6 sm:p-10 bg-card border border-border mb-16 shadow-sm">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <span className="text-xs font-mono font-bold tracking-[0.2em] text-primary uppercase block mb-2">
+              MILESTONES
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black text-foreground">
+              Our Journey of Impact
+            </h3>
+          </div>
+
+          {/* Horizontal / Grid Timeline */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 relative">
+            {timelineSteps.map((step, idx) => {
+              const Icon = step.icon;
+              return (
+                <SectionReveal key={step.title} delay={0.05 * idx}>
+                  <div className="relative p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border hover:border-primary/50 transition-all group flex flex-col justify-between h-full">
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className="text-xs font-mono font-black px-2 py-0.5 rounded-md"
+                          style={{ background: `${step.color}20`, color: step.color }}
+                        >
+                          {step.year}
+                        </span>
+                        <Icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </div>
+                      <h4 className="text-xs sm:text-sm font-bold text-foreground mb-1 leading-snug">{step.title}</h4>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                </SectionReveal>
+              );
+            })}
+          </div>
         </div>
 
         {/* Inspiring Quote Callout & CTA Button */}

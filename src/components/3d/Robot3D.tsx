@@ -826,13 +826,11 @@ export default function Robot3DCanvas({
     <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
       <Canvas
         camera={{ position: [0, 0.20, 5.2], fov: 38 }}
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: 'high-performance',
-          stencil: false,
-          depth: true,
         }}
       >
         <CinematicLighting />

@@ -14,9 +14,11 @@ const RouterContext = createContext<RouterContextType>({
 
 export function normalizePath(path: string): string {
   if (!path || path === '' || path === '/') return '/';
-  if (path === '/labs' || path === '/shorai-labs') return '/labs';
-  if (path === '/about' || path === '/about-us' || path === '/about-seg') return '/about';
-  if (path === '/transformation' || path === '/schools' || path === '/how-it-works') return '/transformation';
+  if (path.startsWith('/about')) return '/about';
+  if (path.startsWith('/why-shorai') || path.startsWith('/why')) return '/why-shorai';
+  if (path.startsWith('/schools') || path.startsWith('/for-schools') || path.startsWith('/transformation')) return '/schools';
+  if (path.startsWith('/contact')) return '/contact';
+  if (path.startsWith('/labs')) return '/labs';
   return '/';
 }
 

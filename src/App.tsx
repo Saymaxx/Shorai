@@ -8,6 +8,9 @@ import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
 import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
 import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
 import InnovationLabs from '@/components/home/InnovationLabs';
+import AIEducationSection from '@/components/home/AIEducationSection';
+import DroneEducationSection from '@/components/home/DroneEducationSection';
+import CodingEducationSection from '@/components/home/CodingEducationSection';
 import InteractiveTechnology from '@/components/home/InteractiveTechnology';
 import ForSchoolsSection from '@/components/home/ForSchoolsSection';
 import ProjectShowcase from '@/components/home/ProjectShowcase';
@@ -20,19 +23,21 @@ import RobotGuideUI from '@/components/3d/RobotGuideUI';
 import MotionGraphicsBackground from '@/components/animations/MotionGraphicsBackground';
 import ShoraiLabsPage from '@/pages/ShoraiLabsPage';
 import AboutUsPage from '@/pages/AboutUsPage';
+import WhyShoraiPage from '@/pages/WhyShoraiPage';
 import SchoolTransformationPage from '@/pages/SchoolTransformationPage';
+import ContactPage from '@/pages/ContactPage';
 
 export default function App() {
   const { pathname } = useRouter();
 
-  if (pathname === '/labs') {
+  if (pathname === '/contact') {
     return (
       <main className="flex min-h-screen flex-col bg-background selection:bg-primary/30 selection:text-primary relative transition-colors duration-300">
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
         <RobotGuideUI />
-        <ShoraiLabsPage />
+        <ContactPage />
       </main>
     );
   }
@@ -49,7 +54,19 @@ export default function App() {
     );
   }
 
-  if (pathname === '/transformation') {
+  if (pathname === '/why-shorai') {
+    return (
+      <main className="flex min-h-screen flex-col bg-background selection:bg-primary/30 selection:text-primary relative transition-colors duration-300">
+        <Navbar />
+        <MotionGraphicsBackground />
+        <GlobalMouseFollower />
+        <RobotGuideUI />
+        <WhyShoraiPage />
+      </main>
+    );
+  }
+
+  if (pathname === '/schools' || pathname === '/transformation') {
     return (
       <main className="flex min-h-screen flex-col bg-background selection:bg-primary/30 selection:text-primary relative transition-colors duration-300">
         <Navbar />
@@ -57,6 +74,18 @@ export default function App() {
         <GlobalMouseFollower />
         <RobotGuideUI />
         <SchoolTransformationPage />
+      </main>
+    );
+  }
+
+  if (pathname === '/labs') {
+    return (
+      <main className="flex min-h-screen flex-col bg-background selection:bg-primary/30 selection:text-primary relative transition-colors duration-300">
+        <Navbar />
+        <MotionGraphicsBackground />
+        <GlobalMouseFollower />
+        <RobotGuideUI />
+        <ShoraiLabsPage />
       </main>
     );
   }
@@ -94,7 +123,12 @@ export default function App() {
       {/* 7. Shorai Innovation Labs (Turnkey Robotics & AI Lab Infrastructure) */}
       <InnovationLabs />
 
-      {/* 8. 5-Step School Transformation Roadmap */}
+      {/* 8. Interactive 3D Technology Sandboxes */}
+      <AIEducationSection />
+      <DroneEducationSection />
+      <CodingEducationSection />
+
+      {/* 9. 5-Step School Transformation Roadmap */}
       <InteractiveTechnology />
 
       {/* 10. Institutional School Partnership Proposition */}
