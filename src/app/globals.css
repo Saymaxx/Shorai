@@ -211,10 +211,10 @@
     background: #94A3B8;
   }
 
-  .dark ::-webkit-scrollbar-track {
-    background: #060913;
-  }
-  .dark ::-webkit-scrollbar-thumb {
-    background: rgba(56, 189, 248, 0.3);
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

@@ -5,14 +5,11 @@ import './app/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { RouterProvider } from '@/context/RouterContext';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
-import Navbar from '@/components/shared/Navbar';
-import Preloader from '@/components/shared/Preloader';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider>
       <RouterProvider>
-        <Preloader />
         <SmoothScrollProvider>
           <App />
         </SmoothScrollProvider>
