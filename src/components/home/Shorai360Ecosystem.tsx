@@ -472,66 +472,6 @@ export default function Shorai360Ecosystem() {
 
         </div>
 
-        {/* ── 8 Pillars Responsive Cards Grid (Mobile/Tablet Friendly) ────────── */}
-        <div className="mt-16">
-          <SectionReveal>
-            <div className="text-center mb-10">
-              <span className="text-xs font-mono font-bold text-primary uppercase tracking-widest block mb-1">
-                ALL 8 PILLARS AT A GLANCE
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-foreground">
-                Complete End-to-End Institutional Transformation
-              </h3>
-            </div>
-          </SectionReveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {pillars.map((item, idx) => {
-              const Icon = item.icon;
-              const isCurrent = activeIdx === idx;
-
-              return (
-                <SectionReveal key={item.id} delay={0.05 * idx}>
-                  <div
-                    onClick={() => setActiveIdx(idx)}
-                    className={`p-6 rounded-3xl border transition-all duration-300 cursor-pointer h-full flex flex-col justify-between group ${
-                      isCurrent
-                        ? 'bg-card border-primary ring-2 ring-primary/20 shadow-lg'
-                        : 'bg-card/70 hover:bg-card border-border hover:border-primary/40 shadow-sm hover:shadow-md'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div 
-                          className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-sm"
-                          style={{ background: item.color }}
-                        >
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <span className="text-xs font-mono font-bold text-muted-foreground">
-                          0{item.number}
-                        </span>
-                      </div>
-
-                      <h4 className="text-sm font-black text-foreground mb-2 group-hover:text-primary transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed font-medium mb-4">
-                        {item.shortDesc}
-                      </p>
-                    </div>
-
-                    <div className="pt-3 border-t border-border flex items-center justify-between text-[11px] font-bold text-primary">
-                      <span>View details</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </SectionReveal>
-              );
-            })}
-          </div>
-        </div>
-
       </div>
 
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
