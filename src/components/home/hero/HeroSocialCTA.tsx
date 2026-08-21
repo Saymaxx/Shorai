@@ -134,25 +134,25 @@ export default function HeroSocialCTA() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`group relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg w-full sm:w-[150px] lg:w-[160px] min-h-[135px] overflow-hidden`}
+                        className={`group relative flex flex-col items-start justify-between p-5 sm:p-6 rounded-3xl bg-card hover:bg-muted/50 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-2 hover:shadow-xl w-full sm:w-[170px] lg:w-[185px] min-h-[160px] overflow-hidden`}
                       >
                         {/* Top icon and link arrow */}
                         <div className="flex items-center justify-between w-full relative z-10">
                           <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm"
+                            className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-115 shadow-sm"
                             style={{ background: social.bg }}
                           >
-                            <Icon className="w-5 h-5 transition-colors duration-300" style={{ color: social.color }} />
+                            <Icon className="w-7 h-7 sm:w-8 sm:h-8 transition-colors duration-300" style={{ color: social.color }} />
                           </div>
-                          <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                          <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                         </div>
 
                         {/* Bottom handle & title */}
-                        <div className="relative z-10 mt-3 text-left">
-                          <h4 className="text-sm font-bold text-foreground tracking-wide group-hover:text-primary transition-colors">
+                        <div className="relative z-10 mt-4 text-left">
+                          <h4 className="text-base font-black text-foreground tracking-wide group-hover:text-primary transition-colors">
                             {social.name}
                           </h4>
-                          <span className="text-[11px] font-mono text-muted-foreground block truncate">
+                          <span className="text-xs font-mono text-muted-foreground block truncate mt-0.5">
                             {social.handle}
                           </span>
                         </div>
