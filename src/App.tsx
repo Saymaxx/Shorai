@@ -3,7 +3,7 @@ import { useRouter } from '@/context/RouterContext';
 import Navbar from '@/components/shared/Navbar';
 import HeroSection from '@/components/home/hero/HeroSection';
 import HeroSocialCTA from '@/components/home/hero/HeroSocialCTA';
-import AboutSEGAcademy from '@/components/home/AboutSEGAcademy';
+import WhatIsShoraiSection from '@/components/home/WhatIsShoraiSection';
 import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
 import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
 import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
@@ -105,8 +105,8 @@ export default function App() {
       {/* 2. Official Social Media Connection Strip */}
       <HeroSocialCTA />
 
-      {/* 3. Institutional Legacy & Milestones (SEG Academy - 15+ Years) */}
-      <AboutSEGAcademy />
+      {/* 3. What is Shorai Section */}
+      <WhatIsShoraiSection />
 
       {/* 4. Why Schools Need Shorai (Data Grid, NEP 2020 & 6 Institutional Outcomes) */}
       <WhySchoolsNeedShorai />

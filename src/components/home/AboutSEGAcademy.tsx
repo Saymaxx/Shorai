@@ -20,46 +20,11 @@ import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
-const stats = [
-  {
-    value: '15+',
-    unit: 'YEARS',
-    label: 'Educational Excellence',
-    desc: 'Deep pedagogical experience in industry training',
-    color: '#7928CA',
-    icon: Award,
-  },
-  {
-    value: '1000+',
-    unit: 'STUDENTS',
-    label: 'Empowered Learners',
-    desc: 'Hands-on training in emerging technologies',
-    color: '#6366F1',
-    icon: Users,
-  },
-  {
-    value: '50+',
-    unit: 'PROGRAMS',
-    label: 'Industry Courses',
-    desc: 'NEP aligned future-ready STEM curricula',
-    color: '#00D4FF',
-    icon: BookOpen,
-  },
-  {
-    value: 'FUTURE',
-    unit: 'FOCUSED',
-    label: 'Innovation Mindset',
-    desc: 'Practical, project-based engineering labs',
-    color: '#FF6B00',
-    icon: Rocket,
-  },
-];
-
 export default function AboutSEGAcademy() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <section id="about-seg" className="relative py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
+    <section id="about-seg" className="relative py-20 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
       {/* Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.03] rounded-full blur-[140px]" />
@@ -69,7 +34,7 @@ export default function AboutSEGAcademy() {
       <div className="max-w-[1440px] mx-auto relative z-10">
 
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-14">
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
               <Sparkles className="w-3.5 h-3.5" />
@@ -91,41 +56,6 @@ export default function AboutSEGAcademy() {
               SEG Academy Pvt. Ltd. has been empowering learners through industry-oriented education, professional training, technology programs, and skill development. Today, this legacy continues through <strong>SHORAI</strong>—our dedicated initiative to transform schools into future-ready learning ecosystems powered by AI, Robotics, STEM, and Coding.
             </p>
           </SectionReveal>
-        </div>
-
-        {/* 4 Stat Cards from Brochure */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-20">
-          {stats.map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <SectionReveal key={stat.label} delay={0.1 + idx * 0.08}>
-                <div className="relative p-6 sm:p-7 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col justify-between h-full">
-                  <div className="flex items-center justify-between mb-4">
-                    <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm"
-                      style={{ background: `${stat.color}15`, color: stat.color }}
-                    >
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <span
-                      className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
-                      style={{ background: `${stat.color}10`, color: stat.color }}
-                    >
-                      {stat.unit}
-                    </span>
-                  </div>
-
-                  <div>
-                    <div className="text-3xl sm:text-4xl font-black text-foreground mb-1 tracking-tight">
-                      {stat.value}
-                    </div>
-                    <h4 className="text-sm font-bold text-foreground mb-1.5">{stat.label}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{stat.desc}</p>
-                  </div>
-                </div>
-              </SectionReveal>
-            );
-          })}
         </div>
 
         {/* Inspiring Quote Callout & CTA Button */}
