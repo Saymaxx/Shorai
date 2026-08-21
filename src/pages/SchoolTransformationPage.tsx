@@ -34,12 +34,11 @@ export default function SchoolTransformationPage() {
           <img
             src="/images/advanced_stem_classroom.jpg"
             alt="Advanced STEM and AI School Innovation Lab"
-            className="w-full h-full object-cover object-center filter brightness-[0.45] dark:brightness-[0.25] scale-105 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center"
           />
-          {/* Subtle multi-layer gradient overlays for text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/60 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-background/80" />
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-[#7928CA]/20 via-[#6366F1]/20 to-[#00D4FF]/20 rounded-full blur-[140px] pointer-events-none" />
+          {/* Subtle semi-transparent dark cinematic overlay so image is vividly visible */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/50 to-background" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,0.6)_100%)]" />
         </div>
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10 text-center">
