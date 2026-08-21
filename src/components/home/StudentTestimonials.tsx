@@ -95,24 +95,11 @@ export default function StudentTestimonials() {
       <div className="max-w-[1440px] mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <SectionReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3.5 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5" />
-              STUDENT VOICES &amp; SUCCESS STORIES
-            </div>
-          </SectionReveal>
-
-          <SectionReveal delay={0.08}>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-3 leading-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight">
               HEAR FROM OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">YOUNG INNOVATORS</span>
             </h2>
-          </SectionReveal>
-
-          <SectionReveal delay={0.12}>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto">
-              Real Indian school students discovering their passion for Robotics, AI, Coding, and Drones inside Shorai Innovation Labs.
-            </p>
           </SectionReveal>
         </div>
 
