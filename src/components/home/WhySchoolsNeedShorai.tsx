@@ -21,7 +21,8 @@ import {
   ShieldCheck,
   Star,
   Activity,
-  ChevronRight
+  ChevronRight,
+  Plane
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
@@ -277,6 +278,112 @@ export default function WhySchoolsNeedShorai() {
             </p>
           </SectionReveal>
         </div>
+
+        {/* ── Visual Showcase: Image Left, Modern STEM Reasons Right ── */}
+        <SectionReveal delay={0.12}>
+          <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-sm mb-20 p-5 sm:p-7 lg:p-9">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Image Container on the Left (6 Cols) */}
+              <div className="lg:col-span-6 relative rounded-2xl overflow-hidden group shadow-lg">
+                <img
+                  src="/images/why_schools_need_shorai.jpg"
+                  alt="Indian students and teacher in AI and Robotics innovation lab learning modern STEM"
+                  className="w-full h-auto object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
+                />
+                
+                {/* Floating Interactive Pill 1: NEP 2020 */}
+                <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>NEP 2020 Aligned Innovation Hub</span>
+                </div>
+
+                {/* Floating Interactive Pill 2: AI & Drones */}
+                <div className="absolute bottom-4 right-4 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                  <Bot className="w-3.5 h-3.5 text-primary" />
+                  <span>AI Robotics &amp; Autonomous Drones</span>
+                </div>
+              </div>
+
+              {/* Text Explaining Why Schools Need Modern STEM on the Right (6 Cols) */}
+              <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    FUTURE-PROOF PEDAGOGY
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-3 leading-tight">
+                    Why Modern Schools Need Robotics, AI, Coding &amp; Drones.
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                    By 2030, over 85% of high-growth careers will require fluencies in automation, intelligent systems, and computational problem-solving. SHORAI brings these four critical pillars into your campus:
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-left">
+                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-primary/40 transition-colors group">
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <div className="w-7 h-7 rounded-lg bg-primary/15 text-primary flex items-center justify-center flex-shrink-0">
+                          <Bot className="w-4 h-4" />
+                        </div>
+                        <h4 className="text-xs font-bold text-foreground">Robotics Education</h4>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        Hands-on mechanical design, sensors, wiring, and microcontrollers.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-secondary/40 transition-colors group">
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <div className="w-7 h-7 rounded-lg bg-secondary/15 text-secondary flex items-center justify-center flex-shrink-0">
+                          <Cpu className="w-4 h-4" />
+                        </div>
+                        <h4 className="text-xs font-bold text-foreground">Artificial Intelligence</h4>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        Applied neural network models, computer vision &amp; smart decision engines.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-accent/40 transition-colors group">
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <div className="w-7 h-7 rounded-lg bg-accent/15 text-accent flex items-center justify-center flex-shrink-0">
+                          <Code2 className="w-4 h-4" />
+                        </div>
+                        <h4 className="text-xs font-bold text-foreground">Coding &amp; Algorithms</h4>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        Computational logic progression from visual blocks to Python &amp; C++.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-2xl bg-muted/40 border border-border hover:border-emerald-500/40 transition-colors group">
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-500 flex items-center justify-center flex-shrink-0">
+                          <Plane className="w-4 h-4" />
+                        </div>
+                        <h4 className="text-xs font-bold text-foreground">Drone Technology</h4>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                        Aerodynamics, telemetry, spatial navigation, and flight safety.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => setIsContactOpen(true)}
+                    className="inline-flex items-center gap-2 text-xs font-mono font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group"
+                  >
+                    <span>Request an on-campus lab consultation</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </SectionReveal>
 
         {/* 4 By The Numbers Metrics Grid */}
         <div className="mb-24">
