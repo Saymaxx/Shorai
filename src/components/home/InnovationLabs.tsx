@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight, Brain, Wrench, Plane, Code2, Sparkles, CheckCircle2 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
@@ -90,15 +91,25 @@ export default function InnovationLabs() {
             </SectionReveal>
 
             <SectionReveal delay={0.3}>
-              <MagneticWrapper>
-                <button
-                  onClick={() => setIsContactOpen(true)}
-                  className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center gap-2 transition-all hover:scale-105"
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href="/labs"
+                  className="px-6 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center gap-2 transition-all hover:scale-105"
                 >
-                  <span>To know more about us contact us</span>
+                  <Sparkles className="w-4 h-4" />
+                  <span>Launch Shorai Labs &amp; Demos</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
-              </MagneticWrapper>
+                </Link>
+
+                <MagneticWrapper>
+                  <button
+                    onClick={() => setIsContactOpen(true)}
+                    className="px-6 h-13 rounded-2xl bg-card hover:bg-muted border border-border text-foreground font-bold text-sm tracking-wide shadow-sm flex items-center gap-2 transition-all"
+                  >
+                    <span>Contact Us</span>
+                  </button>
+                </MagneticWrapper>
+              </div>
             </SectionReveal>
           </div>
 
@@ -106,27 +117,27 @@ export default function InnovationLabs() {
           <div className="lg:col-span-7 relative">
             <SectionReveal delay={0.15}>
               <div 
-                className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-xl aspect-[16/11]"
+                className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-2xl aspect-[16/10] ring-1 ring-border/50"
                 style={{ transform: `translate(${parallaxLabX}px, ${parallaxLabY}px)` }}
               >
                 <Image 
-                  src="/images/shorai-innovation-lab.png" 
-                  alt="Students building the future in SHORAI Innovation Labs" 
+                  src="/images/shorai-bright-lab.jpg" 
+                  alt="Indian students building robots and drones in Shorai Innovation Lab" 
                   fill 
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                 />
 
-                {/* Ambient vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                {/* Subtle bottom gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
                 {/* Floating interactive tags */}
                 <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md text-white border border-white/15">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md text-white border border-white/20 shadow-lg">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span>LAB ACTIVE // 100% HANDS-ON</span>
+                    <span>LAB ACTIVE // 100% PRACTICAL</span>
                   </div>
-                  <div className="px-3 py-1.5 rounded-xl bg-primary/80 backdrop-blur-md text-white font-bold">
-                    K-12 INNOVATION
+                  <div className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-primary to-secondary backdrop-blur-md text-white font-bold shadow-lg">
+                    NEP 2020 STEM LAB
                   </div>
                 </div>
               </div>

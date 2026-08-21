@@ -3,47 +3,52 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Sparkles, Phone, ArrowRight, MessageSquare } from 'lucide-react';
+import { 
+  Menu, 
+  X, 
+  Sun, 
+  Moon, 
+  ArrowRight, 
+  FlaskConical, 
+  Home, 
+  Building2, 
+  Rocket 
+} from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useRouter } from '@/context/RouterContext';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
-const navLinks = [
-  { name: 'About Us', href: '#about-seg' },
-  { name: 'Why Shorai', href: '#why-shorai' },
-  { name: '360° Ecosystem', href: '#ecosystem' },
-  { name: 'Future Skills', href: '#skills' },
-  { name: '3D Labs', href: '#technology' },
-  { name: 'Contact', href: '#contact' },
+const navPages = [
+  { name: 'Home', href: '/', icon: Home },
+  { name: 'Shorai Labs', href: '/labs', icon: FlaskConical },
+  { name: 'About Us', href: '/about', icon: Building2 },
+  { name: 'Transformation', href: '/transformation', icon: Rocket },
 ];
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { pathname } = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-      
-      const sections = document.querySelectorAll('section[id]');
-      let current = '';
-      sections.forEach((section) => {
-        const sectionTop = (section as HTMLElement).offsetTop;
-        if (window.scrollY >= sectionTop - 180) {
-          current = section.getAttribute('id') || '';
-        }
-      });
-      if (current) setActiveSection(current);
-      else if (window.scrollY < 100) setActiveSection('home');
+      setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isPageActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/' || pathname === '';
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -76,29 +81,32 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links (Pages Only) */}
           <nav className="hidden lg:flex items-center">
-            <div className="flex items-center rounded-full px-1.5 py-1 bg-muted/60 border border-border backdrop-blur-md">
-              {navLinks.map((link) => {
-                const linkId = link.href.replace('#', '');
-                const isActive = activeSection === linkId;
+            <div className="flex items-center rounded-full p-1 bg-muted/60 border border-border backdrop-blur-md gap-1">
+              {navPages.map((page) => {
+                const active = isPageActive(page.href);
+                const Icon = page.icon;
                 
                 return (
-                  <div key={link.name} className="relative">
-                    {isActive && (
+                  <div key={page.name} className="relative">
+                    {active && (
                       <motion.div
-                        layoutId="nav-active-pill"
+                        layoutId="nav-page-active-pill"
                         className="absolute inset-0 rounded-full bg-card shadow-sm border border-border"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
                     <Link
-                      href={link.href}
-                      className={`relative z-10 px-4 py-2 text-xs font-semibold transition-colors block rounded-full ${
-                        isActive ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'
+                      href={page.href}
+                      className={`relative z-10 px-4 py-2 text-xs font-bold transition-all flex items-center gap-2 rounded-full ${
+                        active 
+                          ? 'text-primary' 
+                          : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      {link.name}
+                      <Icon className={`w-3.5 h-3.5 ${active ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span>{page.name}</span>
                     </Link>
                   </div>
                 );
@@ -159,7 +167,7 @@ export default function Navbar() {
               </MagneticWrapper>
             </div>
 
-            {/* Mobile Toggle */}
+            {/* Mobile Menu Toggle */}
             <button
               className="lg:hidden relative z-50 text-foreground p-2 rounded-xl bg-muted border border-border"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -183,22 +191,28 @@ export default function Navbar() {
             >
               <div className="p-6 flex flex-col gap-3">
                 <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest px-2">
-                  Navigation
+                  Pages
                 </div>
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block text-base font-semibold py-2 px-3 rounded-xl transition-colors ${
-                      activeSection === link.href.replace('#', '') 
-                        ? 'bg-primary/10 text-primary font-bold' 
-                        : 'text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+                {navPages.map((page) => {
+                  const active = isPageActive(page.href);
+                  const Icon = page.icon;
+
+                  return (
+                    <Link
+                      key={page.name}
+                      href={page.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 text-base font-bold py-3 px-4 rounded-xl transition-colors ${
+                        active 
+                          ? 'bg-primary/10 text-primary' 
+                          : 'text-foreground hover:bg-muted'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${active ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span>{page.name}</span>
+                    </Link>
+                  );
+                })}
 
                 <button
                   onClick={() => {

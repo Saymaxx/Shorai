@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
   Bot, 
@@ -15,12 +15,18 @@ import {
   HeartHandshake, 
   Sparkles, 
   ArrowRight,
-  Quote,
-  Target
+  Target,
+  CheckCircle2,
+  Zap,
+  ShieldCheck,
+  Star,
+  Activity,
+  ChevronRight
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import SpiralFlipbook, { FlipbookPage } from '@/components/shared/SpiralFlipbook';
 
 const numbersData = [
   {
@@ -88,41 +94,154 @@ const solutions = [
   },
 ];
 
-const outcomes = [
+const schoolOutcomes = [
   {
+    id: 'reputation',
     title: 'Future-Ready Reputation',
-    desc: 'Establishes the school as a progressive 21st-century institution.',
+    subtitle: 'PREMIER 21ST-CENTURY BRAND',
+    metric: '+100%',
+    metricLabel: 'Admissions Brand Appeal',
+    desc: 'Establishes your school as an elite technological beacon in the city, driving parent trust and high enrollment interest.',
     icon: Building2,
+    gradient: 'from-[#7928CA] to-[#6366F1]',
+    accentColor: '#7928CA',
+    deliverables: ['Custom Branded Lab Signage', 'Regional Press & Media PR', 'NEP 2020 Compliance Certificate']
   },
   {
-    title: 'Higher Student Engagement',
-    desc: 'Transformative hands-on learning increases student interest & retention.',
+    id: 'engagement',
+    title: 'Transformative Student Engagement',
+    subtitle: 'ACTIVE HANDS-ON LEARNING',
+    metric: '10x',
+    metricLabel: 'Practical STEM Retention',
+    desc: 'Replaces passive rote memorization with experiential lab sessions where students design, solder, wire, and program real prototypes.',
     icon: Users,
+    gradient: 'from-[#6366F1] to-[#00D4FF]',
+    accentColor: '#6366F1',
+    deliverables: ['100% Practical Experiments', 'Real Hardware & Robotics Kits', 'Gamified Coding Challenges']
   },
   {
-    title: 'Academic & Innovation Excellence',
-    desc: 'Boosts analytical problem-solving and science/math understanding.',
+    id: 'academic',
+    title: 'Academic & Analytical Excellence',
+    subtitle: 'SCIENCE & MATH MASTERY',
+    metric: '94%',
+    metricLabel: 'Higher Concept Clarity',
+    desc: 'Directly boosts scientific problem-solving, mathematical intuition, and algorithmic logic through applied engineering projects.',
     icon: TrendingUp,
+    gradient: 'from-[#00D4FF] to-[#10B981]',
+    accentColor: '#00D4FF',
+    deliverables: ['Integrated STEM Syllabus', 'Continuous LMS Assessments', 'Project-Based Homework Modules']
   },
   {
-    title: 'Stronger Parent Trust',
-    desc: 'Parents see tangible project output, robots and practical creations.',
+    id: 'parent-trust',
+    title: 'Unshakeable Parent Trust',
+    subtitle: 'VISIBLE STUDENT CREATIONS',
+    metric: '98%',
+    metricLabel: 'Parent Satisfaction Rate',
+    desc: 'Parents witness tangible robots, IoT smart devices, and software applications built by their children during annual innovation expos.',
     icon: HeartHandshake,
+    gradient: 'from-[#FF6B00] to-[#FF3D7F]',
+    accentColor: '#FF6B00',
+    deliverables: ['Annual School Innovation Day', 'Student Portfolio Certificates', 'Live Showcase Demos']
   },
   {
-    title: 'Competitions & Hackathons',
-    desc: 'Prepares students for national & international Olympiads & STEM awards.',
+    id: 'competitions',
+    title: 'National & Global Competitions',
+    subtitle: 'OLYMPIADS & HACKATHONS',
+    metric: '50+',
+    metricLabel: 'National STEM Awards',
+    desc: 'Direct mentorship for national robotics competitions, ATL marathons, AI olympiads, and international student hackathons.',
     icon: Award,
+    gradient: 'from-[#F59E0B] to-[#FF6B00]',
+    accentColor: '#F59E0B',
+    deliverables: ['Competition Mentorship', 'Inter-School Hackathons', 'Robotics Olympiad Training']
   },
   {
-    title: 'School Brand Differentiation',
-    desc: 'Stand out in admissions with cutting-edge robotics & AI lab infrastructure.',
+    id: 'teacher-empowerment',
+    title: 'Faculty Empowerment & Upskilling',
+    subtitle: 'CONFIDENT MASTER EDUCATORS',
+    metric: '100%',
+    metricLabel: 'Certified STEM Teachers',
+    desc: 'Upskills your existing school teachers with continuous certification, structured lesson aids, and 24/7 technical mentor support.',
     icon: Sparkles,
+    gradient: 'from-[#EC4899] to-[#7928CA]',
+    accentColor: '#EC4899',
+    deliverables: ['Teacher Certification Modules', 'Ready-to-Teach Slide Decks', 'Ongoing On-Demand Support']
   },
 ];
 
 export default function WhySchoolsNeedShorai() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [activeOutcomeIdx, setActiveOutcomeIdx] = useState(0);
+  const activeOutcome = schoolOutcomes[activeOutcomeIdx];
+  const ActiveIcon = activeOutcome.icon;
+
+  // Build pages for SpiralFlipbook
+  const flipbookPages: FlipbookPage[] = schoolOutcomes.map((item, idx) => {
+    const Icon = item.icon;
+    return {
+      id: item.id,
+      pageNumber: idx + 1,
+      title: item.title,
+      badge: item.subtitle,
+      color: item.accentColor,
+      content: (
+        <div className="flex flex-col justify-between h-full py-2">
+          {/* Top Metric Header */}
+          <div className="flex items-center justify-between mb-5">
+            <div 
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{
+                background: `linear-gradient(135deg, ${item.accentColor}25, ${item.accentColor}10)`,
+                borderColor: `${item.accentColor}50`,
+                borderWidth: 1,
+                color: item.accentColor,
+              }}
+            >
+              <Icon className="w-7 h-7" />
+            </div>
+
+            <div className="text-right">
+              <div 
+                className="text-3xl sm:text-4xl font-black tracking-tight"
+                style={{ color: item.accentColor }}
+              >
+                {item.metric}
+              </div>
+              <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase">
+                {item.metricLabel}
+              </div>
+            </div>
+          </div>
+
+          {/* Outcome Title & Subtitle */}
+          <div className="mb-4">
+            <h4 className="text-xl sm:text-2xl font-black text-foreground mb-1 leading-snug">
+              {item.title}
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {item.desc}
+            </p>
+          </div>
+
+          {/* Key Deliverables on Notebook Page */}
+          <div className="p-4 rounded-2xl bg-muted/40 border border-border">
+            <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Star className="w-3 h-3 text-amber-500" />
+              <span>Verified Deliverables</span>
+            </div>
+            <div className="space-y-2">
+              {item.deliverables.map((deliv, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs font-semibold text-foreground/90">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                  <span>{deliv}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ),
+    };
+  });
 
   return (
     <section id="why-shorai" className="relative py-28 px-4 sm:px-6 bg-muted/20 overflow-hidden border-t border-border">
@@ -160,7 +279,7 @@ export default function WhySchoolsNeedShorai() {
         </div>
 
         {/* 4 By The Numbers Metrics Grid */}
-        <div className="mb-20">
+        <div className="mb-24">
           <div className="text-center mb-10">
             <span className="text-xs font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
               DATA-DRIVEN INSIGHTS
@@ -191,7 +310,7 @@ export default function WhySchoolsNeedShorai() {
         </div>
 
         {/* Shorai Is The Solution Hub */}
-        <div className="rounded-3xl p-6 sm:p-10 lg:p-12 bg-card border border-border mb-20 shadow-sm">
+        <div className="rounded-3xl p-6 sm:p-10 lg:p-12 bg-card border border-border mb-28 shadow-sm">
           <div className="text-center max-w-xl mx-auto mb-12">
             <span className="text-xs font-mono font-bold tracking-[0.2em] text-primary uppercase block mb-2">
               COMPREHENSIVE FRAMEWORK
@@ -224,34 +343,109 @@ export default function WhySchoolsNeedShorai() {
           </div>
         </div>
 
-        {/* 6 Measurable Outcomes for Partner Schools */}
-        <div className="mb-20">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold tracking-[0.2em] text-secondary uppercase block mb-2">
-              INSTITUTIONAL VALUE
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-black text-foreground">
-              Outcomes For Schools
+        {/* ── REDESIGNED: LEFT INFO + RIGHT SPIRAL FLIPBOOK ── */}
+        <div className="mb-24">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-xs font-mono font-bold text-secondary mb-3 shadow-sm">
+              <Zap className="w-3.5 h-3.5" />
+              <span>INTERACTIVE FLIPBOOK &bull; 6 KEY OUTCOMES</span>
+            </div>
+            <h3 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight mb-3">
+              Measurable Outcomes For Schools
             </h3>
+            <p className="text-sm text-muted-foreground">
+              Flip through the interactive outcome sheets to explore tangible institutional returns in admissions, academic prestige, and parent satisfaction.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {outcomes.map((out, idx) => {
-              const Icon = out.icon;
-              return (
-                <SectionReveal key={out.title} delay={0.06 * idx}>
-                  <div className="p-6 rounded-2xl bg-card border border-border hover:border-secondary/50 shadow-sm transition-all duration-300 group h-full flex flex-col justify-between">
-                    <div>
-                      <div className="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <h4 className="text-base font-bold text-foreground mb-2">{out.title}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{out.desc}</p>
+          {/* Main 2-Column Layout (Left Info + Right Spiral Flipbook) */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            
+            {/* LEFT: 5 Columns Narrative & Jump Tabs */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold mb-4 border"
+                  style={{
+                    background: `${activeOutcome.accentColor}15`,
+                    borderColor: `${activeOutcome.accentColor}40`,
+                    color: activeOutcome.accentColor,
+                  }}
+                >
+                  <ActiveIcon className="w-3.5 h-3.5" />
+                  <span>{activeOutcome.subtitle}</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-3 leading-tight">
+                  {activeOutcome.title}
+                </h3>
+
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                  {activeOutcome.desc}
+                </p>
+
+                {/* Big Metric Box */}
+                <div className="p-5 rounded-2xl bg-card border border-border shadow-sm mb-6 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase block mb-0.5">
+                      IMPACT SCORECARD
+                    </span>
+                    <div className="text-xs font-bold text-foreground">
+                      {activeOutcome.metricLabel}
                     </div>
                   </div>
-                </SectionReveal>
-              );
-            })}
+                  <div 
+                    className="text-3xl font-black font-mono tracking-tight"
+                    style={{ color: activeOutcome.accentColor }}
+                  >
+                    {activeOutcome.metric}
+                  </div>
+                </div>
+
+                {/* Quick Page Jump Selector */}
+                <div className="space-y-1.5 mb-8">
+                  <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                    SELECT OUTCOME SHEET
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {schoolOutcomes.map((item, idx) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveOutcomeIdx(idx)}
+                        className={`text-left px-3 py-2 rounded-xl text-xs font-bold transition-all border truncate flex items-center justify-between ${
+                          activeOutcomeIdx === idx
+                            ? 'bg-card border-primary text-primary shadow-sm ring-1 ring-primary/20'
+                            : 'bg-muted/40 hover:bg-muted border-border text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        <span className="truncate">{item.title}</span>
+                        <span className="text-[10px] font-mono ml-1 opacity-70">P{idx + 1}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <MagneticWrapper>
+                <button
+                  onClick={() => setIsContactOpen(true)}
+                  className="w-full sm:w-auto px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-105"
+                >
+                  <span>To know more about us contact us</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </MagneticWrapper>
+            </div>
+
+            {/* RIGHT: 7 Columns 3D Spiral Flipbook */}
+            <div className="lg:col-span-7 flex justify-center">
+              <SpiralFlipbook
+                pages={flipbookPages}
+                activePageIndex={activeOutcomeIdx}
+                onPageChange={(idx) => setActiveOutcomeIdx(idx)}
+              />
+            </div>
+
           </div>
         </div>
 

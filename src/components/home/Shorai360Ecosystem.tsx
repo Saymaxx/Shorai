@@ -15,106 +15,323 @@ import {
   CheckCircle2, 
   ArrowRight,
   ShieldCheck,
-  Layers
+  Layers,
+  Star,
+  Activity,
+  Zap,
+  ChevronRight
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import SpiralFlipbook, { FlipbookPage } from '@/components/shared/SpiralFlipbook';
 
-const ecosystemPillars = [
+const ecosystemStory = [
   {
     id: 'curriculum',
     number: '01',
-    title: 'CURRICULUM',
-    badge: 'NEP Aligned',
-    desc: 'Industry relevant & future-focused structured syllabus tailored for K-12 students with progressive difficulty grades.',
+    chapter: 'CHAPTER I &bull; FOUNDATION',
+    title: 'NEP 2020 Aligned Curriculum',
+    tagline: 'Structured Grade 1 to 12 STEM Pedagogy',
+    desc: 'Our curriculum bridges abstract classroom theory with applied technology. Designed with progressive difficulty levels, students master algorithmic thinking, electronics, physics simulations, and machine learning from early school years.',
     icon: BookOpen,
     color: '#7928CA',
+    gradient: 'from-[#7928CA] to-[#6366F1]',
+    highlights: [
+      'Grade-by-Grade structured textbook and digital modules',
+      'Integrated with CBSE, ICSE, and State Board frameworks',
+      'Real-world problem-solving and coding paradigms'
+    ],
+    previewData: {
+      type: 'Curriculum Framework',
+      metrics: [
+        { label: 'Grade Range', value: '1st - 12th' },
+        { label: 'Modules', value: '120+ Units' },
+        { label: 'Compliance', value: '100% NEP' }
+      ],
+      codeSnippet: `// Grade 6-8 Algorithm Logic\nloop (distanceSensor.read() > 10cm) {\n  motorLeft.setSpeed(80);\n  motorRight.setSpeed(80);\n  rgbRing.setGlow("CYAN");\n}`
+    }
   },
   {
     id: 'robotics-lab',
     number: '02',
-    title: 'ROBOTICS & INNOVATION LAB',
-    badge: 'State-of-the-Art',
-    desc: 'Turnkey lab setup with safety certified robotics kits, microcontrollers, sensors, 3D printers, and test workbenches.',
+    chapter: 'CHAPTER II &bull; INFRASTRUCTURE',
+    title: 'Turnkey Robotics & Innovation Lab',
+    tagline: 'Industrial Workbenches, Kits & 3D Prototyping',
+    desc: 'We transform empty classroom spaces into state-of-the-art technological discovery centers. Equipped with safety-certified microcontrollers, sensors, 3D printers, soldering stations, and drone testing cages.',
     icon: Bot,
     color: '#EC4899',
+    gradient: 'from-[#EC4899] to-[#FF3D7F]',
+    highlights: [
+      'Safety-certified robotic hardware and mechanical components',
+      'Modular 3D printing & rapid prototyping stations',
+      'Smart storage racks and student experiment workbenches'
+    ],
+    previewData: {
+      type: 'Lab Hardware Stack',
+      metrics: [
+        { label: 'Hardware Kits', value: '30+ Per Lab' },
+        { label: 'Safety Level', value: 'ISO Certified' },
+        { label: '3D Precision', value: '0.1mm Print' }
+      ],
+      codeSnippet: `// Hardware Pin Configuration\n#define MOTOR_PIN_A 5\n#define ULTRASONIC_ECHO 12\nservoGripper.attach(9);\nservoGripper.write(90); // Arm open`
+    }
   },
   {
     id: 'ai-lms',
     number: '03',
-    title: 'AI LEARNING PLATFORM (LMS)',
-    badge: 'Smart Dashboards',
-    desc: 'Personalized student learning paths, assignment tracking, automated assessments & real-time analytics for teachers.',
+    chapter: 'CHAPTER III &bull; INTELLIGENCE',
+    title: 'AI-Powered Learning Platform (LMS)',
+    tagline: 'Personalized Student Paths & Real-Time Analytics',
+    desc: 'Every student receives an intelligent cloud dashboard that adapts to their learning speed. Teachers track student progress, review code submissions, and generate diagnostic reports with one click.',
     icon: Laptop,
     color: '#FF6B00',
+    gradient: 'from-[#FF6B00] to-[#F59E0B]',
+    highlights: [
+      'Automated code evaluation and instant bug diagnostics',
+      'Teacher progress dashboards with live class analytics',
+      'Gamified badges, streaks, and student project portfolios'
+    ],
+    previewData: {
+      type: 'Cloud LMS Engine',
+      metrics: [
+        { label: 'Auto-Grading', value: '< 200ms' },
+        { label: 'Analytics', value: 'Live Telemetry' },
+        { label: 'Uptime', value: '99.9% Cloud' }
+      ],
+      codeSnippet: `// Real-Time Student Performance Metric\nAI_LMS.evaluateSubmission({\n  studentId: "STU-8821",\n  concept: "Neural Classification",\n  score: 98.4,\n  badge: "ML Explorer"\n});`
+    }
   },
   {
     id: 'teacher-training',
     number: '04',
-    title: 'TEACHER EMPOWERMENT',
-    badge: 'Faculty Training',
-    desc: 'Comprehensive training, lesson plans, teaching aids & ongoing mentorship so educators can teach cutting-edge STEM confidently.',
+    chapter: 'CHAPTER IV &bull; FACULTY',
+    title: 'Certified Teacher Empowerment',
+    tagline: 'Upskilling School Educators into STEM Mentors',
+    desc: 'A lab is only as good as the teachers who inspire within it. We provide continuous certification programs, step-by-step lecture plans, and 24/7 dedicated engineering mentors to support your faculty.',
     icon: GraduationCap,
     color: '#F59E0B',
+    gradient: 'from-[#F59E0B] to-[#10B981]',
+    highlights: [
+      'Comprehensive on-campus and virtual faculty bootcamps',
+      'Ready-to-use slide decks, lesson guides, and rubric sheets',
+      'Ongoing on-call technical mentor support throughout the academic year'
+    ],
+    previewData: {
+      type: 'Faculty Enablement',
+      metrics: [
+        { label: 'Training Hours', value: '40+ Hours' },
+        { label: 'Certification', value: 'SEG Certified' },
+        { label: 'Faculty Rating', value: '4.9 / 5.0' }
+      ],
+      codeSnippet: `// Teacher Dashboard Assessment Report\nClassReport report = new ClassReport("Grade 8-B");\nreport.setMastery("Robotics Kinematics", 92.5);\nreport.exportToPrincipalPortal();`
+    }
   },
   {
     id: 'pbl',
     number: '05',
-    title: 'PROJECT BASED LEARNING',
-    badge: '100% Practical',
-    desc: 'Hands-on projects where students design, build, and troubleshoot real working prototypes rather than just memorizing theory.',
+    chapter: 'CHAPTER V &bull; DISCOVERY',
+    title: 'Project-Based Learning (PBL)',
+    tagline: '100% Hands-On Prototyping & Invention',
+    desc: 'Students do not memorize definitions—they build solutions for real-world problems. From automated smart irrigation systems to disaster-response quadcopters, learning is tangible and exciting.',
     icon: Cpu,
     color: '#10B981',
+    gradient: 'from-[#10B981] to-[#00D4FF]',
+    highlights: [
+      'Hands-on construction of working hardware prototypes',
+      'Interdisciplinary projects fusing Math, Physics, and Coding',
+      'Collaborative team innovation sprints'
+    ],
+    previewData: {
+      type: 'Project Inventions',
+      metrics: [
+        { label: 'Prototypes', value: '15+ / Student' },
+        { label: 'Build Method', value: 'Design Thinking' },
+        { label: 'Success Rate', value: '96% Working' }
+      ],
+      codeSnippet: `// Smart City Prototype Sensor Logic\nif (soilMoisture < 300) {\n  relayPump.activate(5000);\n  oledDisplay.print("Watering Crops...");\n  cloudIoT.sendAlert("PUMP_ON");\n}`
+    }
   },
   {
     id: 'competitions',
     number: '06',
-    title: 'COMPETITIONS & HACKATHONS',
-    badge: 'Global Stages',
-    desc: 'Direct access to national & international robotics Olympiads, AI challenges, science fairs, and inter-school hackathons.',
+    chapter: 'CHAPTER VI &bull; GLORY',
+    title: 'Competitions & Hackathons',
+    tagline: 'National & Global Competitive Arenas',
+    desc: 'We groom student teams to represent your school at prestigious national Olympiads, Atal Tinkering Marathons, World Robot Olympiad (WRO), and inter-school hackathons.',
     icon: Trophy,
     color: '#00D4FF',
+    gradient: 'from-[#00D4FF] to-[#6366F1]',
+    highlights: [
+      'Direct guidance for national & international STEM olympiads',
+      'Annual Shorai inter-school innovation championships',
+      'Trophies, certificates, and national student recognition'
+    ],
+    previewData: {
+      type: 'Competitive Record',
+      metrics: [
+        { label: 'Awards Won', value: '50+ Medals' },
+        { label: 'National Rank', value: 'Top 1%' },
+        { label: 'Hackathons', value: 'Year-Round' }
+      ],
+      codeSnippet: `// Competition Autonomous Route Flight Plan\nWaypoints route = DroneFlight.createAutonomousRoute();\nroute.addCoordinate(0.0, 0.0, 2.5); // Takeoff\nroute.navigateMazeObstacles(ultrasonicScan());\nroute.precisionLand();`
+    }
   },
   {
     id: 'career',
     number: '07',
-    title: 'CAREER GUIDANCE & COUNSELLING',
-    badge: 'Future Mapping',
-    desc: 'Early career exploration, guest lectures with industry engineers, resume building & soft-skill development.',
+    chapter: 'CHAPTER VII &bull; HORIZONS',
+    title: 'Career Guidance & Mentorship',
+    tagline: 'Connecting Classrooms with Industry Engineers',
+    desc: 'Students interact with leading tech engineers, AI researchers, and aerospace experts to discover future engineering careers early, building strong resumes and college portfolios.',
     icon: Compass,
     color: '#6366F1',
+    gradient: 'from-[#6366F1] to-[#7928CA]',
+    highlights: [
+      'Interactive guest lectures with tech industry leaders',
+      'Portfolio building for prestigious engineering universities',
+      'Early exploration of emerging tech domains (AI, Aerospace, IoT)'
+    ],
+    previewData: {
+      type: 'Career Mapping',
+      metrics: [
+        { label: 'Tech Domains', value: '12 Horizons' },
+        { label: 'Mentors', value: 'Industry Pros' },
+        { label: 'Portfolio', value: 'Verified PDF' }
+      ],
+      codeSnippet: `// Student Engineering Portfolio\nStudentProfile student = new StudentProfile("Aarav Sharma");\nstudent.addSkills(["Embedded C++", "Computer Vision", "ROS 2"]);\nstudent.generateVerifiedBadge();`
+    }
   },
   {
     id: 'parent',
     number: '08',
-    title: 'PARENT ENGAGEMENT',
-    badge: 'Open Communication',
-    desc: 'Regular innovation showcases, project exhibitions, learning progress updates & awareness sessions for parents.',
+    chapter: 'CHAPTER VIII &bull; COMMUNITY',
+    title: 'Parent Community & Showcase Expos',
+    tagline: 'Visible Output that Builds Lifelong Parent Trust',
+    desc: 'We organize annual on-campus Innovation Days where parents see live robot races, drone flights, and AI demonstrations created by their children, solidifying the school’s premier reputation.',
     icon: HeartHandshake,
     color: '#8B5CF6',
+    gradient: 'from-[#8B5CF6] to-[#EC4899]',
+    highlights: [
+      'Annual on-campus Shorai STEM Innovation Day',
+      'Live student project demonstrations and parent voting',
+      'Transparent learning growth reports shared each term'
+    ],
+    previewData: {
+      type: 'Community Trust',
+      metrics: [
+        { label: 'Parent Rating', value: '98.5% Positive' },
+        { label: 'Attendance', value: '100% Capacity' },
+        { label: 'Enrollments', value: '+35% Growth' }
+      ],
+      codeSnippet: `// Innovation Day Showcase Live Vote Stream\nExpoStream.broadcast({\n  stallId: "BOT-ROVER-04",\n  votes: 420,\n  audienceFeedback: "Remarkable student innovation!"\n});`
+    }
   },
 ];
 
 export default function Shorai360Ecosystem() {
-  const [activePillar, setActivePillar] = useState(ecosystemPillars[0]);
+  const [activeStoryIdx, setActiveStoryIdx] = useState(0);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const activeChapter = ecosystemStory[activeStoryIdx];
+  const ActiveIcon = activeChapter.icon;
+
+  // Build flipbook pages
+  const flipbookPages: FlipbookPage[] = ecosystemStory.map((item, idx) => {
+    const Icon = item.icon;
+    return {
+      id: item.id,
+      pageNumber: idx + 1,
+      title: item.title,
+      badge: item.chapter,
+      color: item.color,
+      content: (
+        <div className="flex flex-col justify-between h-full py-1">
+          {/* Header Specs */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
+                style={{ background: item.color }}
+              >
+                <Icon className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-xs font-mono font-bold text-foreground">
+                  {item.previewData.type}
+                </div>
+                <div className="text-[10px] font-mono text-emerald-500 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <span>ACTIVE TELEMETRY</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <div className="text-xs font-mono font-bold text-primary">
+                0{item.number} // 08
+              </div>
+            </div>
+          </div>
+
+          {/* 3 Metric Cards */}
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            {item.previewData.metrics.map((m, i) => (
+              <div key={i} className="p-2.5 rounded-xl bg-muted/40 border border-border text-center">
+                <div className="text-xs sm:text-sm font-black text-foreground mb-0.5">
+                  {m.value}
+                </div>
+                <div className="text-[8px] sm:text-[9px] font-mono font-bold text-muted-foreground uppercase">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Code / Blueprint Terminal */}
+          <div className="rounded-xl bg-black/90 text-cyan-300 p-3 border border-white/10 font-mono text-xs shadow-inner overflow-hidden mb-3">
+            <div className="flex items-center justify-between text-[9px] text-muted-foreground mb-1 pb-1 border-b border-white/10">
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="ml-1 text-white/70">shorai_blueprint.ts</span>
+              </div>
+              <span className="text-white/40">v3.60</span>
+            </div>
+            <pre className="overflow-x-auto text-[10px] sm:text-[11px] leading-relaxed text-emerald-400">
+              <code>{item.previewData.codeSnippet}</code>
+            </pre>
+          </div>
+
+          {/* Bottom verified badge */}
+          <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground pt-2 border-t border-border/50">
+            <div className="flex items-center gap-1.5 text-foreground font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+              <span>Turnkey Ecosystem</span>
+            </div>
+            <span className="text-primary font-bold">100% Practical</span>
+          </div>
+        </div>
+      ),
+    };
+  });
 
   return (
     <section id="ecosystem" className="relative py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[800px] bg-primary/[0.025] rounded-full blur-[160px]" />
+        <div className="absolute top-1/3 left-1/4 w-[50vw] h-[50vw] max-w-[700px] bg-primary/[0.03] rounded-full blur-[160px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[50vw] h-[50vw] max-w-[700px] bg-secondary/[0.03] rounded-full blur-[160px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
           <SectionReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-xs font-mono font-bold text-secondary mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-xs font-mono font-bold text-secondary mb-4 shadow-sm">
               <Layers className="w-3.5 h-3.5" />
-              INTEGRATED TRANSFORMATION MODEL
+              <span>INTERACTIVE FLIPBOOK &bull; 8-CHAPTER ECOSYSTEM</span>
             </div>
           </SectionReveal>
 
@@ -126,72 +343,102 @@ export default function Shorai360Ecosystem() {
 
           <SectionReveal delay={0.15}>
             <p className="text-base sm:text-lg font-bold text-foreground/90 tracking-wide mb-2">
-              One Partner. Endless Possibilities.
+              One Unified Ecosystem. 8 Powerful Chapters.
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-              A complete, end-to-end solution that transforms schools into future-ready learning environments. From modern lab infrastructure to teacher empowerment and student development, Shorai delivers everything through one trusted partner.
+              Turn through the interactive spiral binder to explore how Shorai empowers your school across curriculum, lab hardware, AI software, and faculty enablement.
             </p>
           </SectionReveal>
         </div>
 
-        {/* 8-Pillars Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
-          {ecosystemPillars.map((pillar, idx) => {
-            const Icon = pillar.icon;
-            const isSelected = activePillar.id === pillar.id;
+        {/* ── 2-COLUMN LAYOUT: LEFT INFO + RIGHT SPIRAL FLIPBOOK ── */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-20">
+          
+          {/* LEFT: 5 Cols Narrative & Chapter Index */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              <div 
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold mb-4 border"
+                style={{
+                  background: `${activeChapter.color}15`,
+                  borderColor: `${activeChapter.color}40`,
+                  color: activeChapter.color,
+                }}
+              >
+                <ActiveIcon className="w-3.5 h-3.5" />
+                <span>{activeChapter.chapter}</span>
+              </div>
 
-            return (
-              <SectionReveal key={pillar.id} delay={0.06 * idx}>
-                <div
-                  onClick={() => setActivePillar(pillar)}
-                  className={`p-6 sm:p-7 rounded-3xl cursor-pointer transition-all duration-300 h-full flex flex-col justify-between group relative overflow-hidden border ${
-                    isSelected 
-                      ? 'bg-card border-primary shadow-xl shadow-primary/10 ring-2 ring-primary/20 scale-[1.02]' 
-                      : 'bg-card/70 hover:bg-card border-border hover:border-primary/40 shadow-sm'
-                  }`}
-                >
-                  {/* Top Header */}
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div 
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 shadow-sm"
-                        style={{ background: `${pillar.color}15`, color: pillar.color }}
-                      >
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span className="text-xs font-mono font-bold text-muted-foreground/60">
-                        {pillar.number}
-                      </span>
-                    </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-2 leading-tight">
+                {activeChapter.title}
+              </h3>
 
-                    <div className="mb-2">
-                      <span 
-                        className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1.5"
-                        style={{ background: `${pillar.color}15`, color: pillar.color }}
-                      >
-                        {pillar.badge}
-                      </span>
-                      <h4 className="text-base font-bold text-foreground leading-snug">
-                        {pillar.title}
-                      </h4>
-                    </div>
+              <div className="text-xs font-mono font-bold text-primary mb-4 uppercase tracking-wider">
+                {activeChapter.tagline}
+              </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {pillar.desc}
-                    </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                {activeChapter.desc}
+              </p>
+
+              {/* Highlights List */}
+              <div className="space-y-2.5 mb-6">
+                {activeChapter.highlights.map((h, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-xs font-semibold text-foreground/90">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <span>{h}</span>
                   </div>
+                ))}
+              </div>
 
-                  <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between text-[11px] font-mono text-primary font-bold">
-                    <span>Learn More</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                  </div>
+              {/* Chapter Index Quick Selector */}
+              <div className="space-y-1.5 mb-8">
+                <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                  CHAPTER SELECTOR
                 </div>
-              </SectionReveal>
-            );
-          })}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {ecosystemStory.map((item, idx) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveStoryIdx(idx)}
+                      className={`text-center px-2 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+                        activeStoryIdx === idx
+                          ? 'bg-card border-primary text-primary shadow-sm ring-1 ring-primary/20'
+                          : 'bg-muted/40 hover:bg-muted border-border text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] opacity-70 mr-1">0{item.number}</span>
+                      <span className="truncate">{item.title.split(' ')[0]}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Action CTA */}
+            <MagneticWrapper>
+              <button
+                onClick={() => setIsContactOpen(true)}
+                className="w-full sm:w-auto px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-105"
+              >
+                <span>To know more about us contact us</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </MagneticWrapper>
+          </div>
+
+          {/* RIGHT: 7 Cols Spiral Flipbook */}
+          <div className="lg:col-span-7 flex justify-center">
+            <SpiralFlipbook
+              pages={flipbookPages}
+              activePageIndex={activeStoryIdx}
+              onPageChange={(idx) => setActiveStoryIdx(idx)}
+            />
+          </div>
+
         </div>
 
-        {/* What Makes It Powerful + Our Promise Box */}
+        {/* What Makes It Powerful + Promise Box */}
         <SectionReveal delay={0.2}>
           <div className="rounded-3xl p-8 sm:p-12 bg-card border border-border shadow-sm mb-16">
             <div className="grid lg:grid-cols-12 gap-8 items-center">
@@ -252,16 +499,6 @@ export default function Shorai360Ecosystem() {
             </div>
           </div>
         </SectionReveal>
-
-        {/* Bottom Slogan Banner */}
-        <div className="text-center">
-          <p className="text-base sm:text-xl font-bold text-foreground/90 tracking-tight">
-            Together, Let&apos;s Build Future-Ready Schools for{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#FF6B00]">
-              Future-Ready India.
-            </span>
-          </p>
-        </div>
 
       </div>
 

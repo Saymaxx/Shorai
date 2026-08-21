@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ArrowUpRight, Sparkles, Users } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Users, Activity, CheckCircle2, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
 
@@ -82,11 +83,21 @@ const socialLinks = [
   },
 ];
 
+const tickerItems = [
+  '⚡ 1000+ STUDENTS EMPOWERED',
+  '🤖 50+ ACTIVE SCHOOL LABS',
+  '🚀 100% NEP 2020 ALIGNED',
+  '🧠 120+ AI & ML MODULES',
+  '🏆 50+ NATIONAL STEM MEDALS',
+  '🛸 AUTONOMOUS DRONE WORKSTATIONS',
+  '💡 3D RAPID PROTOTYPING HUBS',
+];
+
 export default function HeroSocialCTA() {
   return (
-    <section className="relative z-20 w-full py-10 px-4 sm:px-6 overflow-hidden bg-background border-y border-border transition-colors duration-300">
+    <section className="relative z-20 w-full py-8 px-4 sm:px-6 overflow-hidden bg-background border-y border-border transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto">
-        <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-card border border-border shadow-sm">
+        <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-card border border-border shadow-sm mb-6">
           
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
             
@@ -123,7 +134,7 @@ export default function HeroSocialCTA() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`group relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg w-full sm:w-[150px] lg:w-[160px] min-h-[135px] overflow-hidden`}
+                        className={`group relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg w-full sm:w-[150px] lg:w-[160px] min-h-[135px] overflow-hidden`}
                       >
                         {/* Top icon and link arrow */}
                         <div className="flex items-center justify-between w-full relative z-10">
@@ -154,6 +165,26 @@ export default function HeroSocialCTA() {
 
           </div>
         </div>
+
+        {/* ── MOTION GRAPHIC: Infinite Live Scrolling Marquee ── */}
+        <div className="relative w-full overflow-hidden rounded-2xl py-3 bg-muted/30 border border-border/70 backdrop-blur-sm">
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          
+          <motion.div
+            className="flex items-center gap-8 whitespace-nowrap min-w-max"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+          >
+            {[...tickerItems, ...tickerItems].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 text-xs font-mono font-bold text-muted-foreground hover:text-primary transition-colors">
+                <span>{item}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
       </div>
     </section>
   );
