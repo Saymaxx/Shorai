@@ -1,16 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { 
   Send, 
   Sparkles, 
-  CheckCircle2, 
-  ArrowRight, 
-  Rocket, 
-  ShieldCheck, 
-  GraduationCap, 
-  Bot 
+  CheckCircle2 
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
@@ -225,48 +219,6 @@ export default function HomeContactCTASection() {
           </div>
 
         </div>
-
-        {/* ── Closing High-Impact Call To Action Banner ─────────────────── */}
-        <SectionReveal delay={0.2}>
-          <div className="rounded-3xl p-8 sm:p-12 lg:p-14 bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-primary/30 backdrop-blur-xl flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left shadow-xl">
-            
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
-                <Rocket className="w-3.5 h-3.5" />
-                SHORAI INNOVATION MISSION
-              </div>
-              <h3 className="text-2xl sm:text-4xl font-black text-foreground tracking-tight mb-3">
-                Transform Your Campus Into An Innovation Powerhouse.
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Join forward-thinking Indian schools pioneering NEP 2020 Robotics, AI, Coding, and Drone education.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 flex-shrink-0">
-              <MagneticWrapper>
-                <Link
-                  href="/schools"
-                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-                >
-                  <span>Explore School Labs</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </MagneticWrapper>
-
-              <MagneticWrapper>
-                <Link
-                  href="/contact"
-                  className="px-8 py-4 rounded-2xl bg-card border border-border text-foreground hover:text-primary font-bold text-sm tracking-wide shadow-sm hover:border-primary/40 transition-all flex items-center gap-2"
-                >
-                  <span>Visit Contact Page</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </MagneticWrapper>
-            </div>
-
-          </div>
-        </SectionReveal>
 
       </div>
     </section>
