@@ -1,82 +1,91 @@
 'use client';
 
-import { globalMouseX, globalMouseY } from '@/lib/mouse';
-import { motion, useSpring, useTransform } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function GlobalMouseFollower() {
-  const [isMounted, setIsMounted] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
+  const orbRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
-    setIsMounted(true);
+    let mouseX = -100;
+    let mouseY = -100;
+    let orbX = -100;
+    let orbY = -100;
+    let dotX = -100;
+    let dotY = -100;
+    let isHovering = false;
+    let animationFrameId: number;
 
-    const onEnter = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (t && (t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('a') || t.closest('button') || t.closest('[role="button"]'))) {
-        setIsHovering(true);
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button') || target.closest('[role="button"]'))) {
+        isHovering = true;
       }
     };
-    const onLeave = () => setIsHovering(false);
 
-    document.addEventListener('mouseover', onEnter);
-    document.addEventListener('mouseout', onLeave);
+    const handleMouseOut = () => {
+      isHovering = false;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
+    document.addEventListener('mouseout', handleMouseOut, { passive: true });
+
+    const animate = () => {
+      // Fluid linear interpolation for buttery smooth 60/120fps tracking
+      dotX += (mouseX - dotX) * 0.45;
+      dotY += (mouseY - dotY) * 0.45;
+
+      orbX += (mouseX - orbX) * 0.12;
+      orbY += (mouseY - orbY) * 0.12;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${dotX - 5}px, ${dotY - 5}px, 0) scale(${isHovering ? 1.6 : 1})`;
+        dotRef.current.style.backgroundColor = isHovering ? '#FF6B00' : '#6366F1';
+      }
+
+      if (orbRef.current) {
+        orbRef.current.style.transform = `translate3d(${orbX - 220}px, ${orbY - 220}px, 0)`;
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
     return () => {
-      document.removeEventListener('mouseover', onEnter);
-      document.removeEventListener('mouseout', onLeave);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
-  const smoothX = useSpring(globalMouseX, { damping: 22, stiffness: 180, mass: 0.4 });
-  const smoothY = useSpring(globalMouseY, { damping: 22, stiffness: 180, mass: 0.4 });
-
-  const slowX = useSpring(globalMouseX, { damping: 35, stiffness: 60, mass: 1 });
-  const slowY = useSpring(globalMouseY, { damping: 35, stiffness: 60, mass: 1 });
-
-  const orbSize = 460;
-  const dotSize = 10;
-
-  const orbX = useTransform(slowX, (v) => v - orbSize / 2);
-  const orbY = useTransform(slowY, (v) => v - orbSize / 2);
-  const dotX = useTransform(smoothX, (v) => v - dotSize / 2);
-  const dotY = useTransform(smoothY, (v) => v - dotSize / 2);
-
-  if (!isMounted) return null;
-
   return (
     <>
-      {/* Soft playful pastel follower aura */}
-      <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-0 rounded-full hidden md:block"
+      {/* Soft ambient ambient aura */}
+      <div
+        ref={orbRef}
+        className="pointer-events-none fixed top-0 left-0 z-0 rounded-full hidden md:block w-[440px] h-[440px] will-change-transform"
         style={{
-          width: orbSize,
-          height: orbSize,
-          x: orbX,
-          y: orbY,
           background: theme === 'dark'
-            ? 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(56,189,248,0.06) 45%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, rgba(255,107,0,0.05) 50%, transparent 70%)',
-          opacity: 0.9,
+            ? 'radial-gradient(circle, rgba(99,102,241,0.10) 0%, rgba(56,189,248,0.04) 45%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(99,102,241,0.06) 0%, rgba(255,107,0,0.04) 50%, transparent 70%)',
+          opacity: 0.8,
         }}
       />
 
       {/* Playful precision dot cursor */}
-      <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full hidden md:block"
-        style={{
-          width: dotSize,
-          height: dotSize,
-          x: dotX,
-          y: dotY,
-          background: isHovering ? '#FF6B00' : '#6366F1',
-          boxShadow: isHovering
-            ? '0 0 14px rgba(255,107,0,0.7)'
-            : '0 0 14px rgba(99,102,241,0.7)',
-        }}
-        animate={{ scale: isHovering ? 1.7 : 1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      <div
+        ref={dotRef}
+        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full hidden md:block w-2.5 h-2.5 will-change-transform transition-transform duration-75 ease-out shadow-[0_0_12px_rgba(99,102,241,0.6)]"
       />
     </>
   );
