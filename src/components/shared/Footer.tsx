@@ -9,10 +9,10 @@ import {
   Globe, 
   Sparkles, 
   ArrowRight, 
-  ExternalLink,
-  ShieldCheck,
-  Building2,
-  Navigation
+  ExternalLink, 
+  Building2, 
+  Navigation,
+  Compass
 } from 'lucide-react';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
@@ -64,14 +64,14 @@ export default function Footer() {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Main Grid: Info + Map + Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-16 border-b border-border">
+        {/* Main Grid: Brand & Contact Info Left + Innovation Center & Actions Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 pb-16 border-b border-border items-start">
           
-          {/* Col 1: Brand & Initiative (4 Cols) */}
-          <div className="lg:col-span-4 flex flex-col justify-between">
+          {/* Col 1: Brand & Verified Contact Details (6 Cols) */}
+          <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
               <Link href="/" className="flex items-center gap-3 mb-5 group">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#6366F1] to-[#00D4FF] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#6366F1] to-[#00D4FF] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
                   <span className="text-white font-black text-2xl tracking-tighter">S</span>
                 </div>
                 <div>
@@ -84,12 +84,12 @@ export default function Footer() {
                 </div>
               </Link>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 text-xs font-semibold text-primary mb-5">
-                <Building2 className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs font-semibold text-primary mb-5">
+                <Building2 className="w-4 h-4" />
                 An Initiative by SEG Academy Pvt. Ltd.
               </div>
 
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-lg">
                 Transforming K-12 school education across India through turnkey AI &amp; Robotics Innovation Labs, NEP-aligned STEM curriculum, and certified faculty empowerment.
               </p>
 
@@ -99,8 +99,8 @@ export default function Footer() {
                   href="tel:+917880630963"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <Phone className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <Phone className="w-4.5 h-4.5" />
                   </div>
                   <span>+91 7880630963</span>
                 </a>
@@ -109,8 +109,8 @@ export default function Footer() {
                   href="mailto:contact@shorai.in"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
-                    <Mail className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                    <Mail className="w-4.5 h-4.5" />
                   </div>
                   <span>contact@shorai.in / info@shorai.in</span>
                 </a>
@@ -121,93 +121,71 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-                    <Globe className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                    <Globe className="w-4.5 h-4.5" />
                   </div>
                   <span>www.shorai.in</span>
                 </a>
 
                 <div className="flex items-start gap-3 text-muted-foreground pt-1">
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
-                    <MapPin className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+                    <MapPin className="w-4.5 h-4.5" />
                   </div>
-                  <span className="leading-snug">
+                  <span className="leading-snug max-w-md">
                     119/114, Ramkrishna Road, Khudiram, Khardaha, Kolkata, North 24 Parganas, West Bengal 700116.
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-2.5 mt-8">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-muted/80 hover:bg-[#0A66C2]/20 border border-border hover:border-[#0A66C2]/50 text-foreground hover:text-[#0A66C2] flex items-center justify-center transition-all"
-                aria-label="LinkedIn"
-              >
-                <LinkedInIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-muted/80 hover:bg-[#FF0000]/20 border border-border hover:border-[#FF0000]/50 text-foreground hover:text-[#FF0000] flex items-center justify-center transition-all"
-                aria-label="YouTube"
-              >
-                <YouTubeIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-muted/80 hover:bg-[#E1306C]/20 border border-border hover:border-[#E1306C]/50 text-foreground hover:text-[#E1306C] flex items-center justify-center transition-all"
-                aria-label="Instagram"
-              >
-                <InstagramIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-muted/80 hover:bg-[#1877F2]/20 border border-border hover:border-[#1877F2]/50 text-foreground hover:text-[#1877F2] flex items-center justify-center transition-all"
-                aria-label="Facebook"
-              >
-                <FacebookIcon className="w-4 h-4" />
-              </a>
+            {/* Extra Big Social CTA Icons */}
+            <div className="mt-8">
+              <span className="text-[11px] font-mono font-bold tracking-widest text-muted-foreground uppercase block mb-3">
+                CONNECT ON SOCIAL
+              </span>
+              <div className="flex items-center gap-3.5">
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#0A66C2]/20 border border-border hover:border-[#0A66C2]/50 text-foreground hover:text-[#0A66C2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedInIcon className="w-5.5 h-5.5" />
+                </a>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#FF0000]/20 border border-border hover:border-[#FF0000]/50 text-foreground hover:text-[#FF0000] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  aria-label="YouTube"
+                >
+                  <YouTubeIcon className="w-5.5 h-5.5" />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#E1306C]/20 border border-border hover:border-[#E1306C]/50 text-foreground hover:text-[#E1306C] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  aria-label="Instagram"
+                >
+                  <InstagramIcon className="w-5.5 h-5.5" />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#1877F2]/20 border border-border hover:border-[#1877F2]/50 text-foreground hover:text-[#1877F2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  aria-label="Facebook"
+                >
+                  <FacebookIcon className="w-5.5 h-5.5" />
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Col 2: Navigation & Ecosystem (3 Cols) */}
-          <div className="lg:col-span-3">
-            <h4 className="text-xs font-mono font-bold tracking-[0.2em] text-foreground uppercase mb-5">
-              360° STEM ECOSYSTEM
-            </h4>
-            <ul className="space-y-2.5 text-xs text-muted-foreground">
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">AI &amp; Machine Learning Labs</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">Robotics &amp; Kinematics</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">Coding, Python &amp; ROS 2</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">Drone Tech &amp; Aerodynamics</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">IoT &amp; Smart Microcontrollers</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">3D Printing &amp; Rapid Prototyping</Link></li>
-              <li><Link href="#skills" className="hover:text-foreground transition-colors">AR / VR Immersive Classrooms</Link></li>
-              <li><Link href="#ecosystem" className="hover:text-foreground transition-colors">AI-Powered LMS Platform</Link></li>
-              <li><Link href="#ecosystem" className="hover:text-foreground transition-colors">Teacher Training &amp; Support</Link></li>
-            </ul>
-
-            <h4 className="text-xs font-mono font-bold tracking-[0.2em] text-foreground uppercase mt-8 mb-3">
-              ABOUT SEG ACADEMY
-            </h4>
-            <ul className="space-y-2 text-xs text-muted-foreground">
-              <li><Link href="#about-seg" className="hover:text-foreground transition-colors">Our Journey &amp; Milestones</Link></li>
-              <li><Link href="#why-shorai" className="hover:text-foreground transition-colors">Why Schools Need Shorai</Link></li>
-              <li><Link href="#technology" className="hover:text-foreground transition-colors">School Transformation Process</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 3: Interactive Google Map Location Card (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
+          {/* Col 2: Interactive Google Map + Dual Action Buttons (6 Cols) */}
+          <div className="lg:col-span-6 flex flex-col justify-between h-full">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-xs font-mono font-bold tracking-[0.2em] text-foreground uppercase">
@@ -217,15 +195,15 @@ export default function Footer() {
                   href="https://maps.google.com/?q=Ramkrishna+Road,+Khardaha,+Kolkata+700116"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
                 >
                   <span>Open in Google Maps</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               {/* Embedded Interactive Google Map */}
-              <div className="relative w-full h-[220px] rounded-2xl overflow-hidden border border-border bg-muted shadow-inner group">
+              <div className="relative w-full h-[240px] sm:h-[260px] rounded-3xl overflow-hidden border border-border bg-muted shadow-inner group">
                 <iframe
                   title="Shorai SEG Academy Location Map"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14725.753380486844!2d88.3756184!3d22.7212457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c666a01d51f%3A0x6b13e8e19b027d14!2sKhardaha%2C%20West%20Bengal%20700116!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
@@ -239,30 +217,43 @@ export default function Footer() {
                 />
 
                 {/* Map Overlay Badge */}
-                <div className="absolute bottom-3 left-3 p-2.5 rounded-xl bg-card/90 border border-border backdrop-blur-md text-xs shadow-lg max-w-[280px]">
-                  <div className="font-bold text-foreground flex items-center gap-1.5 mb-0.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="absolute bottom-3.5 left-3.5 p-3 rounded-2xl bg-card/90 border border-border backdrop-blur-md text-xs shadow-lg max-w-[300px]">
+                  <div className="font-bold text-foreground flex items-center gap-2 mb-0.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                     Shorai STEM Center
                   </div>
-                  <div className="text-[10px] text-muted-foreground leading-tight">
+                  <div className="text-[11px] text-muted-foreground leading-tight">
                     Khardaha, Kolkata, West Bengal 700116
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Prominent "To know more about us contact us" Button */}
-            <div className="mt-6">
+            {/* Dual CTA Buttons: "To know more about us contact us" + "Visit Us" */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <MagneticWrapper>
                 <button
                   onClick={() => setIsContactOpen(true)}
-                  className="w-full h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+                  className="w-full h-14 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
                 >
                   <span>To know more about us contact us</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </MagneticWrapper>
+
+              <MagneticWrapper>
+                <a
+                  href="https://maps.google.com/?q=Ramkrishna+Road,+Khardaha,+Kolkata+700116"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-14 rounded-2xl bg-card hover:bg-muted border border-border hover:border-primary/50 text-foreground font-bold text-xs tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                >
+                  <Navigation className="w-4 h-4 text-primary" />
+                  <span>Visit Us</span>
+                </a>
+              </MagneticWrapper>
             </div>
+
           </div>
 
         </div>
