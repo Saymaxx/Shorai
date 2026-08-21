@@ -14,7 +14,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <RouterProvider>
         <Preloader />
         <SmoothScrollProvider>
-          <Navbar />
           <App />
         </SmoothScrollProvider>
       </RouterProvider>
