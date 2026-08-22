@@ -11,7 +11,7 @@ interface HeroVisualProps {
 }
 
 const DIALOGUES = [
-  "Hello! I'm Shorai-1 👋",
+  "Hello! Welcome to Shorai 👋",
   "Ready to build real robots? 🤖",
   "Let's code our first AI model! 🧠",
   "Fly autonomous drones today! 🚀",

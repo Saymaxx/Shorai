@@ -4,13 +4,69 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Brain, Wrench, Plane, Code2, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Brain, Plane, Code2, Sparkles, CheckCircle2, Bot, Zap } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 
+const quadrants = [
+  {
+    id: 'ai',
+    title: 'AI & Machine Learning',
+    subtitle: 'Neural Nets • Computer Vision',
+    icon: Brain,
+    image: '/images/shorai-quadrant-ai.jpg',
+    alt: 'Indian student learning Artificial Intelligence and computer vision',
+    accentColor: '#8B5CF6',
+    badgeBg: 'bg-purple-500/90 text-white',
+    ringColor: 'group-hover:ring-purple-500/60',
+    glowColor: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.35)]',
+    tag: 'AI LAB',
+  },
+  {
+    id: 'drone',
+    title: 'Drone Technology',
+    subtitle: 'Aeromodelling • UAV Flight',
+    icon: Plane,
+    image: '/images/shorai-quadrant-drone.jpg',
+    alt: 'Indian student tuning educational drone in aerospace lab',
+    accentColor: '#06B6D4',
+    badgeBg: 'bg-cyan-500/90 text-white',
+    ringColor: 'group-hover:ring-cyan-500/60',
+    glowColor: 'group-hover:shadow-[0_0_30px_rgba(6,182,212,0.35)]',
+    tag: 'DRONE LAB',
+  },
+  {
+    id: 'robotics',
+    title: 'Robotics & Automation',
+    subtitle: '6-Axis Arms • Microcontrollers',
+    icon: Bot,
+    image: '/images/shorai-quadrant-robotics.jpg',
+    alt: 'Indian student programming robotic arm in robotics lab',
+    accentColor: '#F59E0B',
+    badgeBg: 'bg-amber-500/90 text-white',
+    ringColor: 'group-hover:ring-amber-500/60',
+    glowColor: 'group-hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]',
+    tag: 'ROBOTICS LAB',
+  },
+  {
+    id: 'coding',
+    title: 'Coding & Software',
+    subtitle: 'Python • Logic • Web Apps',
+    icon: Code2,
+    image: '/images/shorai-quadrant-coding.jpg',
+    alt: 'Indian student coding algorithms and web applications',
+    accentColor: '#10B981',
+    badgeBg: 'bg-emerald-500/90 text-white',
+    ringColor: 'group-hover:ring-emerald-500/60',
+    glowColor: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.35)]',
+    tag: 'CODING LAB',
+  },
+];
+
 export default function InnovationLabs() {
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const [activeQuadrant, setActiveQuadrant] = useState<string | null>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
@@ -62,14 +118,20 @@ export default function InnovationLabs() {
             </SectionReveal>
 
             <SectionReveal delay={0.15}>
-              <div className="text-xs font-mono font-bold tracking-[0.2em] text-primary mb-6 uppercase">
-                AI &bull; ROBOTICS &bull; CODING &bull; DRONES
+              <div className="text-xs font-mono font-bold tracking-[0.2em] text-primary mb-6 uppercase flex items-center gap-2 flex-wrap">
+                <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">AI</span>
+                <span>&bull;</span>
+                <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">DRONES</span>
+                <span>&bull;</span>
+                <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">ROBOTICS</span>
+                <span>&bull;</span>
+                <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">CODING</span>
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.2}>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">
-                Equipped with industrial-grade microcontrollers, 6-axis robotic arms, autonomous flight simulators, and intelligent computer vision terminals—giving every student the tools to invent and discover.
+                Empowering students across India with hands-on mastery in Artificial Intelligence, Drone Aeronautics, 6-Axis Robotics, and Modern Coding—turning classrooms into futuristic innovation hubs.
               </p>
             </SectionReveal>
 
@@ -113,33 +175,77 @@ export default function InnovationLabs() {
             </SectionReveal>
           </div>
 
-          {/* RIGHT: 55% - Visual Lab Scene */}
+          {/* RIGHT: 55% - 4-Quadrant Visual Matrix */}
           <div className="lg:col-span-7 relative">
             <SectionReveal delay={0.15}>
               <div 
-                className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-2xl aspect-[16/10] ring-1 ring-border/50"
+                className="relative rounded-3xl p-3 sm:p-4 bg-card/60 backdrop-blur-md border border-border/80 shadow-2xl ring-1 ring-border/50"
                 style={{ transform: `translate(${parallaxLabX}px, ${parallaxLabY}px)` }}
               >
-                <Image 
-                  src="/images/shorai-bright-lab.jpg" 
-                  alt="Indian students building robots and drones in Shorai Innovation Lab" 
-                  fill 
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                />
+                {/* 2x2 Quadrant Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  {quadrants.map((quad) => {
+                    const Icon = quad.icon;
+                    return (
+                      <div
+                        key={quad.id}
+                        onMouseEnter={() => setActiveQuadrant(quad.id)}
+                        onMouseLeave={() => setActiveQuadrant(null)}
+                        className={`group relative rounded-2xl overflow-hidden bg-background border border-border/80 transition-all duration-500 aspect-[4/3] ring-1 ring-border/40 hover:ring-2 ${quad.ringColor} ${quad.glowColor} hover:-translate-y-1`}
+                      >
+                        {/* Student Photograph */}
+                        <Image 
+                          src={quad.image} 
+                          alt={quad.alt} 
+                          fill 
+                          className="object-cover transition-transform duration-700 group-hover:scale-108"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+                        />
 
-                {/* Subtle bottom gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
+                        {/* High-contrast gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none transition-opacity duration-300 group-hover:opacity-90" />
 
-                {/* Floating interactive tags */}
-                <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md text-white border border-white/20 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span>LAB ACTIVE // 100% PRACTICAL</span>
+                        {/* Top Category Badge */}
+                        <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                          <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg backdrop-blur-md shadow-md text-[11px] font-mono font-bold ${quad.badgeBg}`}>
+                            <Icon className="w-3.5 h-3.5" />
+                            <span>{quad.tag}</span>
+                          </div>
+                          
+                          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+                        </div>
+
+                        {/* Bottom Information */}
+                        <div className="absolute bottom-0 inset-x-0 p-3 sm:p-3.5 flex flex-col justify-end text-white pointer-events-none">
+                          <div className="text-sm sm:text-base font-bold leading-tight group-hover:text-white transition-colors drop-shadow-sm flex items-center gap-1.5">
+                            {quad.title}
+                          </div>
+                          <p className="text-[11px] sm:text-xs text-white/80 font-medium tracking-wide mt-0.5 line-clamp-1 drop-shadow-sm">
+                            {quad.subtitle}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Central Floating Badge */}
+                <div className="hidden sm:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 items-center gap-2 px-4 py-2 rounded-full bg-background/90 backdrop-blur-xl border border-primary/40 shadow-2xl text-[11px] font-mono font-black text-foreground">
+                  <Zap className="w-3.5 h-3.5 text-primary animate-bounce" />
+                  <span>SHORAI 4-PILLAR LABS</span>
+                </div>
+
+                {/* Bottom Footer Ribbon */}
+                <div className="mt-3 sm:mt-4 pt-3 border-t border-border/60 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span>100% PRACTICAL HANDS-ON LEARNING</span>
                   </div>
-                  <div className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-primary to-secondary backdrop-blur-md text-white font-bold shadow-lg">
-                    NEP 2020 STEM LAB
+                  <div className="px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 text-primary font-bold text-[11px]">
+                    NEP 2020 COMPLIANT
                   </div>
                 </div>
+
               </div>
             </SectionReveal>
           </div>

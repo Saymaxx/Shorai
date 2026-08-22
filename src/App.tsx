@@ -10,7 +10,7 @@ import StudentTestimonials from '@/components/home/StudentTestimonials';
 import HomeContactCTASection from '@/components/home/HomeContactCTASection';
 import Footer from '@/components/shared/Footer';
 import GlobalMouseFollower from '@/components/shared/GlobalMouseFollower';
-import RobotGuideUI from '@/components/3d/RobotGuideUI';
+import ShoraiChatbot from '@/components/chat/ShoraiChatbot';
 import MotionGraphicsBackground from '@/components/animations/MotionGraphicsBackground';
 import ShoraiLabsPage from '@/pages/ShoraiLabsPage';
 import AboutUsPage from '@/pages/AboutUsPage';
@@ -27,7 +27,7 @@ export default function App() {
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
-        <RobotGuideUI />
+        <ShoraiChatbot />
         <ContactPage />
       </main>
     );
@@ -39,7 +39,7 @@ export default function App() {
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
-        <RobotGuideUI />
+        <ShoraiChatbot />
         <AboutUsPage />
       </main>
     );
@@ -51,7 +51,7 @@ export default function App() {
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
-        <RobotGuideUI />
+        <ShoraiChatbot />
         <WhyShoraiPage />
       </main>
     );
@@ -63,7 +63,7 @@ export default function App() {
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
-        <RobotGuideUI />
+        <ShoraiChatbot />
         <SchoolTransformationPage />
       </main>
     );
@@ -75,7 +75,7 @@ export default function App() {
         <Navbar />
         <MotionGraphicsBackground />
         <GlobalMouseFollower />
-        <RobotGuideUI />
+        <ShoraiChatbot />
         <ShoraiLabsPage />
       </main>
     );
@@ -89,9 +89,9 @@ export default function App() {
       {/* Dynamic Animated Motion Graphics Background Layer */}
       <MotionGraphicsBackground />
 
-      {/* 3D Interactive Mascot & Soft Ambient Follower */}
+      {/* Interactive AI Chatbot & Ambient Follower */}
       <GlobalMouseFollower />
-      <RobotGuideUI />
+      <ShoraiChatbot />
 
       {/* 1. Cinematic Hero Section with 3D Robot Mascot & SEG Academy Endorsement */}
       <HeroSection />
