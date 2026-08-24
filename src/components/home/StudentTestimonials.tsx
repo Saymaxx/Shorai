@@ -113,77 +113,80 @@ export default function StudentTestimonials() {
         <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-28 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
 
         {/* Continuous Side-Scrolling Track */}
-        <div className="testimonial-marquee-track gap-4 sm:gap-5 px-4">
+        <div className="testimonial-marquee-track gap-5 sm:gap-6 px-4">
           {carouselItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={`${item.id}-${idx}`}
-                className="w-[220px] sm:w-[250px] shrink-0 rounded-2xl sm:rounded-3xl overflow-hidden bg-card border border-border hover:border-primary/50 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
+                className="w-[320px] sm:w-[380px] shrink-0 rounded-3xl p-6 sm:p-7 bg-card border border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
               >
-                
-                {/* 1. Compact Portrait Image of Indian Student */}
-                <div className="relative aspect-[3/3.2] w-full overflow-hidden bg-muted">
-                  <img
-                    src={item.image}
-                    alt={`${item.name} - ${item.project}`}
-                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  />
-                  
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                {/* Subtle top color highlight */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1 transition-all duration-300 group-hover:h-1.5 opacity-80"
+                  style={{ background: item.color }}
+                />
 
-                  {/* Top Badge: Domain Tag */}
-                  <div className="absolute top-2.5 left-2.5 z-10">
-                    <span 
-                      className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md shadow-sm text-white border border-white/20"
-                      style={{ background: `${item.color}cc` }}
-                    >
-                      {item.tag}
-                    </span>
-                  </div>
+                <div>
+                  {/* Top Bar: Domain Tag + 5 Stars */}
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-[10px] font-mono font-bold uppercase tracking-wider text-foreground">
+                      <Icon className="w-3.5 h-3.5" style={{ color: item.color }} />
+                      <span>{item.tag}</span>
+                    </div>
 
-                  {/* Bottom of Image: Project Pill */}
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
-                    <div className="px-2.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border shadow-md flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 truncate">
-                        <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                        <span className="text-[11px] font-bold text-foreground truncate">
-                          {item.project}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-0.5 flex-shrink-0">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400 drop-shadow-sm" />
+                      ))}
                     </div>
                   </div>
 
+                  {/* Project Highlight Pill */}
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/10 text-primary border border-primary/20 text-xs font-bold mb-3">
+                    <span>{item.project}</span>
+                  </div>
+
+                  {/* Bigger, High-Legibility Student Quote */}
+                  <div className="relative mb-5">
+                    <Quote className="w-8 h-8 text-primary/10 absolute -top-2 -left-1 pointer-events-none" />
+                    <p className="text-sm sm:text-base text-foreground font-semibold leading-relaxed relative z-10 pl-2">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+                  </div>
                 </div>
 
-                {/* 2. Compact Bottom Half: Student Quote & Identity */}
-                <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-grow">
-                  
-                  {/* Quote */}
-                  <p className="text-[11px] sm:text-xs text-foreground/90 leading-relaxed font-medium mb-3 italic line-clamp-3">
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
-
-                  {/* Student Credentials */}
-                  <div className="pt-2.5 border-t border-border flex items-center justify-between">
-                    <div>
-                      <h4 className="text-xs font-black text-foreground leading-snug">{item.name}</h4>
-                      <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
-                    </div>
+                {/* Bottom Student Profile: Small Icon-Sized Avatar + Identity */}
+                <div className="pt-4 border-t border-border flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {/* Small Icon-Sized Avatar Image */}
                     <div 
-                      className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm"
-                      style={{ background: `${item.color}15`, color: item.color }}
+                      className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 shadow-sm shrink-0 bg-muted"
+                      style={{ borderColor: item.color }}
                     >
-                      <Quote className="w-3 h-3 text-muted-foreground" />
+                      <img
+                        src={item.image}
+                        alt={`${item.name}`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-black text-foreground truncate leading-tight">
+                        {item.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground font-medium truncate mt-0.5">
+                        {item.grade}
+                      </p>
                     </div>
                   </div>
 
+                  <div 
+                    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-110"
+                    style={{ background: `${item.color}15`, color: item.color }}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </div>
                 </div>
 
               </div>

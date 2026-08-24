@@ -302,9 +302,9 @@ export const defaultSiteContent: SiteContent = {
       ],
     },
     innovationLabs: {
-      badge: 'WHERE STUDENTS BUILD THE FUTURE',
-      title: 'Four Dedicated ',
-      titleGradient: 'Innovation Hubs',
+      badge: 'INNOVATION LABS',
+      title: 'WHERE STUDENTS ',
+      titleGradient: 'BUILD THE FUTURE',
       subtitle: 'Explore our 4 flagship school lab environments designed for experiential discovery.',
       labs: [
         {
@@ -398,8 +398,8 @@ export const defaultSiteContent: SiteContent = {
     },
     banner: {
       badge: 'SHORAI ECOSYSTEM',
-      title: 'WHY SCHOOLS NEED ',
-      titleGradient: 'SHORAI',
+      title: 'Why Shorai ',
+      titleGradient: 'for Schools',
       narrative: 'Shorai bridges the gap between classroom learning and real-world innovation by providing a comprehensive future-skills ecosystem. Through hands-on experiences, industry-aligned programs, and modern learning solutions, we empower students to become creators, problem-solvers, and future leaders.',
       quote: 'The best time to prepare for the future was yesterday. The next best time is RIGHT NOW.',
       bottomStatement: 'The world is changing faster than ever, driven by Artificial Intelligence, automation, digital transformation, and emerging technologies. Today\'s students need more than traditional education—they need practical skills, innovative thinking, and the confidence to thrive in a technology-driven future.',

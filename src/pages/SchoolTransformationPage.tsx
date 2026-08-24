@@ -17,7 +17,6 @@ import InteractiveTechnology from '@/components/home/InteractiveTechnology';
 import GradeWiseCurriculumSection from '@/components/home/GradeWiseCurriculumSection';
 import TransformationPartnerComparisonSection from '@/components/home/TransformationPartnerComparisonSection';
 import PartnershipTracksSection from '@/components/home/PartnershipTracksSection';
-import HowItWorks from '@/components/home/HowItWorks';
 import Testimonials from '@/components/home/Testimonials';
 import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
@@ -108,8 +107,6 @@ export default function SchoolTransformationPage() {
       {/* 5-Step Methodology Section */}
       <InteractiveTechnology />
 
-      {/* How It Works Detailed Workflow */}
-      <HowItWorks />
 
       {/* Educator Testimonials */}
       <Testimonials />

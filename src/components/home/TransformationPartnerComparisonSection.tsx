@@ -163,7 +163,7 @@ export default function TransformationPartnerComparisonSection() {
                 {/* Natural Photo Container */}
                 <div className="relative w-full aspect-[4/3] sm:aspect-[16/11]">
                   <img
-                    src="/images/robotics_smart_class_teacher.jpg"
+                    src="/images/robotics_teacher_smart_class.jpg"
                     alt="Indian robotics master teacher engaging students in smart innovation class"
                     className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />

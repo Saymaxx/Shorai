@@ -186,20 +186,13 @@ export default function WhyShoraiPage() {
             })}
           </div>
 
-          {/* Subtle low-intensity soft glow behind text for maximum image clarity */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.15)_45%,transparent_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(6,9,19,0.5)_0%,rgba(6,9,19,0.2)_45%,transparent_70%)] pointer-events-none z-10" />
+          {/* High-contrast solid soft white shield glow directly behind hero typography */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.85)_40%,rgba(255,255,255,0.45)_70%,transparent_100%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(6,9,19,0.95)_0%,rgba(6,9,19,0.85)_40%,rgba(6,9,19,0.45)_70%,transparent_100%)] pointer-events-none z-10" />
         </div>
 
-        {/* ── Foreground Hero Content (Overlaying Directly Over the Carousel with Zero Card Box) ── */}
+        {/* ── Foreground Hero Content (Overlaying Directly Over the Carousel with High Clarity) ── */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 w-full text-center relative z-20 my-auto">
           
-          <SectionReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/30 text-xs font-mono font-bold text-primary mb-4 backdrop-blur-md shadow-sm">
-              <Sparkles className="w-4 h-4" />
-              <span>{hero.badge}</span>
-            </div>
-          </SectionReveal>
-
           <SectionReveal delay={0.08}>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.1] drop-shadow-sm">
               {hero.title} <br className="hidden sm:inline" />
@@ -210,7 +203,7 @@ export default function WhyShoraiPage() {
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
-            <p className="text-base sm:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed mb-6 font-semibold drop-shadow-sm">
+            <p className="text-base sm:text-xl text-foreground max-w-2xl mx-auto leading-relaxed mb-6 font-bold drop-shadow-sm">
               {hero.subtitle}
             </p>
           </SectionReveal>
@@ -218,21 +211,17 @@ export default function WhyShoraiPage() {
           {/* Quick Highlight Metrics */}
           <SectionReveal delay={0.16}>
             <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mb-8 max-w-3xl mx-auto text-xs font-semibold">
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border text-foreground shadow-sm">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/95 backdrop-blur-md border border-border text-foreground shadow-sm">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                 <span>100% Practical Hands-on Labs</span>
               </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border text-foreground shadow-sm">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/95 backdrop-blur-md border border-border text-foreground shadow-sm">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                 <span>NEP 2020 Aligned Curriculum</span>
               </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border text-foreground shadow-sm">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/95 backdrop-blur-md border border-border text-foreground shadow-sm">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                 <span>Certified Teacher Training</span>
-              </div>
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-background/90 backdrop-blur-md border border-border text-foreground shadow-sm">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                <span>Industry Hardware &amp; Cloud</span>
               </div>
             </div>
           </SectionReveal>

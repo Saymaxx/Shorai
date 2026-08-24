@@ -42,23 +42,6 @@ export default function WhySchoolsNeedShoraiBanner() {
           {/* Left Column (6 Cols) */}
           <div className="lg:col-span-6 flex flex-col items-start">
             
-            {/* Shorai Brand Header Pill */}
-            <SectionReveal>
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-[#6366F1]/30 mb-6 shadow-sm">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center text-white font-black text-sm shadow-md">
-                  S
-                </div>
-                <div>
-                  <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                    {banner.badge}
-                  </div>
-                  <div className="text-[10px] font-mono text-muted-foreground">
-                    Building Future Innovators with AI &amp; Robotics
-                  </div>
-                </div>
-              </div>
-            </SectionReveal>
-
             {/* Section Main Title */}
             <SectionReveal delay={0.08}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-6 leading-tight">
@@ -76,30 +59,8 @@ export default function WhySchoolsNeedShoraiBanner() {
               </p>
             </SectionReveal>
 
-            {/* 4 Feature Value Pills */}
-            <SectionReveal delay={0.16}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8 w-full">
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border text-xs sm:text-sm font-bold text-foreground shadow-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>Hands-on Experiential Labs</span>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border text-xs sm:text-sm font-bold text-foreground shadow-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>Industry-Aligned Programs</span>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border text-xs sm:text-sm font-bold text-foreground shadow-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>Turnkey Learning Solutions</span>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border text-xs sm:text-sm font-bold text-foreground shadow-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>Empowering Future Leaders</span>
-                </div>
-              </div>
-            </SectionReveal>
-
             {/* Action CTA Button */}
-            <SectionReveal delay={0.2}>
+            <SectionReveal delay={0.16}>
               <div className="flex flex-wrap items-center gap-4">
                 <MagneticWrapper>
                   <button
@@ -140,12 +101,6 @@ export default function WhySchoolsNeedShoraiBanner() {
 
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                  {/* Top Floating Badge */}
-                  <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 shadow-lg flex items-center gap-2 text-xs font-bold text-white font-mono">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    <span>PRACTICAL INNOVATION</span>
-                  </div>
                 </div>
 
                 {/* Floating Purple Quote Box */}

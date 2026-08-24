@@ -267,25 +267,9 @@ export default function Shorai360Ecosystem() {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* ── TOP HEADER: EMBLEM + TITLE + SUBTITLE ── */}
+        {/* ── TOP HEADER: TITLE + SUBTITLE ── */}
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12 sm:mb-16">
           
-          <SectionReveal>
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-[#6366F1]/30 mb-6 shadow-sm backdrop-blur-md">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center text-white font-black text-sm shadow-md">
-                S
-              </div>
-              <div className="text-left">
-                <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                  {eco.badge}
-                </div>
-                <div className="text-[10px] font-mono text-muted-foreground font-semibold">
-                  Building Future Innovators with AI &amp; Robotics
-                </div>
-              </div>
-            </div>
-          </SectionReveal>
-
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
               {eco.title} <br />
@@ -499,25 +483,18 @@ export default function Shorai360Ecosystem() {
                 </g>
               </svg>
 
-              {/* ── Center Hub HTML Content (Crisp Typography & Gradient Logo) ── */}
+              {/* ── Center Hub Official Shorai Logo Emblem ── */}
               <div 
                 className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center"
                 style={{ zIndex: 10 }}
               >
-                {/* Shorai S Logo Emblem */}
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#EC4899] to-[#00D4FF] flex items-center justify-center text-white font-black text-2xl sm:text-3xl shadow-[0_6px_20px_rgba(121,40,202,0.4)] mb-1 sm:mb-1.5 transition-transform duration-300">
-                  S
-                </div>
-
-                {/* SCHOOL Title */}
-                <div className="text-xl sm:text-2xl font-black tracking-tight text-foreground uppercase leading-none mb-1">
-                  SCHOOL
-                </div>
-
-                {/* Future-Ready Transformation Tag */}
-                <div className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-wider max-w-[120px] leading-tight">
-                  Future-Ready <br />
-                  <span className="text-primary font-black">Transformation</span>
+                {/* Official Circular Logo */}
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden p-1 bg-white dark:bg-[#0B0F19] shadow-[0_8px_30px_rgba(121,40,202,0.4)] border-2 border-primary/40 flex items-center justify-center transition-transform duration-300">
+                  <img 
+                    src="/images/shorai_logo.png" 
+                    alt="SHORAI - Building Future Innovators with AI & Robotics" 
+                    className="w-full h-full object-contain rounded-full"
+                  />
                 </div>
               </div>
 
@@ -657,70 +634,8 @@ export default function Shorai360Ecosystem() {
 
         </div>
 
-        {/* ── 8 PILLARS QUICK-SELECT CHIP STRIP (FOR EASY NAVIGATION) ── */}
-        <div className="rounded-3xl p-5 sm:p-6 bg-card border border-border shadow-sm mb-12">
-          <div className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-3 px-1 flex items-center justify-between">
-            <span>EXPLORE ALL 8 ECOSYSTEM PILLARS</span>
-            <span className="hidden sm:inline">CLICK TO SELECT</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-            {PILLARS.map((p, idx) => {
-              const Icon = p.icon;
-              const isSelected = activePillarIdx === idx;
-
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => {
-                    setActivePillarIdx(idx);
-                    setHoveredPillarIdx(null);
-                  }}
-                  className={`p-2.5 rounded-2xl border text-left transition-all duration-200 flex flex-col items-center text-center justify-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-muted border-2 shadow-md scale-105'
-                      : 'bg-card hover:bg-muted/50 border-border/80'
-                  }`}
-                  style={{ borderColor: isSelected ? p.color : undefined }}
-                >
-                  <div 
-                    className="w-7 h-7 rounded-xl flex items-center justify-center text-white shadow-sm"
-                    style={{ backgroundColor: p.color }}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-[11px] font-black uppercase tracking-tight line-clamp-1" style={{ color: isSelected ? p.color : undefined }}>
-                    {p.title.split(' ')[0]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── OUR PROMISE BANNER (WITH ROBOT MASCOT) ── */}
-        <div className="rounded-3xl p-6 sm:p-7 bg-card border-2 border-border shadow-xl mb-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
-              <Target className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <div className="text-base sm:text-lg font-black text-foreground">
-                Our Promise
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-semibold max-w-2xl leading-relaxed">
-                Empowering schools with a unified ecosystem that inspires innovation, nurtures talent, and prepares every student for the future.
-              </p>
-            </div>
-          </div>
-
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center shrink-0 shadow-lg">
-            <Bot className="w-8 h-8 text-white animate-bounce" />
-          </div>
-        </div>
-
         {/* ── BOTTOM BANNER: TOGETHER, LET'S BUILD FUTURE-READY SCHOOLS ── */}
-        <div className="rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#FF6B00] text-white shadow-xl flex flex-wrap items-center justify-between gap-4">
+        <div className="rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#FF6B00] text-white shadow-xl flex flex-wrap items-center justify-between gap-4 mt-8">
           <div className="flex items-center gap-3">
             <Quote className="w-6 h-6 text-amber-300 shrink-0 rotate-180" />
             <div className="text-base sm:text-xl lg:text-2xl font-black tracking-tight drop-shadow-md">

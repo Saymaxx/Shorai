@@ -66,8 +66,8 @@ export default function Navbar() {
           
           {/* ── Brand Logo with SEG Academy Endorsement ── */}
           <Link href="/" className="relative z-50 flex items-center gap-3.5 group">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#6366F1] to-[#00D4FF] flex items-center justify-center shadow-[0_0_25px_rgba(99,102,241,0.45)] group-hover:scale-105 transition-transform flex-shrink-0">
-              <span className="text-white font-black text-2xl tracking-tighter">S</span>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
+              <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">

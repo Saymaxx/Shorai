@@ -101,13 +101,6 @@ export default function InnovationLabs() {
           
           {/* LEFT: 45% - Content */}
           <div className="lg:col-span-5 flex flex-col items-start">
-            <SectionReveal>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
-                <Sparkles className="w-3.5 h-3.5" />
-                {labsData.badge}
-              </div>
-            </SectionReveal>
-
             <SectionReveal delay={0.1}>
               <h2 
                 className="font-black tracking-tight text-foreground mb-6 leading-tight"

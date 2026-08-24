@@ -70,12 +70,33 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function Testimonials() {
-  // Double items for seamless marquee
-  const doubled = [...testimonials, ...testimonials];
+  // Tripled items for smooth continuous infinite loop
+  const tripled = [...testimonials, ...testimonials, ...testimonials];
 
   return (
     <section id="testimonials" className="relative py-24 sm:py-32 px-4 sm:px-6 bg-muted/20 overflow-hidden border-t border-border">
       
+      {/* CSS Animation Keyframes for 120fps hardware-accelerated marquee */}
+      <style>{`
+        @keyframes educatorTestimonialMarquee {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-33.333%, 0, 0);
+          }
+        }
+        .educator-testimonial-track {
+          display: flex;
+          width: max-content;
+          animation: educatorTestimonialMarquee 34s linear infinite;
+          will-change: transform;
+        }
+        .educator-testimonial-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.03] rounded-full blur-[140px]" />
@@ -85,7 +106,7 @@ export default function Testimonials() {
       <div className="max-w-[1440px] mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-14 sm:mb-16">
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
@@ -109,97 +130,91 @@ export default function Testimonials() {
           </SectionReveal>
         </div>
 
-        {/* ── Continuous Marquee Carousel (Light-Mode Aesthetic) ── */}
-        <div className="relative w-full overflow-hidden">
-          
-          {/* Edge Gradient Masks for Smooth Fade */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
+      </div>
 
-          {/* Marquee Track */}
-          <div 
-            className="flex gap-6 w-max hover:[animation-play-state:paused]"
-            style={{
-              animation: 'testimonialMarquee 42s linear infinite',
-              willChange: 'transform',
-            }}
-          >
-            {doubled.map((item, idx) => {
-              const BadgeIcon = item.badgeIcon;
-              return (
-                <div
-                  key={`${item.id}-${idx}`}
-                  className="w-[330px] sm:w-[420px] flex-shrink-0 p-7 sm:p-8 rounded-3xl bg-card border border-border/90 shadow-lg hover:shadow-xl hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div>
-                    {/* Card Top: Reviewer Badge + 5 Stars */}
-                    <div className="flex items-center justify-between gap-2 mb-5">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-mono font-bold text-primary">
-                        <BadgeIcon className="w-3 h-3" />
-                        <span>{item.badge}</span>
-                      </div>
+      {/* ── Continuous Marquee Carousel (120fps Hardware Accelerated) ── */}
+      <div className="relative w-full overflow-hidden z-10 py-2">
+        
+        {/* Edge Gradient Masks for Smooth Fade */}
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
 
-                      {/* 5-Star Rating */}
-                      <div className="flex items-center gap-1">
-                        {[...Array(item.rating)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className="w-4 h-4 fill-amber-400 text-amber-400 drop-shadow-sm" 
-                          />
-                        ))}
-                      </div>
+        {/* Marquee Track */}
+        <div className="educator-testimonial-track gap-5 sm:gap-6 px-4">
+          {tripled.map((item, idx) => {
+            const BadgeIcon = item.badgeIcon;
+            return (
+              <div
+                key={`${item.id}-${idx}`}
+                className="w-[320px] sm:w-[400px] flex-shrink-0 p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-md hover:shadow-2xl hover:border-primary/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+              >
+                <div>
+                  {/* Card Top: Reviewer Badge + 5 Stars */}
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-[10px] font-mono font-bold uppercase tracking-wider text-foreground">
+                      <BadgeIcon className="w-3.5 h-3.5 text-primary" />
+                      <span>{item.badge}</span>
                     </div>
 
-                    {/* Review Quote with subtle quote icon */}
-                    <div className="relative mb-6">
-                      <Quote className="w-8 h-8 text-primary/15 absolute -top-2 -left-1 pointer-events-none" />
-                      <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed relative z-10 pl-2">
-                        &ldquo;{item.quote}&rdquo;
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1.5 mb-6">
-                      {item.tags.map((tag, tIdx) => (
-                        <span 
-                          key={tIdx}
-                          className="px-2.5 py-0.5 rounded-lg bg-muted/60 text-[11px] font-semibold text-muted-foreground border border-border/60"
-                        >
-                          {tag}
-                        </span>
+                    {/* 5-Star Rating */}
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(item.rating)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className="w-3.5 h-3.5 fill-amber-400 text-amber-400 drop-shadow-sm" 
+                        />
                       ))}
                     </div>
+                  </div>
 
-                    {/* Reviewer Profile */}
-                    <div className="pt-4 border-t border-border flex items-center gap-3.5">
-                      <div className="relative w-13 h-13 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-sm flex-shrink-0">
-                        <img
-                          src={item.image}
-                          alt={`${item.name} portrait`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                  {/* Bigger Review Quote with subtle quote icon */}
+                  <div className="relative mb-5">
+                    <Quote className="w-8 h-8 text-primary/10 absolute -top-2 -left-1 pointer-events-none" />
+                    <p className="text-sm sm:text-base text-foreground font-semibold leading-relaxed relative z-10 pl-2">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {item.tags.map((tag, tIdx) => (
+                      <span 
+                        key={tIdx}
+                        className="px-2.5 py-0.5 rounded-lg bg-primary/10 text-primary text-[11px] font-bold border border-primary/20"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Reviewer Profile: Small Icon-Sized Avatar + Identity */}
+                  <div className="pt-3.5 border-t border-border flex items-center gap-3">
+                    <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-primary/30 shadow-sm flex-shrink-0 bg-muted">
+                      <img
+                        src={item.image}
+                        alt={`${item.name} portrait`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <h4 className="text-sm font-black text-foreground truncate leading-tight">
+                        {item.name}
+                      </h4>
+                      <div className="text-xs font-bold text-primary truncate mt-0.5">
+                        {item.role}
                       </div>
-                      <div className="flex flex-col min-w-0">
-                        <h4 className="text-sm font-black text-foreground truncate">
-                          {item.name}
-                        </h4>
-                        <div className="text-xs font-bold text-primary truncate">
-                          {item.role}
-                        </div>
-                        <div className="text-[11px] font-medium text-muted-foreground truncate">
-                          {item.institution}
-                        </div>
+                      <div className="text-[11px] font-medium text-muted-foreground truncate">
+                        {item.institution}
                       </div>
                     </div>
                   </div>
-
                 </div>
-              );
-            })}
-          </div>
 
+              </div>
+            );
+          })}
         </div>
 
       </div>

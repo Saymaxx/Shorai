@@ -82,8 +82,8 @@ export default function Footer() {
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
               <Link href="/" className="flex items-center gap-3.5 mb-4 group">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#6366F1] to-[#00D4FF] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
-                  <span className="text-white font-black text-2xl tracking-tighter">S</span>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
+                  <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
                 </div>
                 <div>
                   <span className="text-2xl font-black tracking-tight text-foreground block leading-tight">

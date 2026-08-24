@@ -120,7 +120,7 @@ export default function LeadInquiryForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${className}`} aria-label="School Consultation Inquiry Form">
+    <form onSubmit={handleSubmit} className={`${variant === 'modal' ? 'space-y-3' : 'space-y-4'} ${className}`} aria-label="School Consultation Inquiry Form">
       {/* Anti-spam honeypot */}
       <input
         type="text"
@@ -134,16 +134,16 @@ export default function LeadInquiryForm({
       />
       
       {/* Name and School Fields */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${variant === 'modal' ? 'gap-3' : 'gap-4'}`}>
         <div>
           <label 
             htmlFor={`${formId}-name`} 
-            className="block text-xs font-semibold text-foreground/85 mb-1.5"
+            className="block text-[11px] font-semibold text-foreground/85 mb-1"
           >
             Your Name <span className="text-primary font-bold">*</span>
           </label>
           <div className="relative">
-            <User className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <User className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id={`${formId}-name`}
               type="text"
@@ -151,7 +151,7 @@ export default function LeadInquiryForm({
               placeholder="Principal / Educator Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all"
+              className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
             />
           </div>
         </div>
@@ -159,12 +159,12 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-school`} 
-            className="block text-xs font-semibold text-foreground/85 mb-1.5"
+            className="block text-[11px] font-semibold text-foreground/85 mb-1"
           >
             School / Institution <span className="text-primary font-bold">*</span>
           </label>
           <div className="relative">
-            <Building2 className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Building2 className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id={`${formId}-school`}
               type="text"
@@ -172,23 +172,23 @@ export default function LeadInquiryForm({
               placeholder="e.g. Delhi Public School"
               value={formData.school}
               onChange={(e) => setFormData({ ...formData, school: e.target.value })}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all"
+              className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
             />
           </div>
         </div>
       </div>
 
       {/* Phone and Email Fields */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${variant === 'modal' ? 'gap-3' : 'gap-4'}`}>
         <div>
           <label 
             htmlFor={`${formId}-phone`} 
-            className="block text-xs font-semibold text-foreground/85 mb-1.5"
+            className="block text-[11px] font-semibold text-foreground/85 mb-1"
           >
             Phone / WhatsApp <span className="text-primary font-bold">*</span>
           </label>
           <div className="relative">
-            <Phone className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Phone className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id={`${formId}-phone`}
               type="tel"
@@ -196,7 +196,7 @@ export default function LeadInquiryForm({
               placeholder="+91 98765 43210"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all"
+              className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
             />
           </div>
         </div>
@@ -204,12 +204,12 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-email`} 
-            className="block text-xs font-semibold text-foreground/85 mb-1.5"
+            className="block text-[11px] font-semibold text-foreground/85 mb-1"
           >
             Email Address <span className="text-primary font-bold">*</span>
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Mail className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id={`${formId}-email`}
               type="email"
@@ -217,7 +217,7 @@ export default function LeadInquiryForm({
               placeholder="educator@school.edu.in"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all"
+              className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
             />
           </div>
         </div>
@@ -227,7 +227,7 @@ export default function LeadInquiryForm({
       <div>
         <label 
           htmlFor={`${formId}-purpose`} 
-          className="block text-xs font-semibold text-foreground/85 mb-1.5"
+          className="block text-[11px] font-semibold text-foreground/85 mb-1"
         >
           Interested Program / Objective
         </label>
@@ -235,7 +235,7 @@ export default function LeadInquiryForm({
           id={`${formId}-purpose`}
           value={formData.purpose}
           onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
-          className="w-full px-3.5 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground focus:outline-none focus:border-primary transition-all"
+          className={`w-full px-3.5 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
         >
           {siteConfig.programOptions.map((opt) => (
             <option key={opt} value={opt}>
@@ -249,18 +249,18 @@ export default function LeadInquiryForm({
       <div>
         <label 
           htmlFor={`${formId}-message`} 
-          className="block text-xs font-semibold text-foreground/85 mb-1.5"
+          className="block text-[11px] font-semibold text-foreground/85 mb-1"
         >
-          Message / Requirements
+          Message / Requirements <span className="text-muted-foreground font-normal">(Optional)</span>
         </label>
         <div className="relative">
           <textarea
             id={`${formId}-message`}
-            rows={variant === 'page' ? 4 : 3}
-            placeholder="Tell us about your student strength, grades, or specific goals..."
+            rows={variant === 'modal' ? 2 : (variant === 'page' ? 4 : 3)}
+            placeholder="Tell us about student strength, grades, or specific goals..."
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            className="w-full p-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all resize-none"
+            className={`w-full p-2.5 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all resize-none`}
           />
         </div>
       </div>
@@ -269,14 +269,14 @@ export default function LeadInquiryForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(99,102,241,0.35)] transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed"
+        className={`w-full px-6 rounded-xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(99,102,241,0.3)] transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed ${variant === 'modal' ? 'py-3' : 'py-3.5'}`}
       >
         {isSubmitting ? (
           <span>Sending your inquiry...</span>
         ) : (
           <>
             <span>{submitButtonText}</span>
-            <Send className="w-4 h-4" />
+            <Send className="w-3.5 h-3.5" />
           </>
         )}
       </button>

@@ -271,8 +271,8 @@ export default function AdminPage() {
         {/* ── LOGIN VIEW ── */}
         {!isAuthenticated ? (
           <div className="max-w-md mx-auto my-16 p-8 rounded-3xl bg-card border-2 border-border shadow-2xl text-center">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-7 h-7" />
+            <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary/40 bg-white dark:bg-[#0B0F19] p-1 shadow-lg mx-auto mb-4">
+              <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
             </div>
             
             <h2 className="text-2xl font-black text-foreground mb-1">Shorai Visual CMS &amp; Admin</h2>

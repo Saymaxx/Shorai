@@ -193,13 +193,6 @@ export default function FutureSkillsEcosystem() {
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-          <SectionReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{skills.badge}</span>
-            </div>
-          </SectionReveal>
-
           <SectionReveal delay={0.1}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
               {skills.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{skills.titleGradient}</span>

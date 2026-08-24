@@ -90,13 +90,6 @@ export default function AtShoraiWeBuildSection() {
         {/* ── SECTION HEADER ── */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-14 sm:mb-16">
           
-          <SectionReveal>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-black text-primary uppercase tracking-widest mb-4 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5" />
-              {cms.badge}
-            </div>
-          </SectionReveal>
-
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
               {cms.title}

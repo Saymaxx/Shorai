@@ -141,8 +141,8 @@ export default function MeetOurTeamSection() {
             
             <SectionReveal>
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-[#6366F1]/30 mb-6 shadow-sm">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center text-white font-black text-base shadow-md">
-                  S
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-md flex-shrink-0">
+                  <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
                 </div>
                 <div>
                   <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
