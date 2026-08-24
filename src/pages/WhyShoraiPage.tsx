@@ -7,11 +7,14 @@ import { Sparkles, ArrowRight, Brain, Plane, Code2, Bot, CheckCircle2, Rocket } 
 import SectionReveal from '@/components/animations/SectionReveal';
 import FutureSkillsEcosystem from '@/components/home/FutureSkillsEcosystem';
 import WhySchoolsNeedShoraiBanner from '@/components/home/WhySchoolsNeedShoraiBanner';
+import AtShoraiWeBuildSection from '@/components/home/AtShoraiWeBuildSection';
 import Shorai360Ecosystem from '@/components/home/Shorai360Ecosystem';
 import FinalCTA from '@/components/home/FinalCTA';
 import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { siteConfig } from '@/config/siteConfig';
 
 // Big, natural booming technology slide deck
 const techSlides = [
@@ -95,13 +98,14 @@ const techSlides = [
 ];
 
 export default function WhyShoraiPage() {
+  usePageMeta(siteConfig.pages.whyShorai);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   // Duplicate for seamless infinite marquee loop
   const carouselItems = [...techSlides, ...techSlides];
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-14 sm:pt-16 transition-colors duration-300">
+    <div className="min-h-screen bg-background text-foreground pt-20 sm:pt-24 transition-colors duration-300">
       
       {/* ── Hero Section with Continuous Moving Panoramic Carousel BEHIND ── */}
       <section className="relative min-h-[600px] sm:min-h-[660px] lg:min-h-[720px] flex flex-col justify-center items-center py-8 sm:py-12 overflow-hidden border-b border-border bg-background">
@@ -274,6 +278,9 @@ export default function WhyShoraiPage() {
 
       {/* ── Why Schools Need Shorai Banner (Exact Brochure Match) ── */}
       <WhySchoolsNeedShoraiBanner />
+
+      {/* ── AT SHORAI WE BUILD (Compact 4 Interactive Demos) ── */}
+      <AtShoraiWeBuildSection />
 
       {/* ── Shorai 360° Education Ecosystem (Moved & Redesigned) ── */}
       <Shorai360Ecosystem />

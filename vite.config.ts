@@ -12,7 +12,35 @@ export default defineConfig({
       'next/font/google': path.resolve(__dirname, './src/lib/next-font-shim.ts'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   build: {
     outDir: 'dist',
-  }
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('@react-three')) {
+            return 'three-vendor';
+          }
+          if (id.includes('node_modules/framer-motion') || id.includes('node_modules/gsap')) {
+            return 'motion-vendor';
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'icons-vendor';
+          }
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'react-vendor';
+          }
+        },
+      },
+    },
+  },
 });

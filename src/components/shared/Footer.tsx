@@ -12,10 +12,13 @@ import {
   ExternalLink, 
   Building2, 
   Navigation,
-  Compass
+  Compass,
+  Award,
+  ShieldCheck
 } from 'lucide-react';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { siteConfig } from '@/config/siteConfig';
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -53,6 +56,10 @@ function FacebookIcon({ className }: { className?: string }) {
 
 export default function Footer() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [activeMapLocation, setActiveMapLocation] = useState<'varanasi' | 'kolkata'>('varanasi');
+
+  const varanasiLoc = siteConfig.locations.varanasi;
+  const kolkataLoc = siteConfig.locations.kolkata;
 
   return (
     <footer id="contact" className="bg-card border-t border-border pt-20 pb-12 relative overflow-hidden">
@@ -64,13 +71,13 @@ export default function Footer() {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Main Grid: Brand & Contact Info Left + Innovation Center & Actions Right */}
+        {/* Main Grid: Brand & Dual Addresses Left + Interactive Google Map Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 pb-16 border-b border-border items-start">
           
-          {/* Col 1: Brand & Verified Contact Details (6 Cols) */}
+          {/* Col 1: Brand, Registration, & Dual Official Addresses (6 Cols) */}
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
-              <Link href="/" className="flex items-center gap-3 mb-5 group">
+              <Link href="/" className="flex items-center gap-3.5 mb-4 group">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#7928CA] via-[#6366F1] to-[#00D4FF] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
                   <span className="text-white font-black text-2xl tracking-tighter">S</span>
                 </div>
@@ -84,129 +91,194 @@ export default function Footer() {
                 </div>
               </Link>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs font-semibold text-primary mb-5">
-                <Building2 className="w-4 h-4" />
-                An Initiative by SEG Academy Pvt. Ltd.
+              {/* SEG Academy Endorsement & MCA Registration Banner */}
+              <div className="p-3.5 rounded-2xl bg-primary/[0.06] border border-primary/20 mb-6">
+                <div className="flex items-center gap-2 text-xs font-black text-primary mb-1">
+                  <Building2 className="w-4 h-4 text-primary shrink-0" />
+                  <span>Skill and Employability Generation Academy (SEG Academy)</span>
+                </div>
+                <div className="text-[11px] text-muted-foreground font-mono leading-relaxed">
+                  Registered under Ministry Of Corporate Affairs • CIN: <strong className="text-foreground">{siteConfig.cin}</strong>
+                </div>
               </div>
 
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-lg">
-                Transforming K-12 school education across India through turnkey AI &amp; Robotics Innovation Labs, NEP-aligned STEM curriculum, and certified faculty empowerment.
-              </p>
-
-              {/* Verified Contact Details */}
-              <div className="space-y-3.5 text-xs text-foreground/90 font-medium">
-                <a 
-                  href="tel:+917880630963"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <Phone className="w-4.5 h-4.5" />
+              {/* Dual Address Cards */}
+              <div className="space-y-4 mb-6">
+                
+                {/* 1. Varanasi Center Card (From Provided Image) */}
+                <div className="p-4 rounded-2xl bg-muted/40 border border-border hover:border-primary/40 transition-all">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <span className="text-[10px] font-mono font-black text-amber-500 uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20">
+                      SEG ACADEMY CENTER // VARANASI
+                    </span>
+                    <a
+                      href={varanasiLoc.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
+                    >
+                      <span>Get Pinpoint</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
                   </div>
-                  <span>+91 7880630963</span>
-                </a>
-
-                <a 
-                  href="mailto:contact@shorai.in"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
-                    <Mail className="w-4.5 h-4.5" />
+                  <div className="flex items-start gap-2.5 text-xs text-foreground/90 font-medium">
+                    <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <span className="leading-relaxed">
+                      {varanasiLoc.address}
+                    </span>
                   </div>
-                  <span>contact@shorai.in / info@shorai.in</span>
-                </a>
-
-                <a 
-                  href="https://www.shorai.in" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-                    <Globe className="w-4.5 h-4.5" />
+                  <div className="flex flex-wrap items-center gap-4 mt-2.5 pt-2 border-t border-border/60 text-[11px] font-mono text-muted-foreground">
+                    <span>Email: <a href={`mailto:${varanasiLoc.email}`} className="text-foreground hover:text-primary font-bold">{varanasiLoc.email}</a></span>
+                    <span>Web: <a href="https://www.segacademy.in" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary font-bold">www.segacademy.in</a></span>
                   </div>
-                  <span>www.shorai.in</span>
-                </a>
-
-                <div className="flex items-start gap-3 text-muted-foreground pt-1">
-                  <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
-                    <MapPin className="w-4.5 h-4.5" />
-                  </div>
-                  <span className="leading-snug max-w-md">
-                    119/114, Ramkrishna Road, Khudiram, Khardaha, Kolkata, North 24 Parganas, West Bengal 700116.
-                  </span>
                 </div>
+
+                {/* 2. Kolkata STEM Innovation Center */}
+                <div className="p-4 rounded-2xl bg-muted/40 border border-border hover:border-primary/40 transition-all">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <span className="text-[10px] font-mono font-black text-sky-500 uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-500/10 border border-sky-500/20">
+                      INNOVATION &amp; STEM HQ // KOLKATA
+                    </span>
+                    <a
+                      href={kolkataLoc.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
+                    >
+                      <span>Get Pinpoint</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-xs text-foreground/90 font-medium">
+                    <MapPin className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
+                    <span className="leading-relaxed">
+                      {kolkataLoc.address}
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Direct Phone & Email Bar */}
+              <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-foreground/90">
+                <a 
+                  href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`}
+                  className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors group"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-muted flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <span>{siteConfig.contact.phoneDisplay}</span>
+                </a>
+
+                <a 
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors group"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-muted flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <span>{siteConfig.contact.email}</span>
+                </a>
               </div>
             </div>
 
-            {/* Extra Big Social CTA Icons */}
+            {/* Social Media Links */}
             <div className="mt-8">
               <span className="text-[11px] font-mono font-bold tracking-widest text-muted-foreground uppercase block mb-3">
                 CONNECT ON SOCIAL
               </span>
               <div className="flex items-center gap-3.5">
                 <a
-                  href="https://linkedin.com"
+                  href={siteConfig.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#0A66C2]/20 border border-border hover:border-[#0A66C2]/50 text-foreground hover:text-[#0A66C2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  className="w-11 h-11 rounded-2xl bg-muted hover:bg-[#0A66C2]/20 border border-border hover:border-[#0A66C2]/50 text-foreground hover:text-[#0A66C2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                   aria-label="LinkedIn"
                 >
-                  <LinkedInIcon className="w-5.5 h-5.5" />
+                  <LinkedInIcon className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://youtube.com"
+                  href={siteConfig.social.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#FF0000]/20 border border-border hover:border-[#FF0000]/50 text-foreground hover:text-[#FF0000] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  className="w-11 h-11 rounded-2xl bg-muted hover:bg-[#FF0000]/20 border border-border hover:border-[#FF0000]/50 text-foreground hover:text-[#FF0000] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                   aria-label="YouTube"
                 >
-                  <YouTubeIcon className="w-5.5 h-5.5" />
+                  <YouTubeIcon className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href={siteConfig.social.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#E1306C]/20 border border-border hover:border-[#E1306C]/50 text-foreground hover:text-[#E1306C] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  className="w-11 h-11 rounded-2xl bg-muted hover:bg-[#E1306C]/20 border border-border hover:border-[#E1306C]/50 text-foreground hover:text-[#E1306C] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                   aria-label="Instagram"
                 >
-                  <InstagramIcon className="w-5.5 h-5.5" />
+                  <InstagramIcon className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://facebook.com"
+                  href={siteConfig.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-2xl bg-muted hover:bg-[#1877F2]/20 border border-border hover:border-[#1877F2]/50 text-foreground hover:text-[#1877F2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                  className="w-11 h-11 rounded-2xl bg-muted hover:bg-[#1877F2]/20 border border-border hover:border-[#1877F2]/50 text-foreground hover:text-[#1877F2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                   aria-label="Facebook"
                 >
-                  <FacebookIcon className="w-5.5 h-5.5" />
+                  <FacebookIcon className="w-5 h-5" />
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Col 2: Interactive Google Map + Dual Action Buttons (6 Cols) */}
+          {/* Col 2: Interactive Google Map Pinpoint View (6 Cols) */}
           <div className="lg:col-span-6 flex flex-col justify-between h-full">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-xs font-mono font-bold tracking-[0.2em] text-foreground uppercase">
-                  OUR INNOVATION CENTER
-                </h4>
+              
+              {/* Map Header with Location Switcher */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold tracking-[0.2em] text-foreground uppercase">
+                    PINPOINT LOCATION:
+                  </span>
+                  <div className="flex items-center bg-muted p-1 rounded-xl border border-border text-xs font-mono">
+                    <button
+                      onClick={() => setActiveMapLocation('varanasi')}
+                      className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                        activeMapLocation === 'varanasi'
+                          ? 'bg-amber-500 text-slate-950 shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      Varanasi (Main)
+                    </button>
+                    <button
+                      onClick={() => setActiveMapLocation('kolkata')}
+                      className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                        activeMapLocation === 'kolkata'
+                          ? 'bg-sky-500 text-white shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      Kolkata (HQ)
+                    </button>
+                  </div>
+                </div>
+
                 <a
-                  href="https://maps.google.com/?q=Ramkrishna+Road,+Khardaha,+Kolkata+700116"
+                  href={activeMapLocation === 'varanasi' ? varanasiLoc.mapUrl : kolkataLoc.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
                 >
-                  <span>Open in Google Maps</span>
+                  <span>Open Exact Pin</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
-              {/* Embedded Interactive Google Map */}
-              <div className="relative w-full h-[240px] sm:h-[260px] rounded-3xl overflow-hidden border border-border bg-muted shadow-inner group">
+              {/* Embedded Interactive Google Map with Direct Pinpoint Overlay */}
+              <div className="relative w-full h-[280px] sm:h-[310px] rounded-3xl overflow-hidden border-2 border-border bg-muted shadow-xl group">
                 <iframe
-                  title="Shorai SEG Academy Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14725.753380486844!2d88.3756184!3d22.7212457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c666a01d51f%3A0x6b13e8e19b027d14!2sKhardaha%2C%20West%20Bengal%20700116!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+                  title="SEG Academy Varanasi & Kolkata Pinpoint Map"
+                  src={activeMapLocation === 'varanasi' ? varanasiLoc.embedMapUrl : kolkataLoc.embedMapUrl}
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: 'contrast(1.05) saturate(1.1)' }}
@@ -216,20 +288,31 @@ export default function Footer() {
                   className="w-full h-full"
                 />
 
-                {/* Map Overlay Badge */}
-                <div className="absolute bottom-3.5 left-3.5 p-3 rounded-2xl bg-card/90 border border-border backdrop-blur-md text-xs shadow-lg max-w-[300px]">
-                  <div className="font-bold text-foreground flex items-center gap-2 mb-0.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Shorai STEM Center
+                {/* Clickable Overlay to Open Exact Pinpoint */}
+                <a
+                  href={activeMapLocation === 'varanasi' ? varanasiLoc.mapUrl : kolkataLoc.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-3.5 left-3.5 right-3.5 p-3.5 rounded-2xl bg-card/95 border border-border backdrop-blur-md text-xs shadow-2xl flex items-center justify-between group-hover:border-primary/50 transition-all"
+                >
+                  <div>
+                    <div className="font-black text-foreground flex items-center gap-2 mb-0.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                      {activeMapLocation === 'varanasi' ? 'SEG Academy • Varanasi Center' : 'Shorai STEM Center • Kolkata'}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground leading-tight line-clamp-1">
+                      {activeMapLocation === 'varanasi' ? varanasiLoc.address : kolkataLoc.address}
+                    </div>
                   </div>
-                  <div className="text-[11px] text-muted-foreground leading-tight">
-                    Khardaha, Kolkata, West Bengal 700116
+                  <div className="px-3 py-1.5 rounded-xl bg-primary text-white text-[11px] font-bold font-mono flex items-center gap-1 shrink-0 ml-3 shadow-md">
+                    <span>Directions</span>
+                    <Navigation className="w-3 h-3" />
                   </div>
-                </div>
+                </a>
               </div>
             </div>
 
-            {/* Dual CTA Buttons: "To know more about us contact us" + "Visit Us" */}
+            {/* Dual CTA Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <MagneticWrapper>
                 <button
@@ -243,13 +326,13 @@ export default function Footer() {
 
               <MagneticWrapper>
                 <a
-                  href="https://maps.google.com/?q=Ramkrishna+Road,+Khardaha,+Kolkata+700116"
+                  href={varanasiLoc.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full h-14 rounded-2xl bg-card hover:bg-muted border border-border hover:border-primary/50 text-foreground font-bold text-xs tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
                 >
-                  <Navigation className="w-4 h-4 text-primary" />
-                  <span>Visit Us</span>
+                  <Navigation className="w-4 h-4 text-amber-500" />
+                  <span>Get Exact Pinpoint Directions</span>
                 </a>
               </MagneticWrapper>
             </div>
@@ -260,12 +343,12 @@ export default function Footer() {
 
         {/* Bottom Legal & Copyright Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} SHORAI (SEG Academy Pvt. Ltd.). All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} SHORAI • Skill and Employability Generation Academy (CIN: {siteConfig.cin}). All Rights Reserved.</p>
           
           <div className="flex items-center gap-6">
             <span className="text-muted-foreground/60">NEP 2020 Aligned</span>
             <span className="text-muted-foreground/60">STEM Certified</span>
-            <button onClick={() => setIsContactOpen(true)} className="hover:text-foreground transition-colors">
+            <button onClick={() => setIsContactOpen(true)} className="hover:text-foreground transition-colors font-bold">
               Contact School Director
             </button>
           </div>
@@ -273,6 +356,7 @@ export default function Footer() {
 
       </div>
 
+      {/* Global Contact Modal */}
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </footer>
   );

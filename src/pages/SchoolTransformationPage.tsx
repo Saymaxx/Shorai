@@ -15,21 +15,25 @@ import {
 } from 'lucide-react';
 import InteractiveTechnology from '@/components/home/InteractiveTechnology';
 import GradeWiseCurriculumSection from '@/components/home/GradeWiseCurriculumSection';
-import SchoolImplementationJourneySection from '@/components/home/SchoolImplementationJourneySection';
+import TransformationPartnerComparisonSection from '@/components/home/TransformationPartnerComparisonSection';
+import PartnershipTracksSection from '@/components/home/PartnershipTracksSection';
 import HowItWorks from '@/components/home/HowItWorks';
 import Testimonials from '@/components/home/Testimonials';
 import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { siteConfig } from '@/config/siteConfig';
 
 export default function SchoolTransformationPage() {
+  usePageMeta(siteConfig.pages.schools);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Transformation Hero Header with Advanced STEM Classroom Background */}
-      <section className="relative pt-36 pb-20 sm:pb-28 overflow-hidden border-b border-border">
+      <section className="relative pt-40 sm:pt-48 pb-20 sm:pb-28 overflow-hidden border-b border-border">
         {/* Background Image Layer with Atmospheric Gradients */}
         <div className="absolute inset-0 z-0">
           <img
@@ -91,8 +95,11 @@ export default function SchoolTransformationPage() {
       {/* Grade-Wise Continuous Curriculum Journey */}
       <GradeWiseCurriculumSection />
 
-      {/* 10-Step School Implementation Journey */}
-      <SchoolImplementationJourneySection />
+      {/* Shorai vs. Traditional Providers: Not a Vendor. A Transformation Partner. */}
+      <TransformationPartnerComparisonSection />
+
+      {/* Three Ways to Begin the Partnership (Engagement Tracks) */}
+      <PartnershipTracksSection />
 
       {/* 5-Step Methodology Section */}
       <InteractiveTechnology />

@@ -145,42 +145,23 @@ export default function GradeWiseCurriculumSection() {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* ── TOP HEADER SECTION: LOGO + TITLE + HEXAGONAL STUDENT HERO IMAGE ── */}
+        {/* ── TOP HEADER SECTION: TITLE + WIDE RECTANGULAR STUDENT HERO IMAGE ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-14 sm:mb-18">
           
-          {/* Left Column: Brand Emblem + Titles */}
-          <div className="lg:col-span-7 flex flex-col items-start">
+          {/* Left Column: Titles & Description */}
+          <div className="lg:col-span-6 flex flex-col items-start">
             
-            {/* Shorai Brand Header Pill */}
-            <SectionReveal>
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-[#6366F1]/30 mb-6 shadow-sm">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center text-white font-black text-base shadow-md">
-                  S
-                </div>
-                <div>
-                  <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                    SHORAI CURRICULUM
-                  </div>
-                  <div className="text-[10px] font-mono text-muted-foreground font-semibold">
-                    Building Future Innovators with AI &amp; Robotics
-                  </div>
-                </div>
-              </div>
-            </SectionReveal>
-
             {/* Main Title & Subtitle */}
-            <SectionReveal delay={0.08}>
-              <div className="text-sm font-mono font-bold tracking-[0.2em] text-primary uppercase mb-2">
-                GRADE-WISE
-              </div>
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-none">
+            <SectionReveal delay={0.05}>
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.08]">
+                GRADE-WISE <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                   CURRICULUM
                 </span>
               </h2>
             </SectionReveal>
 
-            <SectionReveal delay={0.12}>
+            <SectionReveal delay={0.1}>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
                 From Early Learners to Future Leaders.
               </h3>
@@ -191,27 +172,24 @@ export default function GradeWiseCurriculumSection() {
 
           </div>
 
-          {/* Right Column: Hexagonal Framed Indian Student Photo with Badge */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end relative">
-            <SectionReveal delay={0.15}>
-              <div className="relative group">
+          {/* Right Column: Wide Rectangular Indian Student Photo with Floating Badge */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
+            <SectionReveal delay={0.15} className="w-full flex justify-center lg:justify-end">
+              <div className="relative group w-full max-w-[540px]">
                 
-                {/* Hexagon/Rounded Shield Photo Container */}
-                <div className="relative w-[300px] sm:w-[380px] h-[280px] sm:h-[340px] rounded-3xl sm:rounded-[36px] overflow-hidden border-4 border-primary/40 shadow-2xl bg-card">
-                  <Image
+                {/* Wide Rectangular Photo Container */}
+                <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[330px] rounded-3xl overflow-hidden border-4 border-primary/40 shadow-2xl bg-card">
+                  <img
                     src="/images/shorai-quadrant-robotics.jpg"
                     alt="Indian student learning robotics and building smart rovers in Shorai lab"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 300px, 380px"
-                    priority
+                    className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                   {/* Subtle Gradient Scrim */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 {/* Floating Purple Hexagon / Shield Badge */}
-                <div className="absolute -bottom-5 -left-4 sm:-left-8 z-20 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF] text-white shadow-2xl border border-white/30 backdrop-blur-xl max-w-[220px]">
+                <div className="absolute -bottom-5 -left-3 sm:-left-6 z-20 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF] text-white shadow-2xl border border-white/30 backdrop-blur-xl max-w-[220px]">
                   <div className="flex items-center gap-3 mb-1.5">
                     <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
                       <GraduationCap className="w-5 h-5 text-white" />
@@ -376,7 +354,7 @@ export default function GradeWiseCurriculumSection() {
               onClick={() => setIsContactOpen(true)}
               className="px-6 h-11 rounded-xl bg-white text-slate-950 font-bold text-xs sm:text-sm tracking-wide shadow-md flex items-center gap-2 transition-all hover:scale-105 hover:bg-white/95"
             >
-              <span>Download Syllabus PDF</span>
+              <span>Want to know more?</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </MagneticWrapper>

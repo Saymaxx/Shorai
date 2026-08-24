@@ -6,31 +6,13 @@ import Link from 'next/link';
 import { 
   Sparkles, 
   Bot, 
-  Cpu, 
-  Atom, 
-  Code2, 
-  GraduationCap, 
-  TrendingUp, 
-  Globe, 
-  Phone, 
-  MapPin, 
   ArrowRight,
-  Quote,
   ShieldCheck,
   CheckCircle2
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
-
-const CORE_PILLARS = [
-  { name: 'AI', icon: Cpu, color: '#3B82F6', bg: 'bg-blue-500/10 text-blue-500 border-blue-500/30' },
-  { name: 'ROBOTICS', icon: Bot, color: '#8B5CF6', bg: 'bg-purple-500/10 text-purple-500 border-purple-500/30' },
-  { name: 'STEM', icon: Atom, color: '#06B6D4', bg: 'bg-cyan-500/10 text-cyan-500 border-cyan-500/30' },
-  { name: 'CODING', icon: Code2, color: '#EC4899', bg: 'bg-pink-500/10 text-pink-500 border-pink-500/30' },
-  { name: 'TEACHER ENABLEMENT', icon: GraduationCap, color: '#6366F1', bg: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/30' },
-  { name: 'STUDENT DEVELOPMENT', icon: TrendingUp, color: '#F97316', bg: 'bg-orange-500/10 text-orange-500 border-orange-500/30' },
-];
 
 export default function AboutHeroSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -179,85 +161,6 @@ export default function AboutHeroSection() {
               </button>
             </div>
 
-          </div>
-        </SectionReveal>
-
-        {/* ── 6 CORE DOMAINS (AI, ROBOTICS, STEM, CODING, TEACHER ENABLEMENT, STUDENT DEVELOPMENT) ── */}
-        <SectionReveal delay={0.24}>
-          <div className="rounded-3xl p-6 sm:p-8 bg-card border-2 border-border shadow-xl mb-12">
-            
-            <div className="text-center mb-8">
-              <div className="text-xs font-mono font-bold tracking-[0.2em] text-primary uppercase mb-2">
-                CORE DOMAINS
-              </div>
-              <h3 className="text-2xl sm:text-4xl font-black text-foreground">
-                BUILD THE FUTURE. <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">STARTING TODAY.</span>
-              </h3>
-              <p className="text-xs sm:text-sm font-semibold text-muted-foreground mt-1">
-                SHORAI &bull; School Innovation &amp; Future Skills Partner
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              {CORE_PILLARS.map((p, idx) => {
-                const Icon = p.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-2xl bg-muted/40 border border-border/80 flex flex-col items-center text-center justify-center gap-3 transition-all hover:scale-105 hover:bg-card hover:border-primary/40 shadow-sm group"
-                  >
-                    <div 
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-110"
-                      style={{ backgroundColor: p.color }}
-                    >
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <div className="text-xs font-black text-foreground tracking-tight leading-tight">
-                      {p.name}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-          </div>
-        </SectionReveal>
-
-        {/* ── PARTNER RIBBON & OFFICIAL CONTACT BAR ── */}
-        <SectionReveal delay={0.28}>
-          <div className="rounded-2xl sm:rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#FF6B00] text-white shadow-xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              
-              {/* Left Contact Details */}
-              <div className="lg:col-span-8 flex flex-col gap-3">
-                <div className="text-xs font-mono font-bold uppercase tracking-widest text-amber-300">
-                  OFFICIAL CONTACT &amp; LOCATION
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-medium text-white/95">
-                  <div className="flex items-center gap-2.5">
-                    <Globe className="w-4 h-4 text-amber-300 shrink-0" />
-                    <span><strong>Website:</strong> www.shorai.in</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <Phone className="w-4 h-4 text-amber-300 shrink-0" />
-                    <span><strong>Phone:</strong> +91 7430659053</span>
-                  </div>
-                  <div className="sm:col-span-2 flex items-start gap-2.5">
-                    <MapPin className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                    <span><strong>Address:</strong> 119/114, Ramkrishna Road, Khudiram, Khardaha, Kolkata, North 24 Parganas, West Bengal - 700116</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Quote */}
-              <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-white/25 pt-4 lg:pt-0 lg:pl-6 text-left">
-                <Quote className="w-7 h-7 text-amber-300 rotate-180 mb-1" />
-                <p className="text-lg sm:text-xl font-black italic tracking-tight text-white drop-shadow-sm">
-                  Build the future. <br />Starting today.
-                </p>
-              </div>
-
-            </div>
           </div>
         </SectionReveal>
 

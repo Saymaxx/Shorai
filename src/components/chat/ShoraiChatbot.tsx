@@ -333,7 +333,7 @@ export default function ShoraiChatbot() {
     }
   };
 
-  const handleGeneralInput = (text?: string) => {
+  const handleGeneralInput = async (text?: string) => {
     const query = (text || inputVal).trim();
     if (!query) return;
 
@@ -367,6 +367,38 @@ export default function ShoraiChatbot() {
       return;
     }
 
+    setIsTyping(true);
+
+    try {
+      const chatRes = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: query }),
+      });
+
+      if (chatRes.ok) {
+        const data = await chatRes.json();
+        setIsTyping(false);
+        if (data?.reply) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-${Date.now()}`,
+              sender: 'bot',
+              text: data.reply,
+              chips: ['🤖 Explore Labs', '🏫 School Model', '📝 Get in Touch'],
+              linkUrl: '/contact',
+              linkLabel: 'Contact Page',
+            },
+          ]);
+          return;
+        }
+      }
+    } catch {
+      // Backend not available, fallback to local knowledge matcher
+    }
+
+    setIsTyping(false);
     const matched = KNOWLEDGE_BASE.find((item) =>
       item.keywords.some((k) => lower.includes(k))
     );

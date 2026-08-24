@@ -23,8 +23,11 @@ import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { siteConfig } from '@/config/siteConfig';
 
 export default function ShoraiLabsPage() {
+  usePageMeta(siteConfig.pages.labs);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   const scrollToDemo = (id: string) => {
@@ -37,7 +40,7 @@ export default function ShoraiLabsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* 1. Futuristic Shorai Labs Hero Header */}
-      <section className="relative pt-36 pb-20 overflow-hidden border-b border-border">
+      <section className="relative pt-40 sm:pt-48 pb-20 overflow-hidden border-b border-border">
         {/* Ambient background glow & grid pattern */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-[#7928CA]/20 via-[#6366F1]/20 to-[#00D4FF]/20 rounded-full blur-[140px]" />

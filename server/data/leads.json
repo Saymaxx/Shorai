@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Dr. Rajesh Sharma",
+    "email": "principal@dpsvaranasi.edu.in",
+    "contact": "+91 9876543210",
+    "organisation": "Delhi Public School Varanasi",
+    "purpose": "School Innovation Lab Setup",
+    "message": "We want to schedule a 3D drone demo.",
+    "ipAddress": "::1",
+    "userAgent": "node",
+    "id": "lead_1787561480144_h9cd5",
+    "status": "new",
+    "syncedToGoogleSheet": true,
+    "createdAt": "2026-08-24T08:51:20.144Z"
+  }
+]

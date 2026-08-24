@@ -127,8 +127,8 @@ export default function WhatIsShoraiSection() {
                 {/* Quarter Circle Masked Image Container */}
                 <div className="relative rounded-[160px_28px_28px_28px] overflow-hidden border-2 border-primary/20 shadow-2xl bg-card aspect-[4/4.5] group">
                   <img
-                    src="/images/indian_students_stem_lab.jpg"
-                    alt="Indian school students collaborating in modern AI, drone, coding, and robotics lab"
+                    src="/images/robotics_teacher_smart_class.jpg"
+                    alt="Indian STEM teacher teaching robotics mechanisms and circuit diagrams on interactive smart board to students"
                     className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
 
@@ -138,7 +138,7 @@ export default function WhatIsShoraiSection() {
                   {/* Floating Badge 1 (Top Left in the Quarter-Circle curve) */}
                   <div className="absolute top-6 left-6 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>AI &amp; Neural Code Lab</span>
+                    <span>Smart Robotics Class</span>
                   </div>
 
                   {/* Floating Badge 2 (Bottom Right) */}

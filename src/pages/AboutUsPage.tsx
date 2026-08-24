@@ -21,8 +21,11 @@ import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
+import { usePageMeta } from '@/hooks/usePageMeta';
+import { siteConfig } from '@/config/siteConfig';
 
 export default function AboutUsPage() {
+  usePageMeta(siteConfig.pages.about);
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (

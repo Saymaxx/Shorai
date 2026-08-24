@@ -25,18 +25,22 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import Footer from '@/components/shared/Footer';
 import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
+import { siteConfig } from '@/config/siteConfig';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
-const purposeOptions = [
-  'School Lab Setup (AI & Robotics)',
-  'K-12 STEM Curriculum Partnership',
-  'Schedule a Live School Demo',
-  'Teacher & Faculty Certification',
-  'Student Hackathon / Workshop',
-  'General Inquiry',
-];
+const purposeOptions = siteConfig.programOptions;
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  usePageMeta(siteConfig.pages.contact);
+
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    contact: string;
+    purpose: string;
+    schoolName: string;
+    message: string;
+  }>({
     name: '',
     email: '',
     contact: '',
