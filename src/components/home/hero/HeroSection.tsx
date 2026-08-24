@@ -49,7 +49,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full bg-background overflow-hidden flex items-center pt-24 pb-16 transition-colors duration-300"
+      className="relative min-h-[calc(100vh-2rem)] w-full bg-background overflow-hidden flex items-center pt-24 sm:pt-28 pb-10 sm:pb-14 transition-colors duration-300"
     >
       {/* ── Soft & Cheerful Background Atmospherics ── */}
       <motion.div

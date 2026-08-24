@@ -21,7 +21,7 @@ export default function HeroContent() {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/25 mb-6 backdrop-blur-xl shadow-sm"
+        className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 mb-3.5 backdrop-blur-xl shadow-sm"
       >
         <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
         <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase font-mono">
@@ -34,8 +34,8 @@ export default function HeroContent() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="font-black tracking-[-0.03em] leading-[1.04] mb-6 flex flex-col text-foreground"
-        style={{ fontSize: 'clamp(44px, 5.2vw, 76px)' }}
+        className="font-black tracking-[-0.03em] leading-[1.04] mb-3.5 flex flex-col text-foreground"
+        style={{ fontSize: 'clamp(36px, 4.2vw, 66px)' }}
       >
         <span>{hero.titleLine1}</span>
         <span className="flex items-center flex-wrap">
@@ -54,7 +54,7 @@ export default function HeroContent() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.35 }}
-        className="text-xs sm:text-sm font-mono font-bold tracking-[0.2em] text-primary mb-5 uppercase"
+        className="text-xs sm:text-sm font-mono font-bold tracking-[0.2em] text-primary mb-3.5 uppercase"
       >
         AI &bull; ROBOTICS &bull; STEM &bull; CODING &bull; INNOVATION LABS
       </motion.div>
@@ -64,7 +64,7 @@ export default function HeroContent() {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.45 }}
-        className="flex flex-col gap-1.5 mb-8"
+        className="flex flex-col gap-1.5 mb-6"
       >
         <p className="text-sm md:text-base text-muted-foreground max-w-lg leading-relaxed font-medium">
           {hero.subtitle}
