@@ -23,10 +23,13 @@ import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/context/ContentContext';
 
 export default function AboutUsPage() {
   usePageMeta(siteConfig.pages.about);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const cta = content.about.closingCta;
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
@@ -50,17 +53,17 @@ export default function AboutUsPage() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-4">
-              Partner With SEG Academy &amp; Shorai Today
+              {cta.title}
             </h2>
             <p className="text-sm text-muted-foreground mb-8">
-              Let&apos;s build an innovation lab on your campus and empower your students with 21st-century technological fluency.
+              {cta.subtitle}
             </p>
             <MagneticWrapper>
               <button
                 onClick={() => setIsContactOpen(true)}
                 className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
               >
-                <span>To know more about us contact us</span>
+                <span>{cta.buttonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </MagneticWrapper>

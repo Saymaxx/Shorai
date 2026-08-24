@@ -25,10 +25,14 @@ import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import SectionReveal from '@/components/animations/SectionReveal';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/context/ContentContext';
 
 export default function SchoolTransformationPage() {
   usePageMeta(siteConfig.pages.schools);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const hero = content.schools.hero;
+  const closingCta = content.schools.closingCta;
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
@@ -50,7 +54,7 @@ export default function SchoolTransformationPage() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/40 text-xs font-mono font-bold text-white dark:text-primary mb-6 shadow-lg backdrop-blur-md">
               <Rocket className="w-4 h-4 text-primary" />
-              <span>INSTITUTIONAL ROADMAP &bull; TRANSFORMATION</span>
+              <span>{hero.badge}</span>
             </div>
           </SectionReveal>
 
@@ -59,16 +63,16 @@ export default function SchoolTransformationPage() {
               className="font-black tracking-tight text-white mb-6 leading-tight max-w-4xl mx-auto drop-shadow-md"
               style={{ fontSize: 'clamp(38px, 5vw, 68px)' }}
             >
-              TRANSFORM YOUR CAMPUS INTO A <br />
+              {hero.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                FUTURE-READY STEM HUB.
+                {hero.titleGradient}
               </span>
             </h1>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
             <p className="text-base sm:text-lg text-white/90 dark:text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 font-medium drop-shadow-sm">
-              A turnkey, frictionless 5-step implementation lifecycle that integrates AI, Robotics, Coding, and teacher enablement into your school within 30 days.
+              {hero.subtitle}
             </p>
           </SectionReveal>
 
@@ -115,17 +119,17 @@ export default function SchoolTransformationPage() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-4">
-              Ready To Schedule Your School Transformation Audit?
+              {closingCta.title}
             </h2>
             <p className="text-sm text-muted-foreground mb-8">
-              Our master STEM consultants will assess your campus, design an NEP-compliant lab layout, and customize a proposal tailored for your student strength.
+              {closingCta.subtitle}
             </p>
             <MagneticWrapper>
               <button
                 onClick={() => setIsContactOpen(true)}
                 className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
               >
-                <span>To know more about us contact us</span>
+                <span>{closingCta.buttonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </MagneticWrapper>

@@ -4,8 +4,12 @@ import React from 'react';
 import { Sparkles } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import LeadInquiryForm from '@/components/shared/LeadInquiryForm';
+import { useContent } from '@/context/ContentContext';
 
 export default function HomeContactCTASection() {
+  const { content } = useContent();
+  const cta = content.home.getInTouch;
+
   return (
     <section id="get-in-touch" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-muted/20 overflow-hidden border-t border-border">
       
@@ -25,22 +29,22 @@ export default function HomeContactCTASection() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-5 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
-                CONNECT WITH SHORAI
+                {cta.badge}
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.08}>
               <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-6 leading-[1.05]">
-                Get in <br />
+                {cta.titleLine1} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  Touch.
+                  {cta.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.12}>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md font-medium">
-                Have questions or ready to launch an AI &amp; Robotics innovation lab on your campus? Reach out to our STEM team today.
+                {cta.subtitle}
               </p>
             </SectionReveal>
           </div>
@@ -55,8 +59,8 @@ export default function HomeContactCTASection() {
 
                 <div className="relative z-10">
                   <div className="mb-4">
-                    <h3 className="text-xl font-black text-foreground">Schedule a School Lab Consultation</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">Tell us about your campus and we will prepare an NEP-compliant proposal.</p>
+                    <h3 className="text-xl font-black text-foreground">{cta.formTitle}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">{cta.formSubtitle}</p>
                   </div>
 
                   <LeadInquiryForm 

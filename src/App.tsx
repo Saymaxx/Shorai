@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react';
 import { useRouter } from '@/context/RouterContext';
 import RootLayout from '@/components/layout/RootLayout';
 import PageLoadingFallback from '@/components/shared/PageLoadingFallback';
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
 
 // Route-based Code Splitting with React.lazy
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -12,11 +13,16 @@ const WhyShoraiPage = lazy(() => import('@/pages/WhyShoraiPage'));
 const SchoolTransformationPage = lazy(() => import('@/pages/SchoolTransformationPage'));
 const ShoraiLabsPage = lazy(() => import('@/pages/ShoraiLabsPage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const AdminPage = lazy(() => import('@/pages/AdminPage'));
 
 export default function App() {
   const { pathname } = useRouter();
 
   const renderCurrentPage = () => {
+    if (pathname === '/admin') {
+      return <AdminPage />;
+    }
+
     if (pathname === '/contact') {
       return <ContactPage />;
     }
@@ -41,10 +47,12 @@ export default function App() {
   };
 
   return (
-    <RootLayout>
-      <Suspense fallback={<PageLoadingFallback />}>
-        {renderCurrentPage()}
-      </Suspense>
-    </RootLayout>
+    <ErrorBoundary>
+      <RootLayout>
+        <Suspense fallback={<PageLoadingFallback />}>
+          {renderCurrentPage()}
+        </Suspense>
+      </RootLayout>
+    </ErrorBoundary>
   );
 }

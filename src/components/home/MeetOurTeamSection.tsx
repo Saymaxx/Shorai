@@ -18,6 +18,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 interface TeamMember {
   name: string;
@@ -118,6 +119,8 @@ const CORE_VALUES = [
 
 export default function MeetOurTeamSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const team = content.about.meetTeam;
 
   return (
     <section className="relative py-20 sm:py-28 bg-background overflow-hidden border-t border-border transition-colors duration-300">
@@ -143,7 +146,7 @@ export default function MeetOurTeamSection() {
                 </div>
                 <div>
                   <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                    SHORAI LEADERSHIP
+                    {team.badge}
                   </div>
                   <div className="text-[10px] font-mono text-muted-foreground font-semibold">
                     Building Future Innovators with AI &amp; Robotics
@@ -154,15 +157,16 @@ export default function MeetOurTeamSection() {
 
             <SectionReveal delay={0.08}>
               <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-none">
+                {team.title} <br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">
-                  Meet Our Team
+                  {team.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.12}>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium mb-6">
-                A dedicated team of master educators, roboticists, AI researchers, and school transformation consultants committed to empowering India&apos;s next generation.
+                {team.subtitle}
               </p>
             </SectionReveal>
 

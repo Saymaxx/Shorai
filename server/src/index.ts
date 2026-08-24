@@ -2,10 +2,12 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { ENV } from './config/env.js';
 
-// Import Routes
+// Import Routes & Middleware
 import healthRouter from './routes/health.js';
 import leadsRouter from './routes/leads.js';
 import chatRouter from './routes/chat.js';
+import contentRouter from './routes/content.js';
+import { rateLimit } from './middleware/rateLimiter.js';
 
 const app: Express = express();
 
@@ -19,6 +21,14 @@ app.use(cors({
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
+// Security Headers
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 // Request Logger
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
@@ -29,10 +39,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// API Routes Mounting
+// API Routes Mounting with Rate Limiting
 app.use('/api/health', healthRouter);
-app.use('/api/leads', leadsRouter);
-app.use('/api/chat', chatRouter);
+app.use('/api/content', contentRouter);
+app.use('/api/leads', rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: 'Too many lead submissions from this IP. Please try again later.' }), leadsRouter);
+app.use('/api/chat', rateLimit({ windowMs: 1 * 60 * 1000, max: 30, message: 'Chat rate limit reached. Please wait a moment.' }), chatRouter);
 
 // Root Health Fallback
 app.get('/', (req: Request, res: Response) => {

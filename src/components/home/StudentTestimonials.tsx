@@ -11,57 +11,42 @@ import {
   Code2 
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
+import { useContent } from '@/context/ContentContext';
 
-const studentReviews = [
-  {
-    id: 1,
-    name: 'Aarav Sharma',
-    grade: 'Grade 9 • DPS Delhi',
-    project: 'Solar Rover',
-    image: '/images/students/aarav_rover.jpg',
-    icon: Bot,
-    color: '#7928CA',
-    quote: 'Soldering my own microcontroller and coding an autonomous obstacle rover was the best part of this semester!',
-    tag: 'Robotics',
-  },
-  {
-    id: 2,
-    name: 'Ananya Deshmukh',
-    grade: 'Grade 10 • NPS Bangalore',
-    project: 'Delivery Drone',
-    image: '/images/students/ananya_drone.jpg',
-    icon: Plane,
-    color: '#00D4FF',
-    quote: 'Assembling drone flight controllers and learning aerodynamics in our school lab inspired me to pursue aerospace.',
-    tag: 'Drones',
-  },
-  {
-    id: 3,
-    name: 'Meera Iyer',
-    grade: 'Grade 11 • DAV Pune',
-    project: 'Bionic AI Arm',
-    image: '/images/students/meera_robotarm.jpg',
-    icon: Cpu,
-    color: '#6366F1',
-    quote: 'Building neural network models on real cameras during our Shorai AI lab gave me hands-on practical AI skills.',
-    tag: 'AI & Vision',
-  },
-  {
-    id: 4,
-    name: 'Rohan Verma',
-    grade: 'Grade 8 • St. Jude’s High',
-    project: 'Smart IoT Sensor',
-    image: '/images/students/rohan_iot.jpg',
-    icon: Code2,
-    color: '#10B981',
-    quote: 'The mentors guided us step-by-step from breadboard wiring to live cloud telemetry dashboards.',
-    tag: 'IoT & Sensors',
-  },
-];
+const DEFAULT_AVATARS: Record<string, string> = {
+  Robotics: '/images/students/aarav_rover.jpg',
+  Drones: '/images/students/ananya_drone.jpg',
+  'AI & Vision': '/images/students/meera_robotarm.jpg',
+  'IoT & Sensors': '/images/students/rohan_iot.jpg',
+};
+
+const ICONS_MAP: Record<string, any> = {
+  Robotics: Bot,
+  Drones: Plane,
+  'AI & Vision': Cpu,
+  'IoT & Sensors': Code2,
+};
+
+const COLORS_MAP: Record<string, string> = {
+  Robotics: '#7928CA',
+  Drones: '#00D4FF',
+  'AI & Vision': '#6366F1',
+  'IoT & Sensors': '#10B981',
+};
 
 export default function StudentTestimonials() {
+  const { content } = useContent();
+  const testData = content.home.testimonials;
+
+  const reviewsList = testData.reviews.map(r => ({
+    ...r,
+    image: DEFAULT_AVATARS[r.tag] || '/images/students/aarav_rover.jpg',
+    icon: ICONS_MAP[r.tag] || Bot,
+    color: COLORS_MAP[r.tag] || '#7928CA',
+  }));
+
   // Repeated items for seamless infinite loop
-  const carouselItems = [...studentReviews, ...studentReviews, ...studentReviews];
+  const carouselItems = [...reviewsList, ...reviewsList, ...reviewsList];
 
   return (
     <section id="student-testimonials" className="relative py-20 sm:py-24 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
@@ -97,10 +82,25 @@ export default function StudentTestimonials() {
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <SectionReveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              {testData.badge}
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.08}>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight">
-              HEAR FROM OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">YOUNG INNOVATORS</span>
+              {testData.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{testData.titleGradient}</span>
             </h2>
           </SectionReveal>
+
+          {testData.subtitle && (
+            <SectionReveal delay={0.12}>
+              <p className="text-sm sm:text-base text-muted-foreground mt-2 font-medium">
+                {testData.subtitle}
+              </p>
+            </SectionReveal>
+          )}
         </div>
 
       </div>

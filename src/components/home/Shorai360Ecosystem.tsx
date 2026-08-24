@@ -25,6 +25,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 export interface EcosystemPillar {
   id: string;
@@ -237,6 +238,8 @@ export default function Shorai360Ecosystem() {
   const [activePillarIdx, setActivePillarIdx] = useState<number>(0);
   const [hoveredPillarIdx, setHoveredPillarIdx] = useState<number | null>(null);
   const [isContactOpen, setIsContactOpen] = useState<boolean>(false);
+  const { content } = useContent();
+  const eco = content.whyShorai.ecosystem360;
 
   const currentIdx = hoveredPillarIdx !== null ? hoveredPillarIdx : activePillarIdx;
   const currentPillar = PILLARS[currentIdx];
@@ -274,7 +277,7 @@ export default function Shorai360Ecosystem() {
               </div>
               <div className="text-left">
                 <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                  SHORAI 360°
+                  {eco.badge}
                 </div>
                 <div className="text-[10px] font-mono text-muted-foreground font-semibold">
                   Building Future Innovators with AI &amp; Robotics
@@ -285,16 +288,16 @@ export default function Shorai360Ecosystem() {
 
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
-              SHORAI 360° <br />
+              {eco.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#FF6B00]">
-                EDUCATION ECOSYSTEM
+                {eco.titleGradient}
               </span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
             <p className="text-base sm:text-xl text-muted-foreground font-medium mb-3 max-w-2xl mx-auto">
-              A Complete, Integrated &amp; Future-Ready School Transformation Model
+              {eco.subtitle}
             </p>
             <div className="text-lg sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
               One Partner. Endless Possibilities.

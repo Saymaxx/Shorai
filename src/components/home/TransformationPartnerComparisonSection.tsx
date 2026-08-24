@@ -25,6 +25,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 interface ComparisonRow {
   id: string;
@@ -130,59 +131,65 @@ const COMPARISON_DATA: ComparisonRow[] = [
 ];
 
 export default function TransformationPartnerComparisonSection() {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'core' | 'support' | 'growth'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'core' | 'support' | 'growth'>('all');
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
-  const [isContactOpen, setIsContactOpen] = useState<boolean>(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const comp = content.schools.comparison;
 
-  const filteredData = selectedCategory === 'all' 
+  const filteredRows = activeCategory === 'all' 
     ? COMPARISON_DATA 
-    : COMPARISON_DATA.filter(item => item.category === selectedCategory);
+    : COMPARISON_DATA.filter(r => r.category === activeCategory);
 
   return (
-    <section id="transformation-partner" className="relative py-20 sm:py-28 bg-background overflow-hidden border-b border-border transition-colors duration-300">
+    <section id="comparison" className="relative py-20 sm:py-28 bg-muted/20 overflow-hidden border-b border-border transition-colors duration-300">
       
       {/* Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[20%] left-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.04] rounded-full blur-[150px]" />
-        <div className="absolute bottom-[20%] right-[5%] w-[45vw] h-[45vw] max-w-[600px] bg-secondary/[0.04] rounded-full blur-[150px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#00D4FF]/[0.02] rounded-full blur-[180px]" />
+        <div className="absolute top-1/4 -left-20 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.04] rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 -right-20 w-[45vw] h-[45vw] max-w-[600px] bg-secondary/[0.04] rounded-full blur-[150px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* ── TOP HEADER SECTION: IMAGE ON LEFT + HEADING & CATEGORY FILTERS ON RIGHT ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
+        {/* ── TOP 2-COLUMN HEADER: PHOTO LEFT + TITLE & TABS RIGHT ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-14 sm:mb-18">
           
-          {/* Left Column (5 Cols): Natural Image of Two Professionals Having Partnership & Handshaking */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-start">
-            <SectionReveal delay={0.05} className="w-full max-w-[480px]">
-              <div className="relative group">
+          {/* Left Column (5 Cols): Natural Indian Robotics Teacher Smart Classroom Photo */}
+          <div className="lg:col-span-5 relative">
+            <SectionReveal delay={0.05}>
+              <div className="relative rounded-3xl overflow-hidden bg-card border-2 border-border shadow-2xl group">
                 
-                {/* Glow & Backdrop border */}
-                <div className="absolute -inset-1.5 bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] rounded-3xl opacity-30 blur-lg group-hover:opacity-60 transition duration-500 pointer-events-none" />
-                
-                {/* Main Photo Container */}
-                <div className="relative w-full h-[260px] sm:h-[320px] lg:h-[340px] rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl bg-card">
+                {/* Natural Photo Container */}
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11]">
                   <img
-                    src="/images/school_partnership_handshake.jpg"
-                    alt="Education leaders and STEM technology partners shaking hands in a school innovation lab"
+                    src="/images/robotics_smart_class_teacher.jpg"
+                    alt="Indian robotics master teacher engaging students in smart innovation class"
                     className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
-                  
-                  {/* Subtle Vignette Gradient Scrim */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                  
-                  {/* Floating Badge Tag at Bottom */}
-                  <div className="absolute bottom-3.5 left-3.5 right-3.5 px-3.5 py-2 rounded-2xl bg-background/85 backdrop-blur-md border border-border text-foreground shadow-lg flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span className="text-xs font-bold font-mono uppercase tracking-wide">
-                        LONG-TERM PARTNERSHIP
-                      </span>
+                  {/* High Contrast Gradient Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                  {/* Top Floating Badge */}
+                  <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 shadow-lg flex items-center gap-2 text-xs font-bold text-white font-mono">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>DEDICATED FACULTY</span>
+                  </div>
+                </div>
+
+                {/* Floating Bottom Info Pill Over Photo */}
+                <div className="p-4 sm:p-5 bg-card/90 backdrop-blur-md border-t border-border flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-mono font-bold text-foreground">
+                      Full-Time Campus Master Trainer
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
-                      ON-CAMPUS
-                    </span>
+                    <div className="text-[11px] text-muted-foreground">
+                      Continuous on-ground mentoring &amp; lab operations
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-emerald-500 font-mono text-xs font-bold">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>INCLUDED</span>
                   </div>
                 </div>
 
@@ -212,7 +219,7 @@ export default function TransformationPartnerComparisonSection() {
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-4 h-0.5 bg-primary" />
                 <span className="text-xs font-mono font-black tracking-[0.2em] text-primary uppercase">
-                  SHORAI VS. TRADITIONAL PROVIDERS
+                  {comp.badge}
                 </span>
               </div>
             </SectionReveal>
@@ -220,9 +227,9 @@ export default function TransformationPartnerComparisonSection() {
             {/* Main Headline */}
             <SectionReveal delay={0.08}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
-                Not a Vendor. <br className="hidden sm:inline" />
+                {comp.title} <br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  A Transformation Partner.
+                  {comp.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
@@ -230,7 +237,7 @@ export default function TransformationPartnerComparisonSection() {
             {/* Subtitle Description */}
             <SectionReveal delay={0.12}>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium max-w-2xl mb-6">
-                While many providers offer products or one-time workshops, Shorai delivers a complete, integrated ecosystem that transforms a school into a future-ready institution.
+                {comp.subtitle}
               </p>
             </SectionReveal>
 
@@ -245,9 +252,9 @@ export default function TransformationPartnerComparisonSection() {
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setSelectedCategory(tab.id as any)}
+                    onClick={() => setActiveCategory(tab.id as any)}
                     className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-200 ${
-                      selectedCategory === tab.id
+                      activeCategory === tab.id
                         ? 'bg-primary text-white border-primary shadow-md scale-105'
                         : 'bg-card text-muted-foreground hover:text-foreground hover:bg-muted border-border'
                     }`}
@@ -289,7 +296,7 @@ export default function TransformationPartnerComparisonSection() {
 
             {/* Table Body Rows */}
             <div className="divide-y divide-border/60">
-              {filteredData.map((row, idx) => {
+              {filteredRows.map((row, idx) => {
                 const Icon = row.icon;
                 const isHovered = hoveredRowId === row.id;
 

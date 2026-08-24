@@ -24,6 +24,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 // Real 3D Interactive Canvas Models
 import Drone3D from '@/components/3d/Drone3D';
@@ -42,6 +43,8 @@ function CanvasLoadingSpinner() {
 
 export default function AtShoraiWeBuildSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const cms = content.whyShorai.atShoraiWeBuild;
 
   // 1. DRONE DEMO STATE
   const [droneMode, setDroneMode] = useState<'hover' | 'orbit' | 'scan'>('hover');
@@ -58,15 +61,16 @@ export default function AtShoraiWeBuildSection() {
   const [isCodeRunning, setIsCodeRunning] = useState(false);
 
   // 4. MARS ROVER DEMO STATE
+  const [roverMode, setRoverMode] = useState<'idle' | 'drive' | 'scan' | 'sample'>('drive');
   const [roverSpeed, setRoverSpeed] = useState('0.8 m/s');
   const [obstacleDistance, setObstacleDistance] = useState('1.8 m');
   const [armStatus, setArmStatus] = useState<'idle' | 'scanning' | 'sampling'>('scanning');
 
   const runCodeSimulation = () => {
     setIsCodeRunning(true);
-    setCodeOutput('Compiling logic...');
+    setCodeOutput('Compiling syntax and transmitting to embedded hardware...');
     setTimeout(() => {
-      setCodeOutput(`> ${activeCodeBlock} executed.\n[OK] 3D Core synchronized | Latency 1.2ms`);
+      setCodeOutput('Execution SUCCESS: Motors armed at 100% duty cycle. Telemetry stream active.');
       setIsCodeRunning(false);
     }, 1200);
   };
@@ -89,22 +93,19 @@ export default function AtShoraiWeBuildSection() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-black text-primary uppercase tracking-widest mb-4 shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
-              INTERACTIVE 3D LAB EXPERIENCES
+              {cms.badge}
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
-              AT SHORAI,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                we build.
-              </span>
+              {cms.title}
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium max-w-2xl">
-              Interact directly with live 3D models of the autonomous drones, neural AI architectures, code compilers, and planetary Mars rovers built and coded by K-12 students.
+              {cms.subtitle}
             </p>
           </SectionReveal>
 

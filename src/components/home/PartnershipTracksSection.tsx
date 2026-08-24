@@ -25,6 +25,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 interface PartnershipTrack {
   id: string;
@@ -139,6 +140,8 @@ export default function PartnershipTracksSection() {
   const [selectedTrackId, setSelectedTrackId] = useState<string>('ascend');
   const [showComparison, setShowComparison] = useState<boolean>(false);
   const [isContactOpen, setIsContactOpen] = useState<boolean>(false);
+  const { content } = useContent();
+  const tracks = content.schools.partnershipTracks;
 
   return (
     <section id="partnership-tracks" className="relative py-20 sm:py-28 bg-background overflow-hidden border-b border-border transition-colors duration-300">
@@ -158,22 +161,22 @@ export default function PartnershipTracksSection() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#7928CA]/15 via-[#6366F1]/15 to-[#00D4FF]/15 border border-[#6366F1]/30 text-xs font-mono font-bold text-primary mb-4 shadow-sm backdrop-blur-md">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span>ENGAGEMENT MODELS &bull; STARTING TRACKS</span>
+              <span>{tracks.badge}</span>
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-6 leading-tight">
-              Three Ways to Begin the{' '}
+              {tracks.title}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                Partnership
+                {tracks.titleGradient}
               </span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium max-w-3xl mb-8">
-              Every school&apos;s infrastructure, grade strength and goals are different, so exact scope and investment are finalised together at the <span className="text-foreground font-bold underline decoration-primary/50 underline-offset-4">Discovery Meeting &mdash; Step 1 of our Implementation Roadmap</span>. These three tracks are our starting point for conversations with schools across Eastern Uttar Pradesh.
+              {tracks.subtitle}
             </p>
           </SectionReveal>
 

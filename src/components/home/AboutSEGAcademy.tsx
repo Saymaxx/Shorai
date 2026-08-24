@@ -19,10 +19,13 @@ import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import { useRouter } from '@/context/RouterContext';
+import { useContent } from '@/context/ContentContext';
 
 export default function AboutSEGAcademy() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const { navigate } = useRouter();
+  const { content } = useContent();
+  const seg = content.about.segAcademy;
 
   return (
     <section id="about-seg" className="relative py-24 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
@@ -58,30 +61,19 @@ export default function AboutSEGAcademy() {
 
                   {/* Top Floating Badge */}
                   <div className="absolute top-5 right-5 z-10">
-                    <div className="px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-1.5 text-xs font-mono font-bold text-primary">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>SEG ACADEMY FACULTY</span>
+                    <div className="px-3.5 py-1.5 rounded-full bg-card/90 border border-border backdrop-blur-md text-[10px] font-mono font-bold text-primary shadow-lg flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      <span>LEGACY OF EXCELLENCE</span>
                     </div>
                   </div>
 
-                  {/* Bottom Floating Badge */}
-                  <div className="absolute bottom-5 left-5 right-5 z-10">
-                    <div className="p-3.5 rounded-2xl bg-card/90 backdrop-blur-md border border-border shadow-xl flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                          <Building2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-black text-foreground">SEG Academy Pvt. Ltd.</div>
-                          <div className="text-[10px] font-mono text-muted-foreground font-semibold">Bengaluru, Karnataka &bull; Est. 15+ Yrs</div>
-                        </div>
-                      </div>
-                      <div className="text-right pl-2">
-                        <span className="text-[10px] font-mono font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-                          Verified
-                        </span>
-                      </div>
+                  {/* Bottom Strip Badge */}
+                  <div className="absolute bottom-5 left-5 right-5 z-10 p-3 rounded-2xl bg-card/90 backdrop-blur-md border border-border flex items-center justify-between text-xs font-bold text-foreground">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                      <span>Govt. Registered (MCA)</span>
                     </div>
+                    <span className="font-mono text-[10px] text-muted-foreground">15+ YEARS</span>
                   </div>
 
                 </div>
@@ -95,22 +87,22 @@ export default function AboutSEGAcademy() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-5 shadow-sm">
                 <Award className="w-3.5 h-3.5" />
-                <span>LEGACY &amp; PEDAGOGICAL BACKING</span>
+                <span>{seg.badge}</span>
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
-                ABOUT <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SEG ACADEMY</span>
+                {seg.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{seg.titleGradient}</span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.15}>
               <p className="text-base sm:text-lg font-bold text-foreground/90 tracking-wide mb-3">
-                Building Excellence in Education. Inspiring the Next Generation of Innovators.
+                {seg.narrative1}
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                SEG Academy Pvt. Ltd. has been empowering learners through industry-oriented education, professional training, technology programs, and skill development across India. Today, this rich pedagogical heritage powers <strong>SHORAI</strong>—our flagship initiative bringing turnkey NEP 2020 AI, Robotics, Drone, and Coding Innovation Labs directly to school campuses.
+                {seg.narrative2}
               </p>
             </SectionReveal>
 
@@ -144,7 +136,7 @@ export default function AboutSEGAcademy() {
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm font-bold text-foreground italic mb-1">
-                    &ldquo;Great schools don&apos;t just prepare students for exams. They prepare them for the future.&rdquo;
+                    &ldquo;{seg.quote}&rdquo;
                   </p>
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
                     — SEG Academy &amp; Shorai Philosophy

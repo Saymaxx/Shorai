@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const leadService_js_1 = require("../services/leadService.js");
+const database_js_1 = require("../db/database.js");
 const env_js_1 = require("../config/env.js");
 const router = (0, express_1.Router)();
 /**
@@ -53,6 +54,46 @@ router.get('/', (req, res) => {
         count: leads.length,
         leads,
     });
+});
+/**
+ * PATCH /api/leads/:id/status - Update inquiry status
+ */
+router.patch('/:id/status', (req, res) => {
+    const authHeader = req.headers['authorization'] || req.query['secret'];
+    if (authHeader !== `Bearer ${env_js_1.ENV.ADMIN_SECRET}` && authHeader !== env_js_1.ENV.ADMIN_SECRET) {
+        res.status(401).json({ success: false, message: 'Unauthorized.' });
+        return;
+    }
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const { status } = req.body;
+    if (!status || !['new', 'contacted', 'scheduled', 'converted'].includes(status)) {
+        res.status(400).json({ success: false, message: 'Invalid status value.' });
+        return;
+    }
+    const updated = database_js_1.Database.updateLeadStatus(id, status);
+    if (updated) {
+        res.json({ success: true, message: `Lead ${id} status updated to ${status}.` });
+    }
+    else {
+        res.status(404).json({ success: false, message: 'Lead not found.' });
+    }
+});
+/**
+ * POST /api/leads/import - Batch import leads from Google Sheet or CSV
+ */
+router.post('/import', (req, res) => {
+    const authHeader = req.headers['authorization'] || req.query['secret'];
+    if (authHeader !== `Bearer ${env_js_1.ENV.ADMIN_SECRET}` && authHeader !== env_js_1.ENV.ADMIN_SECRET) {
+        res.status(401).json({ success: false, message: 'Unauthorized.' });
+        return;
+    }
+    const { leads: leadsList } = req.body;
+    if (!Array.isArray(leadsList)) {
+        res.status(400).json({ success: false, message: 'Array of leads is required.' });
+        return;
+    }
+    const importedCount = leadService_js_1.LeadService.batchImport(leadsList);
+    res.json({ success: true, message: `Successfully imported ${importedCount} leads.` });
 });
 /**
  * GET /api/leads/stats - Public summary stats

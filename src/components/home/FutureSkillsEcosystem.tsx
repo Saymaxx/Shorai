@@ -24,6 +24,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 type SkillCategory = 'all' | 'hardware' | 'software' | 'future';
 
@@ -173,6 +174,8 @@ export default function FutureSkillsEcosystem() {
   const [activeCategory, setActiveCategory] = useState<SkillCategory>('all');
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const { content } = useContent();
+  const skills = content.whyShorai.futureSkills;
 
   const filteredSkills = activeCategory === 'all' 
     ? skillsData 
@@ -193,19 +196,19 @@ export default function FutureSkillsEcosystem() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>FUTURE SKILLS &bull; 12 DISCOVERY DOMAINS</span>
+              <span>{skills.badge}</span>
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.1}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
-              FUTURE SKILLS <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">ECOSYSTEM</span>
+              {skills.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{skills.titleGradient}</span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
-              12 modern technology tracks preparing students for emerging global careers. From robotics kinematics and autonomous AI to drone aerodynamics and spatial computing.
+              {skills.subtitle}
             </p>
           </SectionReveal>
         </div>

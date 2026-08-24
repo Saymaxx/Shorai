@@ -12,36 +12,12 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
-
-const numbersData = [
-  {
-    stat: '9 in 10',
-    label: 'Parents Demand Future Skills',
-    desc: 'Parents actively seek schools that provide hands-on AI & robotics education.',
-    color: '#7928CA',
-  },
-  {
-    stat: '77%',
-    label: 'Jobs Require Digital Skills',
-    desc: 'Nearly 80% of future job roles will require coding, automation & digital literacy.',
-    color: '#6366F1',
-  },
-  {
-    stat: '65%',
-    label: 'Brand-New Job Types',
-    desc: 'Students today will work in careers and technology domains that don’t even exist yet.',
-    color: '#00D4FF',
-  },
-  {
-    stat: '2X',
-    label: 'Higher Career Growth',
-    desc: 'Students with early practical STEM exposure are twice as likely to excel in high-growth industries.',
-    color: '#FF6B00',
-  },
-];
+import { useContent } from '@/context/ContentContext';
 
 export default function WhySchoolsNeedShorai() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const whyData = content.home.whySchoolsNeedShorai;
 
   return (
     <section id="why-shorai" className="relative py-28 px-4 sm:px-6 bg-muted/20 overflow-hidden border-t border-border">
@@ -58,22 +34,19 @@ export default function WhySchoolsNeedShorai() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-xs font-mono font-bold text-accent mb-4">
               <Target className="w-3.5 h-3.5" />
-              THE CRUCIAL NEED
+              {whyData.badge}
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.1}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-6 leading-tight">
-              WHY SCHOOLS NEED <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">SHORAI</span>
+              {whyData.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">{whyData.titleGradient}</span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
             <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium mb-4">
-              The world is changing faster than ever, driven by Artificial Intelligence, automation, and digital transformation.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Today&apos;s students need more than traditional education—they need practical skills, innovative thinking, and the confidence to thrive in a technology-driven future. Shorai bridges the gap between classroom theory and real-world innovation.
+              {whyData.subtitle}
             </p>
           </SectionReveal>
         </div>
@@ -160,22 +133,26 @@ export default function WhySchoolsNeedShorai() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {numbersData.map((item, idx) => (
-              <SectionReveal key={item.label} delay={0.08 * idx}>
-                <div className="p-7 sm:p-8 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group">
-                  <div>
-                    <div 
-                      className="text-5xl sm:text-6xl font-black mb-4 tracking-tight"
-                      style={{ color: item.color }}
-                    >
-                      {item.stat}
+            {whyData.insights.map((item, idx) => {
+              const colors = ['#7928CA', '#6366F1', '#00D4FF', '#FF6B00'];
+              const itemColor = colors[idx % colors.length];
+              return (
+                <SectionReveal key={item.label} delay={0.08 * idx}>
+                  <div className="p-7 sm:p-8 rounded-3xl bg-card border border-border hover:border-primary/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group">
+                    <div>
+                      <div 
+                        className="text-5xl sm:text-6xl font-black mb-4 tracking-tight"
+                        style={{ color: itemColor }}
+                      >
+                        {item.stat}
+                      </div>
+                      <h4 className="text-lg sm:text-xl font-black text-foreground mb-3 leading-snug">{item.label}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed font-medium">{item.desc}</p>
                     </div>
-                    <h4 className="text-lg sm:text-xl font-black text-foreground mb-3 leading-snug">{item.label}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed font-medium">{item.desc}</p>
                   </div>
-                </div>
-              </SectionReveal>
-            ))}
+                </SectionReveal>
+              );
+            })}
           </div>
         </div>
 

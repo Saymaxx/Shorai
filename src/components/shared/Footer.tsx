@@ -19,6 +19,7 @@ import {
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/context/ContentContext';
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -57,6 +58,9 @@ function FacebookIcon({ className }: { className?: string }) {
 export default function Footer() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [activeMapLocation, setActiveMapLocation] = useState<'varanasi' | 'kolkata'>('varanasi');
+  const { content } = useContent();
+  const foot = content.footer;
+  const cLoc = content.contact.locations;
 
   const varanasiLoc = siteConfig.locations.varanasi;
   const kolkataLoc = siteConfig.locations.kolkata;
@@ -83,10 +87,10 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="text-2xl font-black tracking-tight text-foreground block leading-tight">
-                    SHORAI<span className="text-primary">.</span>
+                    {foot.brandName}<span className="text-primary">.</span>
                   </span>
                   <span className="text-[11px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
-                    Building Future Innovators
+                    {foot.tagline}
                   </span>
                 </div>
               </Link>
@@ -95,10 +99,10 @@ export default function Footer() {
               <div className="p-3.5 rounded-2xl bg-primary/[0.06] border border-primary/20 mb-6">
                 <div className="flex items-center gap-2 text-xs font-black text-primary mb-1">
                   <Building2 className="w-4 h-4 text-primary shrink-0" />
-                  <span>Skill and Employability Generation Academy (SEG Academy)</span>
+                  <span>{foot.segEndorsement}</span>
                 </div>
                 <div className="text-[11px] text-muted-foreground font-mono leading-relaxed">
-                  Registered under Ministry Of Corporate Affairs • CIN: <strong className="text-foreground">{siteConfig.cin}</strong>
+                  Registered under Ministry Of Corporate Affairs • CIN: <strong className="text-foreground">{foot.cin}</strong>
                 </div>
               </div>
 
@@ -124,11 +128,11 @@ export default function Footer() {
                   <div className="flex items-start gap-2.5 text-xs text-foreground/90 font-medium">
                     <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                     <span className="leading-relaxed">
-                      {varanasiLoc.address}
+                      {cLoc.varanasiAddress}
                     </span>
                   </div>
                   <div className="flex flex-wrap items-center gap-4 mt-2.5 pt-2 border-t border-border/60 text-[11px] font-mono text-muted-foreground">
-                    <span>Email: <a href={`mailto:${varanasiLoc.email}`} className="text-foreground hover:text-primary font-bold">{varanasiLoc.email}</a></span>
+                    <span>Email: <a href={`mailto:${cLoc.varanasiEmail}`} className="text-foreground hover:text-primary font-bold">{cLoc.varanasiEmail}</a></span>
                     <span>Web: <a href="https://www.segacademy.in" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary font-bold">www.segacademy.in</a></span>
                   </div>
                 </div>
@@ -152,7 +156,7 @@ export default function Footer() {
                   <div className="flex items-start gap-2.5 text-xs text-foreground/90 font-medium">
                     <MapPin className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
                     <span className="leading-relaxed">
-                      {kolkataLoc.address}
+                      {cLoc.kolkataAddress}
                     </span>
                   </div>
                 </div>
@@ -343,7 +347,7 @@ export default function Footer() {
 
         {/* Bottom Legal & Copyright Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} SHORAI • Skill and Employability Generation Academy (CIN: {siteConfig.cin}). All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} {foot.copyrightText}</p>
           
           <div className="flex items-center gap-6">
             <span className="text-muted-foreground/60">NEP 2020 Aligned</span>

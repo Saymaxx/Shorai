@@ -8,6 +8,7 @@ import { ArrowRight, Brain, Plane, Code2, Sparkles, CheckCircle2, Bot, Zap } fro
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 const quadrants = [
   {
@@ -69,6 +70,8 @@ export default function InnovationLabs() {
   const [activeQuadrant, setActiveQuadrant] = useState<string | null>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { content } = useContent();
+  const labsData = content.home.innovationLabs;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -101,7 +104,7 @@ export default function InnovationLabs() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
                 <Sparkles className="w-3.5 h-3.5" />
-                SHORAI INNOVATION LABS
+                {labsData.badge}
               </div>
             </SectionReveal>
 
@@ -110,28 +113,16 @@ export default function InnovationLabs() {
                 className="font-black tracking-tight text-foreground mb-6 leading-tight"
                 style={{ fontSize: 'clamp(38px, 4.8vw, 64px)' }}
               >
-                WHERE STUDENTS <br />
+                {labsData.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  BUILD THE FUTURE.
+                  {labsData.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.15}>
-              <div className="text-xs font-mono font-bold tracking-[0.2em] text-primary mb-6 uppercase flex items-center gap-2 flex-wrap">
-                <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">AI</span>
-                <span>&bull;</span>
-                <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">DRONES</span>
-                <span>&bull;</span>
-                <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">ROBOTICS</span>
-                <span>&bull;</span>
-                <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">CODING</span>
-              </div>
-            </SectionReveal>
-
-            <SectionReveal delay={0.2}>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">
-                Empowering students across India with hands-on mastery in Artificial Intelligence, Drone Aeronautics, 6-Axis Robotics, and Modern Coding—turning classrooms into futuristic innovation hubs.
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8">
+                {labsData.subtitle}
               </p>
             </SectionReveal>
 

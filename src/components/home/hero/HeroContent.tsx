@@ -6,9 +6,12 @@ import HeroCTA from './HeroCTA';
 import TrustMetrics from './TrustMetrics';
 import ContactModal from '@/components/shared/ContactModal';
 import { Sparkles, ShieldCheck } from 'lucide-react';
+import { useContent } from '@/context/ContentContext';
 
 export default function HeroContent() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const hero = content.home.hero;
 
   return (
     <div className="flex flex-col items-start z-20 relative w-full pr-0 lg:pr-6">
@@ -22,7 +25,7 @@ export default function HeroContent() {
       >
         <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
         <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase font-mono">
-          AN EDUCATION INNOVATION INITIATIVE BY SEG ACADEMY
+          {hero.badge}
         </span>
       </motion.div>
 
@@ -34,10 +37,10 @@ export default function HeroContent() {
         className="font-black tracking-[-0.03em] leading-[1.04] mb-6 flex flex-col text-foreground"
         style={{ fontSize: 'clamp(44px, 5.2vw, 76px)' }}
       >
-        <span>BUILDING FUTURE</span>
+        <span>{hero.titleLine1}</span>
         <span className="flex items-center flex-wrap">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#00D4FF] to-[#FF6B00]">
-            INNOVATORS
+            {hero.titleGradient}
           </span>
         </span>
         <span className="flex items-baseline">
@@ -56,18 +59,15 @@ export default function HeroContent() {
         AI &bull; ROBOTICS &bull; STEM &bull; CODING &bull; INNOVATION LABS
       </motion.div>
 
-      {/* Layman-friendly Subtitle */}
+      {/* Subtitle */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.45 }}
         className="flex flex-col gap-1.5 mb-8"
       >
-        <h2 className="text-lg md:text-xl font-semibold text-foreground/95 tracking-tight">
-          Transforming schools into future-ready learning ecosystems.
-        </h2>
-        <p className="text-sm md:text-base text-muted-foreground max-w-lg leading-relaxed font-normal">
-          We empower K-12 students with practical, project-based STEM education, real robotics kits, interactive 3D learning, and industry-grade innovation labs.
+        <p className="text-sm md:text-base text-muted-foreground max-w-lg leading-relaxed font-medium">
+          {hero.subtitle}
         </p>
       </motion.div>
 

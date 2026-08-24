@@ -3,16 +3,19 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import SectionReveal from '@/components/animations/SectionReveal';
-
-const stats = [
-  { value: '360°', label: 'Complete School Transformation Model' },
-  { value: '12+', label: 'Future Skills Technology Domains' },
-  { value: '1000+', label: 'Young Innovators Empowered' },
-];
+import { useContent } from '@/context/ContentContext';
 
 export default function ImpactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const { content } = useContent();
+  const imp = content.about.impact;
+
+  const stats = [
+    { value: imp.stat1Value, label: imp.stat1Label },
+    { value: imp.stat2Value, label: imp.stat2Label },
+    { value: imp.stat3Value, label: imp.stat3Label },
+  ];
 
   return (
     <section ref={ref} className="py-20 bg-card border-t border-b border-border relative overflow-hidden transition-colors duration-300">

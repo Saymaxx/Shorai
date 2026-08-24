@@ -20,6 +20,9 @@
 # production
 /build
 /dist
+server/dist
+server/data/*.json
+!server/data/.gitkeep
 
 # misc
 .DS_Store

@@ -22,6 +22,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 interface TransformationStep {
   num: string;
@@ -141,6 +142,8 @@ export default function InteractiveTechnology() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const { content } = useContent();
+  const meth = content.schools.methodology;
 
   const activeStep = STEPS[activeIdx];
   const ActiveIcon = activeStep.icon;
@@ -172,22 +175,22 @@ export default function InteractiveTechnology() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>30-DAY TURNKEY LIFECYCLE</span>
+              <span>{meth.badge}</span>
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.08}>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
-              HOW SHORAI <br />
+              {meth.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                TRANSFORMS SCHOOLS.
+                {meth.titleGradient}
               </span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl font-medium">
-              A frictionless 5-stage institutional roadmap that takes your campus from initial assessment to a thriving, award-winning STEM innovation hub within 30 days.
+              {meth.subtitle}
             </p>
           </SectionReveal>
         </div>

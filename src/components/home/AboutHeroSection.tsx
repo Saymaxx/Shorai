@@ -13,9 +13,12 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 export default function AboutHeroSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const hero = content.about.hero;
 
   return (
     <section className="relative pt-32 sm:pt-36 pb-20 sm:pb-28 bg-background overflow-hidden border-b border-border transition-colors duration-300">
@@ -38,12 +41,12 @@ export default function AboutHeroSection() {
             <SectionReveal>
               <div className="space-y-1 mb-6">
                 <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
-                  SCHOOL <br />
+                  {hero.titleLine1} <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF3D7F] via-[#D946EF] to-[#7928CA]">
-                    INNOVATION
+                    {hero.titleGradient}
                   </span> <br />
                   <span className="text-[#4F46E5] dark:text-[#818CF8]">
-                    &amp; FUTURE SKILLS
+                    {hero.titleLine2}
                   </span>
                 </h1>
               </div>
@@ -54,7 +57,7 @@ export default function AboutHeroSection() {
               <div className="p-5 sm:p-6 rounded-2xl bg-card border-2 border-primary/20 shadow-md mb-6 relative overflow-hidden max-w-xl">
                 <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#FF3D7F] to-[#7928CA]" />
                 <p className="text-base sm:text-lg text-foreground font-semibold italic pl-2 leading-relaxed">
-                  &ldquo;A future-school ecosystem designed to connect technology, teachers, student development and innovation.&rdquo;
+                  &ldquo;{hero.quote}&rdquo;
                 </p>
               </div>
             </SectionReveal>
@@ -63,7 +66,7 @@ export default function AboutHeroSection() {
             <SectionReveal delay={0.12}>
               <div className="pl-4 border-l-4 border-[#7928CA] mb-8">
                 <p className="text-sm sm:text-base font-bold text-foreground/90">
-                  Empowering Young Minds with Technology, Creativity &amp; Confidence.
+                  {hero.mission}
                 </p>
               </div>
             </SectionReveal>
@@ -76,7 +79,7 @@ export default function AboutHeroSection() {
                     onClick={() => setIsContactOpen(true)}
                     className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-xl flex items-center gap-2.5 transition-all hover:scale-105"
                   >
-                    <span>Connect With Shorai</span>
+                    <span>{hero.primaryButtonText}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </MagneticWrapper>
@@ -85,7 +88,7 @@ export default function AboutHeroSection() {
                   href="/why-shorai"
                   className="px-6 h-13 rounded-2xl bg-card hover:bg-muted border border-border text-foreground font-bold text-sm tracking-wide shadow-sm flex items-center gap-2 transition-all hover:scale-105"
                 >
-                  <span>Why Shorai</span>
+                  <span>{hero.secondaryButtonText}</span>
                 </Link>
               </div>
             </SectionReveal>

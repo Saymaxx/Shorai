@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Bot, Sparkles, ShieldCheck, Zap, Rocket, Star } from 'lucide-react';
@@ -7,9 +5,12 @@ import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import Link from 'next/link';
+import { useContent } from '@/context/ContentContext';
 
 export default function FinalCTA() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const cta = content.whyShorai.finalCta;
 
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden py-28 px-4 sm:px-6 bg-background border-t border-border transition-colors duration-300">
@@ -54,24 +55,24 @@ export default function FinalCTA() {
         <SectionReveal delay={0.05}>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-6 shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>INSTITUTIONAL ACCELERATION</span>
+            <span>{cta.badge}</span>
           </div>
 
           <h2
             className="font-black tracking-tight text-foreground mb-6"
             style={{ fontSize: 'clamp(38px, 6vw, 80px)', lineHeight: 1.05 }}
           >
-            THE FUTURE WON&apos;T{' '}
+            {cta.title}{' '}
             <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#00D4FF] to-[#FF6B00]">
-              BUILD ITSELF.
+              {cta.titleGradient}
             </span>
           </h2>
         </SectionReveal>
 
         <SectionReveal delay={0.12}>
           <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-lg mx-auto leading-relaxed">
-            Equip your school and students with turnkey robotics labs, NEP-aligned curricula, and hands-on AI sandboxes to lead tomorrow&apos;s world.
+            {cta.subtitle}
           </p>
         </SectionReveal>
 
@@ -104,7 +105,7 @@ export default function FinalCTA() {
                   background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
                 }}
               >
-                <span>To know more about us contact us</span>
+                <span>{cta.primaryButtonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </MagneticWrapper>
@@ -113,7 +114,7 @@ export default function FinalCTA() {
             <Link href="/labs" className="w-full sm:w-auto">
               <button className="w-full sm:w-auto h-14 px-8 rounded-2xl font-bold text-sm sm:text-base text-foreground bg-card border border-border hover:border-primary/40 transition-all duration-300 backdrop-blur-md shadow-sm hover:shadow-md flex items-center justify-center gap-2">
                 <Rocket className="w-4 h-4 text-primary" />
-                <span>Explore Shorai Labs</span>
+                <span>{cta.secondaryButtonText}</span>
               </button>
             </Link>
           </div>

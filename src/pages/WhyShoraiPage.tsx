@@ -15,6 +15,7 @@ import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/context/ContentContext';
 
 // Big, natural booming technology slide deck
 const techSlides = [
@@ -100,6 +101,8 @@ const techSlides = [
 export default function WhyShoraiPage() {
   usePageMeta(siteConfig.pages.whyShorai);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const hero = content.whyShorai.hero;
 
   // Duplicate for seamless infinite marquee loop
   const carouselItems = [...techSlides, ...techSlides];
@@ -193,22 +196,22 @@ export default function WhyShoraiPage() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/30 text-xs font-mono font-bold text-primary mb-4 backdrop-blur-md shadow-sm">
               <Sparkles className="w-4 h-4" />
-              <span>THE FUTURE OF STEM EDUCATION // POWERED BY SHORAI</span>
+              <span>{hero.badge}</span>
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.08}>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.1] drop-shadow-sm">
-              WHY SCHOOLS CHOOSE <br className="hidden sm:inline" />
+              {hero.title} <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                SHORAI LABS
+                {hero.titleGradient}
               </span>
             </h1>
           </SectionReveal>
 
           <SectionReveal delay={0.12}>
             <p className="text-base sm:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed mb-6 font-semibold drop-shadow-sm">
-              Empowering schools across India with world-class <span className="text-primary font-bold">AI, Autonomous Drone, 6-Axis Robotics &amp; Modern Coding Labs</span>.
+              {hero.subtitle}
             </p>
           </SectionReveal>
 
@@ -243,7 +246,7 @@ export default function WhyShoraiPage() {
                   className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-xl flex items-center gap-2.5 transition-all hover:scale-105"
                 >
                   <Rocket className="w-4 h-4" />
-                  <span>Book School Demonstration</span>
+                  <span>{hero.primaryButtonText}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </MagneticWrapper>
@@ -252,7 +255,7 @@ export default function WhyShoraiPage() {
                 href="/labs"
                 className="px-8 h-13 rounded-2xl bg-background/90 hover:bg-muted border border-border text-foreground font-bold text-sm tracking-wide shadow-md flex items-center gap-2 transition-all hover:scale-105 backdrop-blur-md"
               >
-                <span>Explore Lab Packages</span>
+                <span>{hero.secondaryButtonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

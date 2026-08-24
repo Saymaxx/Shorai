@@ -24,6 +24,7 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 interface GradeStage {
   num: string;
@@ -133,6 +134,8 @@ const STAGES: GradeStage[] = [
 
 export default function GradeWiseCurriculumSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const curr = content.schools.curriculum;
 
   return (
     <section className="relative py-20 sm:py-28 bg-background overflow-hidden border-b border-border transition-colors duration-300">
@@ -153,20 +156,20 @@ export default function GradeWiseCurriculumSection() {
             
             {/* Main Title & Subtitle */}
             <SectionReveal delay={0.05}>
+              <div className="text-xs font-mono font-bold text-primary mb-2 uppercase tracking-wider">
+                {curr.badge}
+              </div>
               <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.08]">
-                GRADE-WISE <br />
+                {curr.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  CURRICULUM
+                  {curr.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
-                From Early Learners to Future Leaders.
-              </h3>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium mb-6">
-                Our structured, age-appropriate curriculum ensures a progressive learning journey from curiosity to innovation.
+                {curr.subtitle}
               </p>
             </SectionReveal>
 

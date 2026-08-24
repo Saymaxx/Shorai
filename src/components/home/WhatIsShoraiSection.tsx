@@ -15,8 +15,12 @@ import {
 } from 'lucide-react';
 import SectionReveal from '@/components/animations/SectionReveal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 export default function WhatIsShoraiSection() {
+  const { content } = useContent();
+  const whatIs = content.home.whatIsShorai;
+
   return (
     <section id="what-is-shorai" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
       
@@ -37,22 +41,22 @@ export default function WhatIsShoraiSection() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
-                INTRODUCING SHORAI
+                {whatIs.badge}
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.08}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
-                WHAT IS <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SHORAI?</span>
+                {whatIs.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{whatIs.titleGradient}</span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.12}>
               <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-semibold mb-3">
-                The Next-Generation STEM, Robotics &amp; AI Innovation Ecosystem for Future-Ready Schools.
+                {whatIs.description1}
               </p>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
-                Developed as a flagship education innovation initiative by <strong>SEG Academy</strong>, SHORAI bridges the critical gap between traditional school curricula and the technological demands of the 21st century. We empower K-12 schools with complete turnkey infrastructure, practical kits, and certified training to transform everyday classrooms into advanced technological beacons.
+                {whatIs.description2}
               </p>
             </SectionReveal>
 

@@ -19,6 +19,7 @@ export function normalizePath(path: string): string {
   if (path.startsWith('/schools') || path.startsWith('/for-schools') || path.startsWith('/transformation')) return '/schools';
   if (path.startsWith('/contact')) return '/contact';
   if (path.startsWith('/labs')) return '/labs';
+  if (path.startsWith('/admin')) return '/admin';
   return '/';
 }
 

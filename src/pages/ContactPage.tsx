@@ -27,11 +27,18 @@ import Footer from '@/components/shared/Footer';
 import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 import { siteConfig } from '@/config/siteConfig';
 import { usePageMeta } from '@/hooks/usePageMeta';
+import { useContent } from '@/context/ContentContext';
 
 const purposeOptions = siteConfig.programOptions;
 
 export default function ContactPage() {
   usePageMeta(siteConfig.pages.contact);
+  const { content } = useContent();
+  const cHero = content.contact.hero;
+  const cForm = content.contact.form;
+  const cDirect = content.contact.directReach;
+  const cReach = content.contact.reachUs;
+  const cLoc = content.contact.locations;
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -90,19 +97,19 @@ export default function ContactPage() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-4">
               <Sparkles className="w-3.5 h-3.5" />
-              CONNECT & PARTNER
+              <span>{cHero.badge}</span>
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.1}>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4">
-              GET IN TOUCH WITH <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SHORAI</span>
+              {cHero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{cHero.titleGradient}</span>
             </h1>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Have questions about setting up a Robotics &amp; AI Lab in your school? Fill out the form below or visit our innovation centers.
+              {cHero.subtitle}
             </p>
           </SectionReveal>
         </div>
@@ -118,13 +125,13 @@ export default function ContactPage() {
               
               <div className="mb-8">
                 <span className="text-xs font-mono font-bold text-primary tracking-widest uppercase block mb-1">
-                  DIRECT REACH OUT
+                  {cForm.badge}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-foreground">
-                  Send Us a Message
+                  {cForm.title}
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Our STEM education advisors will get back to you within 24 hours.
+                  {cForm.subtitle}
                 </p>
               </div>
 
@@ -319,17 +326,17 @@ export default function ContactPage() {
               <div className="p-6 sm:p-8 rounded-3xl bg-card border border-border shadow-sm">
                 <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
                   <Headphones className="w-5 h-5 text-primary" />
-                  Direct Reach Out
+                  <span>{cDirect.title}</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground mb-6 leading-relaxed">
-                  Prefer direct communication? Connect with our senior education consultants right away:
+                  {cDirect.subtitle}
                 </p>
 
                 <div className="space-y-4">
                   
-                  {/* Phone */}
+                  {/* Phone 1 */}
                   <a 
-                    href="tel:+917880630963"
+                    href={`tel:${cDirect.phone1.replace(/\s+/g, '')}`}
                     className="flex items-start gap-4 p-3.5 rounded-2xl bg-muted/40 hover:bg-muted/80 border border-border transition-all group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -337,17 +344,17 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">
-                        Direct Phone / Helpline
+                        {cDirect.phone1Label}
                       </span>
                       <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                        +91 78806 30963
+                        {cDirect.phone1}
                       </span>
                     </div>
                   </a>
 
-                  {/* Secondary Phone */}
+                  {/* Secondary Phone 2 */}
                   <a 
-                    href="tel:+919789944439"
+                    href={`tel:${cDirect.phone2.replace(/\s+/g, '')}`}
                     className="flex items-start gap-4 p-3.5 rounded-2xl bg-muted/40 hover:bg-muted/80 border border-border transition-all group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -355,17 +362,17 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">
-                        Institutional Advisory
+                        {cDirect.phone2Label}
                       </span>
                       <span className="text-sm font-bold text-foreground group-hover:text-secondary transition-colors">
-                        +91 97899 44439
+                        {cDirect.phone2}
                       </span>
                     </div>
                   </a>
 
                   {/* Email */}
                   <a 
-                    href="mailto:info@segacademy.in"
+                    href={`mailto:${cDirect.email}`}
                     className="flex items-start gap-4 p-3.5 rounded-2xl bg-muted/40 hover:bg-muted/80 border border-border transition-all group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -373,10 +380,10 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">
-                        Official Inquiries
+                        {cDirect.emailLabel}
                       </span>
                       <span className="text-sm font-bold text-foreground group-hover:text-accent transition-colors">
-                        info@segacademy.in
+                        {cDirect.email}
                       </span>
                     </div>
                   </a>
@@ -391,7 +398,7 @@ export default function ContactPage() {
                         Operational Hours
                       </span>
                       <span className="text-sm font-bold text-foreground">
-                        Monday – Saturday: 9:00 AM – 6:30 PM IST
+                        {cDirect.hours}
                       </span>
                     </div>
                   </div>
@@ -430,19 +437,19 @@ export default function ContactPage() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
                 <MapPin className="w-3.5 h-3.5" />
-                OUR LOCATIONS
+                <span>{cReach.badge}</span>
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
-                HOW TO <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">REACH US</span>
+                {cReach.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{cReach.titleGradient}</span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.15}>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Visit our innovation headquarters and experience center to test live robotics workstations, AI neural kits, and flight simulation bays.
+                {cReach.subtitle}
               </p>
             </SectionReveal>
           </div>
@@ -458,7 +465,7 @@ export default function ContactPage() {
                   <span>Interactive Campus &amp; Innovation Center Map</span>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=SEG+Academy+Pvt+Ltd"
+                  href={siteConfig.locations.varanasi.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-mono text-primary font-bold hover:underline"
@@ -472,7 +479,7 @@ export default function ContactPage() {
               <div className="relative flex-1 w-full min-h-[380px] bg-muted/40">
                 <iframe
                   title="SHORAI & SEG Academy Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.75114757303!2d77.6329!3d12.9234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae148b598b9f1d%3A0x2897e93540ffbb0!2sHSR%20Layout%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  src={siteConfig.locations.varanasi.embedMapUrl}
                   width="100%"
                   height="100%"
                   style={{ border: 0, minHeight: '380px' }}
@@ -487,30 +494,24 @@ export default function ContactPage() {
             {/* Location Address Details Cards (5 Cols) */}
             <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
               
-              {/* Primary Innovation HQ */}
+              {/* Primary Varanasi Center */}
               <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border shadow-sm flex-1 flex flex-col justify-between">
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-mono font-bold mb-3">
-                    HEADQUARTERS &amp; LAB
+                    VARANASI MAIN HUB
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-1">
-                    SEG Academy / SHORAI Innovation Hub
+                    {cLoc.varanasiTitle}
                   </h3>
                   <p className="text-xs text-muted-foreground mb-4">
-                    Advanced STEM Development Center &amp; Robotics Research Facility
+                    {cLoc.varanasiSubtitle}
                   </p>
 
                   <div className="space-y-2.5 text-xs text-muted-foreground leading-relaxed">
                     <div className="flex items-start gap-2.5">
                       <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                       <span>
-                        Plot No. 14, 5th Main Road, Sector 6, HSR Layout, Bengaluru, Karnataka 560102, India.
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <Building2 className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
-                      <span>
-                        Landmark: Near Innovation Corridor &amp; Outer Ring Road
+                        {cLoc.varanasiAddress}
                       </span>
                     </div>
                   </div>
@@ -518,7 +519,7 @@ export default function ContactPage() {
 
                 <div className="pt-5 mt-5 border-t border-border flex items-center justify-between">
                   <a
-                    href="https://maps.google.com/?q=HSR+Layout+Bengaluru"
+                    href={siteConfig.locations.varanasi.mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-colors"
@@ -528,29 +529,29 @@ export default function ContactPage() {
                   </a>
 
                   <span className="text-[11px] font-mono text-muted-foreground">
-                    Metro: Green / Yellow Line
+                    Phone: {cLoc.varanasiPhone}
                   </span>
                 </div>
               </div>
 
-              {/* Delhi NCR Regional Center */}
+              {/* Kolkata Regional Center */}
               <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border shadow-sm flex-1 flex flex-col justify-between">
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-[10px] font-mono font-bold mb-3">
-                    REGIONAL LIAISON OFFICE
+                    KOLKATA HQ
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-1">
-                    Northern Region Support Center
+                    {cLoc.kolkataTitle}
                   </h3>
                   <p className="text-xs text-muted-foreground mb-4">
-                    Institutional Partnerships &amp; School Deployment Cell
+                    {cLoc.kolkataSubtitle}
                   </p>
 
                   <div className="space-y-2.5 text-xs text-muted-foreground leading-relaxed">
                     <div className="flex items-start gap-2.5">
                       <MapPin className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
                       <span>
-                        Block B, Knowledge Park III, Greater Noida, Delhi NCR 201306, India.
+                        {cLoc.kolkataAddress}
                       </span>
                     </div>
                   </div>
@@ -558,14 +559,16 @@ export default function ContactPage() {
 
                 <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
                   <a
-                    href="tel:+917880630963"
+                    href={siteConfig.locations.kolkata.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-secondary/10 hover:bg-secondary/20 text-secondary text-xs font-bold transition-colors"
                   >
-                    <span>Call Northern Cell</span>
-                    <Phone className="w-3.5 h-3.5" />
+                    <span>Open Pinpoint</span>
+                    <Navigation className="w-3.5 h-3.5" />
                   </a>
                   <span className="text-[11px] font-mono text-muted-foreground">
-                    Mon - Sat (9 AM - 6 PM)
+                    Phone: {cLoc.kolkataPhone}
                   </span>
                 </div>
               </div>

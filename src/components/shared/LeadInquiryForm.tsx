@@ -39,6 +39,7 @@ export default function LeadInquiryForm({
     phone: '',
     purpose: defaultPurpose || siteConfig.programOptions[0],
     message: '',
+    websiteHoneypot: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,6 +47,13 @@ export default function LeadInquiryForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Honeypot bot protection: if hidden field is filled, silently ignore
+    if (formData.websiteHoneypot) {
+      setIsSubmitted(true);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -80,6 +88,7 @@ export default function LeadInquiryForm({
       phone: '',
       purpose: defaultPurpose || siteConfig.programOptions[0],
       message: '',
+      websiteHoneypot: '',
     });
     setIsSubmitted(false);
   };
@@ -112,6 +121,17 @@ export default function LeadInquiryForm({
 
   return (
     <form onSubmit={handleSubmit} className={`space-y-4 ${className}`} aria-label="School Consultation Inquiry Form">
+      {/* Anti-spam honeypot */}
+      <input
+        type="text"
+        name="website_hp"
+        tabIndex={-1}
+        autoComplete="off"
+        value={formData.websiteHoneypot}
+        onChange={(e) => setFormData({ ...formData, websiteHoneypot: e.target.value })}
+        className="hidden"
+        aria-hidden="true"
+      />
       
       {/* Name and School Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

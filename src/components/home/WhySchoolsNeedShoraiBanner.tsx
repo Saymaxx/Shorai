@@ -18,9 +18,12 @@ import {
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import { useContent } from '@/context/ContentContext';
 
 export default function WhySchoolsNeedShoraiBanner() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const { content } = useContent();
+  const banner = content.whyShorai.banner;
 
   return (
     <section className="relative py-20 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-b border-border transition-colors duration-300">
@@ -47,7 +50,7 @@ export default function WhySchoolsNeedShoraiBanner() {
                 </div>
                 <div>
                   <div className="text-xs font-mono font-black text-foreground tracking-wider uppercase">
-                    SHORAI ECOSYSTEM
+                    {banner.badge}
                   </div>
                   <div className="text-[10px] font-mono text-muted-foreground">
                     Building Future Innovators with AI &amp; Robotics
@@ -59,9 +62,9 @@ export default function WhySchoolsNeedShoraiBanner() {
             {/* Section Main Title */}
             <SectionReveal delay={0.08}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-6 leading-tight">
-                WHY SCHOOLS NEED <br />
+                {banner.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  SHORAI
+                  {banner.titleGradient}
                 </span>
               </h2>
             </SectionReveal>
@@ -69,7 +72,7 @@ export default function WhySchoolsNeedShoraiBanner() {
             {/* Core Narrative Text */}
             <SectionReveal delay={0.12}>
               <p className="text-base sm:text-lg lg:text-xl text-foreground/90 leading-relaxed font-semibold mb-8">
-                Shorai bridges the gap between classroom learning and real-world innovation by providing a comprehensive future-skills ecosystem. Through hands-on experiences, industry-aligned programs, and modern learning solutions, we empower students to become creators, problem-solvers, and future leaders.
+                {banner.narrative}
               </p>
             </SectionReveal>
 
@@ -151,7 +154,7 @@ export default function WhySchoolsNeedShoraiBanner() {
                     <Quote className="w-7 h-7 text-white/70 shrink-0 rotate-180 mt-0.5" />
                     <div>
                       <p className="text-sm sm:text-base font-black leading-snug drop-shadow-sm">
-                        &ldquo;The best time to prepare for the future was yesterday. The next best time is <span className="text-[#00D4FF] font-black underline underline-offset-2">RIGHT NOW</span>.&rdquo;
+                        &ldquo;{banner.quote}&rdquo;
                       </p>
                     </div>
                   </div>
@@ -173,15 +176,7 @@ export default function WhySchoolsNeedShoraiBanner() {
 
             <div className="max-w-5xl mx-auto relative z-10">
               <p className="text-lg sm:text-2xl lg:text-3xl font-black text-foreground leading-snug sm:leading-relaxed">
-                The world is changing faster than ever, driven by{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
-                  Artificial Intelligence, automation, digital transformation, and emerging technologies
-                </span>
-                . Today&apos;s students need more than traditional education—they need{' '}
-                <span className="text-primary font-black">
-                  practical skills, innovative thinking, and the confidence to thrive
-                </span>{' '}
-                in a technology-driven future.
+                {banner.bottomStatement}
               </p>
             </div>
 
