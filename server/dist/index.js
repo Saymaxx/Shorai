@@ -62,12 +62,14 @@ app.use((err, req, res, next) => {
     console.error('[Server Error]', err);
     res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
 });
-// Start Server
-const server = app.listen(env_js_1.ENV.PORT, () => {
-    console.log(`\n=================================================`);
-    console.log(`🚀 SHORAI BACKEND API SERVER RUNNING`);
-    console.log(`📡 URL: http://localhost:${env_js_1.ENV.PORT}`);
-    console.log(`⚡ Environment: ${env_js_1.ENV.NODE_ENV}`);
-    console.log(`=================================================\n`);
-});
+// Start Server (only when running as standalone Node process, not in Vercel serverless)
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
+    app.listen(env_js_1.ENV.PORT, () => {
+        console.log(`\n=================================================`);
+        console.log(`🚀 SHORAI BACKEND API SERVER RUNNING`);
+        console.log(`📡 URL: http://localhost:${env_js_1.ENV.PORT}`);
+        console.log(`⚡ Environment: ${env_js_1.ENV.NODE_ENV}`);
+        console.log(`=================================================\n`);
+    });
+}
 exports.default = app;

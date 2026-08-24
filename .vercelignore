@@ -1,0 +1,7 @@
+.git
+.gemini
+.agents
+*.log
+dist
+server/dist
+.system_generated
