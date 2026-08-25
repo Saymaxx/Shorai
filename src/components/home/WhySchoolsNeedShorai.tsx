@@ -39,13 +39,13 @@ export default function WhySchoolsNeedShorai() {
           </SectionReveal>
 
           <SectionReveal delay={0.1}>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-6 leading-tight">
+            <h2 className="shorai-heading mb-4">
               {whyData.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">{whyData.titleGradient}</span>
             </h2>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
-            <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium mb-4">
+            <p className="shorai-body max-w-2xl mx-auto mb-2 text-foreground/85 font-medium">
               {whyData.subtitle}
             </p>
           </SectionReveal>
@@ -85,16 +85,16 @@ export default function WhySchoolsNeedShorai() {
                     FUTURE-PROOF PEDAGOGY
                   </div>
                   
-                  <h3 className="text-3xl sm:text-4xl font-black text-foreground mb-6 leading-tight">
+                  <h3 className="shorai-subheading text-2xl sm:text-3xl mb-4">
                     Why Modern Schools Need Robotics, AI, Coding &amp; Drones.
                   </h3>
 
                   {/* Big Highlighted Statement */}
                   <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 border border-primary/20 backdrop-blur-sm">
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground leading-snug tracking-tight">
+                    <p className="shorai-subheading text-xl sm:text-2xl text-foreground">
                       By 2030, over <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">85% of high-growth careers</span> will require fluencies in automation, intelligent systems, and computational problem-solving.
                     </p>
-                    <p className="text-base sm:text-lg font-bold text-foreground/90 mt-4 leading-relaxed">
+                    <p className="shorai-body text-foreground/90 font-bold mt-3">
                       SHORAI brings these four critical pillars into your campus.
                     </p>
                   </div>
@@ -121,12 +121,12 @@ export default function WhySchoolsNeedShorai() {
         <div className="mb-24">
           <div className="text-center mb-12">
             <SectionReveal>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-tight">
+              <h3 className="shorai-heading">
                 DATA-DRIVEN <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA]">INSIGHTS</span>
               </h3>
             </SectionReveal>
             <SectionReveal delay={0.1}>
-              <p className="text-base sm:text-lg text-muted-foreground mt-3 max-w-2xl mx-auto font-medium">
+              <p className="shorai-body max-w-2xl mx-auto mt-3">
                 Key national metrics showing why hands-on AI and Robotics labs are now essential for modern institutions.
               </p>
             </SectionReveal>
@@ -146,8 +146,8 @@ export default function WhySchoolsNeedShorai() {
                       >
                         {item.stat}
                       </div>
-                      <h4 className="text-lg sm:text-xl font-black text-foreground mb-3 leading-snug">{item.label}</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed font-medium">{item.desc}</p>
+                      <h4 className="shorai-subheading mb-2">{item.label}</h4>
+                      <p className="shorai-body text-xs sm:text-sm">{item.desc}</p>
                     </div>
                   </div>
                 </SectionReveal>
@@ -160,10 +160,10 @@ export default function WhySchoolsNeedShorai() {
         <SectionReveal delay={0.2}>
           <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-[#FF6B00]/15 via-[#FF3D7F]/15 to-[#7928CA]/15 border border-accent/30 backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-8 text-center sm:text-left">
             <div>
-              <span className="text-xs font-mono font-bold tracking-widest text-accent uppercase block mb-2">
+              <span className="shorai-eyebrow text-accent block mb-2">
                 SHORAI TODAY. INNOVATORS TOMORROW.
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+              <h3 className="shorai-subheading text-xl sm:text-2xl">
                 Let&apos;s build future-ready schools that create future-ready citizens.
               </h3>
             </div>

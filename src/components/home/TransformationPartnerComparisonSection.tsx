@@ -218,7 +218,7 @@ export default function TransformationPartnerComparisonSection() {
             <SectionReveal>
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-4 h-0.5 bg-primary" />
-                <span className="text-xs font-mono font-black tracking-[0.2em] text-primary uppercase">
+                <span className="shorai-eyebrow text-primary">
                   {comp.badge}
                 </span>
               </div>
@@ -226,7 +226,7 @@ export default function TransformationPartnerComparisonSection() {
 
             {/* Main Headline */}
             <SectionReveal delay={0.08}>
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground mb-4 leading-tight">
+              <h2 className="shorai-heading mb-4">
                 {comp.title} <br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                   {comp.titleGradient}
@@ -236,7 +236,7 @@ export default function TransformationPartnerComparisonSection() {
 
             {/* Subtitle Description */}
             <SectionReveal delay={0.12}>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium max-w-2xl mb-6">
+              <p className="shorai-body max-w-2xl mb-6">
                 {comp.subtitle}
               </p>
             </SectionReveal>

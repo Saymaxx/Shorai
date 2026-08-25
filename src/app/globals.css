@@ -220,14 +220,62 @@
     scroll-behavior: smooth;
   }
 
-  /* Responsive clamp utilities */
-  .fluid-heading {
-    font-size: clamp(1.75rem, 5vw + 1rem, 3.75rem);
-    line-height: 1.15;
+  /* ── 3-Tier Standardized Typography System ── */
+  .shorai-heading {
+    font-size: clamp(2rem, 3.8vw + 0.5rem, 3.6rem);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-family: var(--font-heading);
   }
 
-  .fluid-subheading {
-    font-size: clamp(1.25rem, 3vw + 0.5rem, 2.25rem);
-    line-height: 1.25;
+  .shorai-subheading {
+    font-size: clamp(1.15rem, 1.8vw + 0.2rem, 1.55rem);
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    font-family: var(--font-heading);
+  }
+
+  .shorai-body {
+    font-size: clamp(0.875rem, 0.9vw + 0.1rem, 1.025rem);
+    line-height: 1.65;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    font-family: var(--font-sans);
+  }
+
+  .shorai-eyebrow {
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  /* ── Motion Accessibility: WCAG 2.1 AA Compliance ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ── Institutional Print & PDF Export Stylesheet ── */
+  @media print {
+    body {
+      background: white !important;
+      color: black !important;
+    }
+    nav, footer, .fixed, iframe, button {
+      display: none !important;
+    }
+    .shorai-heading, .shorai-subheading {
+      color: black !important;
+      page-break-after: avoid;
+    }
   }
 }

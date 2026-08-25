@@ -7,6 +7,7 @@
   <link rel="apple-touch-icon" href="/images/shorai_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#6366F1" />
+  <link rel="manifest" href="/manifest.json" />
   
   <title>SHORAI | AI & Robotics Education for Future-Ready Schools</title>
   <meta name="description"
@@ -28,11 +29,93 @@
   <meta name="twitter:description" content="Turnkey STEM, AI & Robotics innovation labs for forward-thinking schools in India." />
   <meta name="twitter:image" content="https://shorai.in/images/shorai_logo.png" />
 
-  <!-- Performance: Asset Preloading & Google Fonts -->
-  <link rel="preload" href="/images/shorai_logo.png" as="image" type="image/png" />
+  <!-- Performance: Resource Hints & Asset Preloading -->
+  <link rel="dns-prefetch" href="https://script.google.com" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="/images/shorai_logo.png" as="image" type="image/png" fetchpriority="high" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Structured Data: Google JSON-LD Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://shorai.in/#organization",
+        "name": "SHORAI",
+        "alternateName": "SEG Academy - SHORAI Innovation Labs",
+        "url": "https://shorai.in",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://shorai.in/images/shorai_logo.png",
+          "caption": "SHORAI STEM & AI Academic Partner Logo"
+        },
+        "description": "Turnkey AI, Robotics, Coding, and Drone Innovation Labs with NEP 2020 aligned curriculum and certified on-ground trainers for K-12 schools across India.",
+        "parentOrganization": {
+          "@type": "EducationalOrganization",
+          "name": "SEG Academy",
+          "url": "https://www.segacademy.in/"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91-7880630963",
+            "contactType": "Institutional Enquiries",
+            "email": "contact@shorai.in",
+            "areaServed": "IN",
+            "availableLanguage": ["English", "Hindi"]
+          }
+        ],
+        "sameAs": [
+          "https://www.segacademy.in/",
+          "https://www.linkedin.com/company/seg-academy/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://shorai.in/#website",
+        "url": "https://shorai.in/",
+        "name": "SHORAI - Future-Ready STEM & AI Education",
+        "publisher": {
+          "@id": "https://shorai.in/#organization"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is SHORAI's school transformation model?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SHORAI delivers turnkey innovation labs featuring hardware kits, NEP 2020 curriculum (Grades 1-12), and dedicated on-campus certified STEM trainers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which technologies are covered in SHORAI labs?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SHORAI covers 12 core domains including AI & Machine Learning, Robotics & Microcontrollers, Autonomous Drones, IoT, AR/VR, 3D Printing, and Python Coding."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does SHORAI provide dedicated full-time trainers to schools?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, unlike traditional kit providers, SHORAI provides certified Master Trainers who manage lab operations and teach hands-on sessions on your campus."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body class="font-sans antialiased bg-background text-foreground">

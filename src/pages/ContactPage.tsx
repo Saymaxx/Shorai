@@ -79,6 +79,7 @@ export default function ContactPage() {
     purpose: string;
     schoolName: string;
     message: string;
+    websiteHoneypot: string;
   }>({
     name: '',
     email: '',
@@ -86,6 +87,7 @@ export default function ContactPage() {
     purpose: purposeOptions[0],
     schoolName: '',
     message: '',
+    websiteHoneypot: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -110,6 +112,7 @@ export default function ContactPage() {
       organisation: formData.schoolName,
       purpose: formData.purpose,
       message: formData.message,
+      honeypot: formData.websiteHoneypot,
     });
 
     setLoading(false);
@@ -124,6 +127,7 @@ export default function ContactPage() {
       purpose: purposeOptions[0],
       schoolName: '',
       message: '',
+      websiteHoneypot: '',
     });
     setSubmitted(false);
   };
@@ -162,19 +166,19 @@ export default function ContactPage() {
           <SectionReveal>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#7928CA]/10 via-[#6366F1]/10 to-[#00D4FF]/10 border border-primary/30 text-xs font-mono font-bold text-primary mb-5 shadow-sm backdrop-blur-md">
               <Sparkles className="w-3.5 h-3.5 text-primary animate-pulse" />
-              <span>{cHero.badge}</span>
+              <span className="shorai-eyebrow text-primary">{cHero.badge}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
             </div>
           </SectionReveal>
 
           <SectionReveal delay={0.1}>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-5 leading-tight">
+            <h1 className="shorai-heading mb-5">
               {cHero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#FF3D7F] to-[#00D4FF]">{cHero.titleGradient}</span>
             </h1>
           </SectionReveal>
 
           <SectionReveal delay={0.15}>
-            <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="shorai-body max-w-2xl mx-auto">
               {cHero.subtitle}
             </p>
           </SectionReveal>
@@ -264,6 +268,17 @@ export default function ContactPage() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* 🛡️ Invisible Honeypot Trap for Spam Bots */}
+                  <input
+                    type="text"
+                    name="websiteHoneypot"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.websiteHoneypot}
+                    onChange={(e) => setFormData({ ...formData, websiteHoneypot: e.target.value })}
+                    className="hidden opacity-0 pointer-events-none absolute -left-[9999px]"
+                    aria-hidden="true"
+                  />
                   
                   {/* Name & Email Row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

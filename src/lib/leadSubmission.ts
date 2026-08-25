@@ -10,6 +10,7 @@ export interface LeadFormData {
   organisation?: string;
   purpose?: string;
   message?: string;
+  honeypot?: string; // Invisible bot trap field
 }
 
 function sanitize(str?: string): string {
@@ -18,6 +19,12 @@ function sanitize(str?: string): string {
 }
 
 export async function submitLeadToGoogleSheet(data: LeadFormData): Promise<{ success: boolean; message?: string }> {
+  // 🛡️ Invisible Honeypot Trap: If a spam bot filled the invisible decoy field, drop silently
+  if (data.honeypot && data.honeypot.trim().length > 0) {
+    console.warn('[LeadSubmission] Spam bot detected via honeypot trap, dropped silently.');
+    return { success: true, message: 'Enquiry submitted successfully.' };
+  }
+
   const cleanData: LeadFormData = {
     name: sanitize(data.name),
     email: sanitize(data.email),

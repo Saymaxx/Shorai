@@ -64,6 +64,7 @@ export default function LeadInquiryForm({
         organisation: formData.school,
         purpose: formData.purpose,
         message: formData.message,
+        honeypot: formData.websiteHoneypot,
       });
 
       setIsSubmitting(false);

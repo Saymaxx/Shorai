@@ -87,21 +87,21 @@ export default function AboutSEGAcademy() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-5 shadow-sm">
                 <Award className="w-3.5 h-3.5" />
-                <span>{seg.badge}</span>
+                <span className="shorai-eyebrow text-primary">{seg.badge}</span>
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
+              <h2 className="shorai-heading mb-4">
                 About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SEG Academy</span>
               </h2>
             </SectionReveal>
 
             <SectionReveal delay={0.15}>
-              <p className="text-base sm:text-lg font-bold text-foreground/90 tracking-wide mb-3">
+              <p className="shorai-subheading text-base sm:text-lg text-foreground/90 mb-2">
                 {seg.narrative1}
               </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+              <p className="shorai-body mb-6">
                 SHORAI is a subsidiary brand of SEG ACADEMY and our specialized institutional initiative, delivering turnkey STEM, AI, and Robotics innovation hubs to forward-thinking schools across India.
               </p>
             </SectionReveal>

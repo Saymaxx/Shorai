@@ -156,10 +156,10 @@ export default function GradeWiseCurriculumSection() {
             
             {/* Main Title & Subtitle */}
             <SectionReveal delay={0.05}>
-              <div className="text-xs font-mono font-bold text-primary mb-2 uppercase tracking-wider">
+              <div className="shorai-eyebrow text-primary mb-2">
                 {curr.badge}
               </div>
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.08]">
+              <h2 className="shorai-heading mb-4">
                 {curr.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                   {curr.titleGradient}
@@ -168,7 +168,7 @@ export default function GradeWiseCurriculumSection() {
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium mb-6">
+              <p className="shorai-body max-w-xl mb-6">
                 {curr.subtitle}
               </p>
             </SectionReveal>

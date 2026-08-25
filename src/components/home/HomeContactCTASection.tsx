@@ -29,12 +29,12 @@ export default function HomeContactCTASection() {
             <SectionReveal>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-5 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
-                {cta.badge}
+                <span className="shorai-eyebrow text-primary">{cta.badge}</span>
               </div>
             </SectionReveal>
 
             <SectionReveal delay={0.08}>
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-6 leading-[1.05]">
+              <h2 className="shorai-heading mb-5">
                 {cta.titleLine1} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                   {cta.titleGradient}
@@ -43,7 +43,7 @@ export default function HomeContactCTASection() {
             </SectionReveal>
 
             <SectionReveal delay={0.12}>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md font-medium">
+              <p className="shorai-body max-w-md">
                 {cta.subtitle}
               </p>
             </SectionReveal>

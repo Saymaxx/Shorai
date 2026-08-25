@@ -6,7 +6,9 @@ import HeroSocialCTA from '@/components/home/hero/HeroSocialCTA';
 import WhatIsShoraiSection from '@/components/home/WhatIsShoraiSection';
 import WhySchoolsNeedShorai from '@/components/home/WhySchoolsNeedShorai';
 import InnovationLabs from '@/components/home/InnovationLabs';
+import SchoolLabEstimator from '@/components/home/SchoolLabEstimator';
 import StudentTestimonials from '@/components/home/StudentTestimonials';
+import InstitutionalFAQSection from '@/components/home/InstitutionalFAQSection';
 import HomeContactCTASection from '@/components/home/HomeContactCTASection';
 import Footer from '@/components/shared/Footer';
 import WelcomeEnquiryPopup from '@/components/home/WelcomeEnquiryPopup';
@@ -36,13 +38,19 @@ export default function HomePage() {
       {/* 5. Shorai Innovation Labs (Turnkey Robotics & AI Lab Infrastructure) */}
       <InnovationLabs />
 
-      {/* 6. Student Testimonials (Young Innovators Voices) */}
+      {/* 6. Interactive School Lab & ROI Estimator */}
+      <SchoolLabEstimator />
+
+      {/* 7. Student Testimonials (Young Innovators Voices) */}
       <StudentTestimonials />
 
-      {/* 7. Get in Touch Form & High-Impact Closing CTA */}
+      {/* 8. Frequently Asked Questions (Institutional Decision Makers) */}
+      <InstitutionalFAQSection />
+
+      {/* 9. Get in Touch Form & High-Impact Closing CTA */}
       <HomeContactCTASection />
 
-      {/* 8. Comprehensive Footer */}
+      {/* 10. Comprehensive Footer */}
       <Footer />
     </>
   );

@@ -5,11 +5,25 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 interface RouterContextType {
   pathname: string;
   navigate: (path: string) => void;
+  prefetch: (path: string) => void;
 }
+
+const ROUTE_LOADERS: Record<string, () => Promise<any>> = {
+  '/': () => import('@/pages/HomePage'),
+  '/about': () => import('@/pages/AboutUsPage'),
+  '/why-shorai': () => import('@/pages/WhyShoraiPage'),
+  '/schools': () => import('@/pages/SchoolTransformationPage'),
+  '/labs': () => import('@/pages/ShoraiLabsPage'),
+  '/contact': () => import('@/pages/ContactPage'),
+  '/admin': () => import('@/pages/AdminPage'),
+};
+
+const prefetchedRoutes = new Set<string>();
 
 const RouterContext = createContext<RouterContextType>({
   pathname: '/',
   navigate: () => {},
+  prefetch: () => {},
 });
 
 export function normalizePath(path: string): string {
@@ -44,6 +58,22 @@ export function RouterProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  const prefetch = (path: string) => {
+    const normalized = normalizePath(path);
+    if (prefetchedRoutes.has(normalized)) return;
+    
+    const loader = ROUTE_LOADERS[normalized];
+    if (loader) {
+      prefetchedRoutes.add(normalized);
+      // Low priority background prefetch
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        (window as any).requestIdleCallback(() => loader().catch(() => {}));
+      } else {
+        setTimeout(() => loader().catch(() => {}), 1);
+      }
+    }
+  };
+
   const navigate = (path: string) => {
     const normalized = normalizePath(path);
     if (typeof window !== 'undefined') {
@@ -54,7 +84,7 @@ export function RouterProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <RouterContext.Provider value={{ pathname, navigate }}>
+    <RouterContext.Provider value={{ pathname, navigate, prefetch }}>
       {children}
     </RouterContext.Provider>
   );
