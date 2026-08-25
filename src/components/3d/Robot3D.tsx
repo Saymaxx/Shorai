@@ -843,7 +843,7 @@ export default function Robot3DCanvas({
     <div ref={containerRef} className="w-full h-full relative cursor-grab active:cursor-grabbing">
       {isVisible && (
         <Canvas
-          camera={{ position: [0, 0.20, 5.2], fov: 38 }}
+          camera={{ position: [0, 0.05, 5.0], fov: 38 }}
           dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1.5] : [1, 2]}
           gl={{
             antialias: true,

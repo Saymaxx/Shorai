@@ -49,7 +49,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-[calc(100vh-2rem)] w-full bg-background overflow-hidden flex items-center pt-24 sm:pt-28 pb-10 sm:pb-14 transition-colors duration-300"
+      className="relative w-full bg-background overflow-hidden flex items-center pt-20 sm:pt-28 pb-8 sm:pb-14 transition-colors duration-300 min-h-0 lg:min-h-[calc(100vh-2rem)]"
     >
       {/* ── Soft & Cheerful Background Atmospherics ── */}
       <motion.div
@@ -89,15 +89,15 @@ export default function HeroSection() {
       </motion.div>
 
       {/* ── Main Hero Layout ── */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] items-center min-h-[calc(100vh-6rem)]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 w-full relative z-20 grid lg:grid-cols-[48%_52%] gap-6 lg:gap-4 items-center">
         
         {/* LEFT — Student-focused value proposition */}
-        <div className="relative z-30 py-8 lg:py-0">
+        <div className="relative z-30 pt-4 pb-2 lg:py-0">
           <HeroContent />
         </div>
 
         {/* RIGHT — Friendly, Interactive 3D Robot Companion */}
-        <div className="relative z-20 w-full h-[520px] sm:h-[600px] lg:h-[680px] flex items-center justify-center">
+        <div className="relative z-20 w-full h-[360px] sm:h-[460px] lg:h-[640px] flex items-center justify-center">
           <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
         </div>
 
