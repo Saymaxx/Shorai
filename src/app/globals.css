@@ -196,25 +196,38 @@
     border: 1px solid rgba(129, 140, 248, 0.3);
   }
 
-  /* Custom smooth scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #F1F5F9;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 9999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
-  }
-
-  html {
+  /* Mobile horizontal overflow protection & responsive scrolling */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
     scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent iOS automatic zoom on form input focus while keeping desktop compact */
+  @media (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Smooth hardware-accelerated touch scrolling */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Responsive clamp utilities */
+  .fluid-heading {
+    font-size: clamp(1.75rem, 5vw + 1rem, 3.75rem);
+    line-height: 1.15;
+  }
+
+  .fluid-subheading {
+    font-size: clamp(1.25rem, 3vw + 0.5rem, 2.25rem);
+    line-height: 1.25;
   }
 }

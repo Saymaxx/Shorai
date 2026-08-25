@@ -822,20 +822,39 @@ export default function Robot3DCanvas({
 }: {
   activeSection?: string;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
-      <Canvas
-        camera={{ position: [0, 0.20, 5.2], fov: 38 }}
-        dpr={[1, 2]}
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance',
-        }}
-      >
-        <CinematicLighting />
-        <CuteRobotHeadModel />
-      </Canvas>
+    <div ref={containerRef} className="w-full h-full relative cursor-grab active:cursor-grabbing">
+      {isVisible && (
+        <Canvas
+          camera={{ position: [0, 0.20, 5.2], fov: 38 }}
+          dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1.5] : [1, 2]}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+          }}
+        >
+          <CinematicLighting />
+          <CuteRobotHeadModel />
+        </Canvas>
+      )}
     </div>
   );
 }

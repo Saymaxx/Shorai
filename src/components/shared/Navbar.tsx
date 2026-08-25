@@ -46,6 +46,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const isPageActive = (href: string) => {
     if (href === '/') {
       return pathname === '/' || pathname === '';
@@ -66,19 +78,19 @@ export default function Navbar() {
           
           {/* ── Brand Logo with SEG Academy Endorsement ── */}
           <Link href="/" className="relative z-50 flex items-center gap-3.5 group">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-[0_0_20px_rgba(99,102,241,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
               <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-black tracking-tight text-foreground">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
                   SHORAI<span className="text-primary">.</span>
                 </span>
                 <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-primary/15 text-primary border border-primary/30">
                   STEM LABS
                 </span>
               </div>
-              <span className="text-[11px] font-semibold text-muted-foreground tracking-tight hidden sm:block">
+              <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground tracking-tight hidden xs:block sm:block">
                 An Initiative by SEG Academy
               </span>
             </div>
@@ -118,13 +130,13 @@ export default function Navbar() {
           </nav>
 
           {/* ── Right Action Area (Theme Switcher + Broader Contact Us Button) ── */}
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             
             {/* Dark / Light Mode Toggle Button */}
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              className="w-11 h-11 rounded-2xl bg-card/90 hover:bg-card border border-border flex items-center justify-center text-foreground transition-all shadow-sm group backdrop-blur-md hover:scale-105"
+              className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-card/90 hover:bg-card border border-border flex items-center justify-center text-foreground transition-all shadow-sm group backdrop-blur-md hover:scale-105"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {theme === 'dark' ? (
@@ -156,7 +168,7 @@ export default function Navbar() {
               <MagneticWrapper>
                 <Link
                   href="/contact"
-                  className="group relative h-11 px-6 rounded-full font-black text-sm text-white overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_30px_rgba(99,102,241,0.6)] flex items-center gap-2"
+                  className="group relative min-h-[44px] h-11 px-6 rounded-full font-black text-sm text-white overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_30px_rgba(99,102,241,0.6)] flex items-center gap-2"
                   style={{
                     background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
                   }}
@@ -172,7 +184,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden relative z-50 text-foreground p-2.5 rounded-2xl bg-card/90 border border-border backdrop-blur-md shadow-sm"
+              className="lg:hidden relative z-50 text-foreground min-w-[44px] min-h-[44px] p-2.5 rounded-2xl bg-card/90 border border-border backdrop-blur-md shadow-sm flex items-center justify-center"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle navigation menu"
@@ -190,10 +202,10 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.25 }}
-              className="absolute top-full left-0 w-full bg-card/95 backdrop-blur-3xl border-b border-border shadow-2xl lg:hidden overflow-hidden"
+              className="fixed top-[65px] left-0 w-full max-h-[calc(100dvh-65px)] overflow-y-auto bg-card/98 backdrop-blur-3xl border-b border-border shadow-2xl lg:hidden z-40 touch-scroll"
             >
-              <div className="p-6 flex flex-col gap-3">
-                <div className="text-xs font-mono font-black text-muted-foreground uppercase tracking-widest px-2">
+              <div className="p-5 sm:p-6 flex flex-col gap-2.5 pb-10">
+                <div className="text-[11px] font-mono font-black text-muted-foreground uppercase tracking-widest px-2 mb-1">
                   Navigation Pages
                 </div>
                 {navPages.map((page) => {
@@ -205,10 +217,10 @@ export default function Navbar() {
                       key={page.name}
                       href={page.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 text-base font-black py-3.5 px-4 rounded-2xl transition-colors ${
+                      className={`flex items-center gap-3 text-base font-black min-h-[48px] py-3.5 px-4 rounded-2xl transition-colors ${
                         active 
                           ? 'bg-primary/15 text-primary border border-primary/30' 
-                          : 'text-foreground hover:bg-muted'
+                          : 'text-foreground hover:bg-muted active:bg-muted/80'
                       }`}
                     >
                       <Icon className={`w-5 h-5 ${active ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -220,7 +232,7 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-2xl mt-4 w-full h-13 text-sm font-black text-white flex items-center justify-center gap-2 shadow-lg"
+                  className="rounded-2xl mt-4 w-full min-h-[48px] h-13 text-sm font-black text-white flex items-center justify-center gap-2 shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
                   }}

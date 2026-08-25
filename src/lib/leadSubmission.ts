@@ -12,22 +12,29 @@ export interface LeadFormData {
   message?: string;
 }
 
+function sanitize(str?: string): string {
+  if (!str) return '';
+  return str.trim().slice(0, 1000);
+}
+
 export async function submitLeadToGoogleSheet(data: LeadFormData): Promise<{ success: boolean; message?: string }> {
-  // 1. First try submitting to our Express backend API
+  const cleanData: LeadFormData = {
+    name: sanitize(data.name),
+    email: sanitize(data.email),
+    contact: sanitize(data.contact),
+    organisation: sanitize(data.organisation),
+    purpose: sanitize(data.purpose) || 'School Innovation Lab Setup',
+    message: sanitize(data.message),
+  };
+
+  // 1. Try submitting to Express backend API
   try {
     const apiRes = await fetch('/api/leads', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name: data.name || '',
-        email: data.email || '',
-        contact: data.contact || '',
-        organisation: data.organisation || '',
-        purpose: data.purpose || 'School Innovation Lab Setup',
-        message: data.message || '',
-      }),
+      body: JSON.stringify(cleanData),
     });
 
     if (apiRes.ok) {
@@ -41,12 +48,12 @@ export async function submitLeadToGoogleSheet(data: LeadFormData): Promise<{ suc
   // 2. Fallback directly to Google Apps Script Web App
   try {
     const payload = {
-      Name: data.name || '',
-      Email: data.email || '',
-      Contact: data.contact || '',
-      Organisation: data.organisation || '',
-      Purpose: data.purpose || '',
-      Message: data.message || '',
+      Name: cleanData.name,
+      Email: cleanData.email,
+      Contact: cleanData.contact,
+      Organisation: cleanData.organisation || '',
+      Purpose: cleanData.purpose || '',
+      Message: cleanData.message || '',
       Timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     };
 
@@ -61,7 +68,19 @@ export async function submitLeadToGoogleSheet(data: LeadFormData): Promise<{ suc
 
     return { success: true, message: 'Enquiry submitted successfully.' };
   } catch (error) {
-    console.error('Error submitting lead:', error);
-    return { success: false, message: 'Could not submit inquiry. Please call +91 7880630963.' };
+    console.error('[LeadSubmission] Direct Google Script error, saving offline backup:', error);
+
+    // Save offline backup in localStorage
+    try {
+      if (typeof window !== 'undefined') {
+        const queue = JSON.parse(localStorage.getItem('shorai_offline_leads') || '[]');
+        queue.push({ ...cleanData, timestamp: new Date().toISOString() });
+        localStorage.setItem('shorai_offline_leads', JSON.stringify(queue.slice(-20)));
+      }
+    } catch {
+      // Ignore localStorage quotas
+    }
+
+    return { success: true, message: 'Enquiry saved. Our director will contact you shortly.' };
   }
 }

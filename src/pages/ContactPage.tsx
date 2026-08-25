@@ -142,10 +142,11 @@ export default function ContactPage() {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="text-[19vw] sm:text-[21vw] font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#00D4FF]/20 via-[#7928CA]/15 to-transparent leading-none"
+            className="text-[15vw] sm:text-[18vw] lg:text-[20vw] font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#00D4FF]/20 via-[#7928CA]/15 to-transparent leading-none"
             style={{ 
               filter: 'blur(0.5px)',
-              letterSpacing: '-0.06em' 
+              letterSpacing: '-0.05em',
+              maxWidth: '100%'
             }}
           >
             SHORAI

@@ -115,26 +115,26 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.93, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-            className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-card border-2 border-primary/40 shadow-[0_25px_80px_rgba(0,0,0,0.5)] z-10 my-4"
+            className="relative w-full max-w-3xl max-h-[92dvh] overflow-y-auto touch-scroll rounded-3xl bg-card border-2 border-primary/40 shadow-[0_25px_80px_rgba(0,0,0,0.5)] z-10 my-auto"
           >
             {/* Top Multi-Color Neon Accent Bar */}
-            <div className="h-2 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#FF3D7F] to-[#00D4FF]" />
+            <div className="h-2 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#FF3D7F] to-[#00D4FF] sticky top-0 z-40" />
 
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-3.5 right-3.5 z-30 w-9 h-9 rounded-full bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all shadow-sm"
+              className="sticky sm:absolute top-3.5 right-3.5 ml-auto mr-3.5 sm:mr-0 z-50 w-9 h-9 rounded-full bg-muted/90 hover:bg-muted border border-border flex items-center justify-center text-foreground/80 hover:text-foreground hover:scale-105 transition-all shadow-sm"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px]">
+            <div className="grid grid-cols-1 md:grid-cols-12 min-h-0 md:min-h-[460px]">
               
               {/* ═══════════════════════════════════════════════════════════════
-                  LEFT: BIGGER CENTERED LOGO + 2-LINE TAGLINE + COLORFUL GRADIENT + SOCIALS
+                  LEFT: CENTERED LOGO + TAGLINE + COLORFUL GRADIENT + SOCIALS
                  ═══════════════════════════════════════════════════════════════ */}
-              <div className="md:col-span-5 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between text-white text-center bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
+              <div className="md:col-span-5 p-5 sm:p-8 relative overflow-hidden flex flex-col justify-between text-white text-center bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                 
                 {/* Colorful Glow Lighting Elements */}
                 <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-pink-500/30 blur-[40px] pointer-events-none" />
@@ -142,10 +142,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                 <div className="relative z-10 flex flex-col items-center">
                   
-                  {/* Bigger Centered Shorai Logo */}
-                  <div className="relative group mb-5">
+                  {/* Centered Shorai Logo */}
+                  <div className="relative group mb-3 sm:mb-5">
                     <div className="absolute -inset-1.5 rounded-full bg-white/40 opacity-75 blur-md group-hover:opacity-100 transition duration-500 animate-pulse" />
-                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white p-1 shadow-2xl flex items-center justify-center border-2 border-white/60 overflow-hidden">
+                    <div className="relative w-16 h-16 sm:w-28 sm:h-28 rounded-full bg-white p-1 shadow-2xl flex items-center justify-center border-2 border-white/60 overflow-hidden">
                       <img 
                         src="/images/shorai_logo.png" 
                         alt="SHORAI" 
@@ -154,32 +154,32 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </div>
                   </div>
 
-                  <div className="mb-4">
-                    <span className="text-2xl sm:text-3xl font-black tracking-tight text-white block leading-none mb-1">SHORAI</span>
+                  <div className="mb-2 sm:mb-4">
+                    <span className="text-xl sm:text-3xl font-black tracking-tight text-white block leading-none mb-1">SHORAI</span>
                     <span className="text-[10px] sm:text-[11px] font-mono text-white/90 font-bold uppercase tracking-wider block">
                       A Subsidiary of SEG Academy
                     </span>
                   </div>
 
                   {/* 2-Line Tagline Headline */}
-                  <div className="space-y-1.5 max-w-xs mx-auto">
-                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+                  <div className="space-y-1 sm:space-y-1.5 max-w-xs mx-auto">
+                    <h3 className="text-lg sm:text-2xl font-black text-white leading-tight tracking-tight">
                       Future-Ready Education
                     </h3>
-                    <p className="text-xs text-white/90 font-medium leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-white/90 font-medium leading-relaxed">
                       Empowering forward-thinking schools with turnkey robotics, AI, and coding innovation hubs.
                     </p>
                   </div>
                 </div>
 
                 {/* Left Bottom: Icon-only Direct Connect Row */}
-                <div className="relative z-10 pt-4 border-t border-white/25 flex items-center justify-center gap-3">
+                <div className="relative z-10 pt-3 sm:pt-4 mt-3 sm:mt-0 border-t border-white/25 flex items-center justify-center gap-3">
                   {/* WhatsApp Icon Button */}
                   <a
                     href={siteConfig.contact.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="WhatsApp"
                     title="WhatsApp"
                   >
@@ -190,7 +190,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="Instagram"
                     title="Instagram"
                   >
@@ -201,7 +201,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="YouTube"
                     title="YouTube"
                   >
@@ -212,7 +212,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="LinkedIn"
                     title="LinkedIn"
                   >

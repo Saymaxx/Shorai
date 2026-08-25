@@ -55,7 +55,7 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
 
   return (
     <div
-      className="relative w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[680px] flex items-center justify-center pointer-events-auto select-none overflow-visible"
+      className="relative w-full h-full min-h-[360px] sm:min-h-[480px] lg:min-h-[640px] flex items-center justify-center pointer-events-auto select-none overflow-visible"
       onClick={handleContainerClick}
     >
       {/* ── MOTION GRAPHIC: Rotating Concentric Holographic HUD Rings ── */}

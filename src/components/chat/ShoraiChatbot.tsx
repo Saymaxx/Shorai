@@ -457,7 +457,7 @@ export default function ShoraiChatbot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-auto">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto">
       
       {/* ── Chat Window ────────────────────────────────────────── */}
       <AnimatePresence>
@@ -468,7 +468,7 @@ export default function ShoraiChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.94 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className={`mb-3.5 w-[92vw] sm:w-[370px] h-[490px] max-h-[78vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl transition-all ${
+            className={`mb-3 w-[calc(100vw-32px)] sm:w-[380px] h-[520px] max-h-[82dvh] rounded-3xl overflow-hidden flex flex-col shadow-2xl transition-all touch-scroll ${
               isDark 
                 ? 'bg-slate-900/95 border border-slate-800 text-white shadow-black/60' 
                 : 'bg-white/95 border border-indigo-100/90 text-slate-900 shadow-[0_20px_50px_rgba(99,102,241,0.18)]'
