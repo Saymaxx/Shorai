@@ -237,6 +237,14 @@ export default function ShoraiChatbot() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const handleOpenAssistant = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('shorai:open-assistant', handleOpenAssistant);
+    return () => window.removeEventListener('shorai:open-assistant', handleOpenAssistant);
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }

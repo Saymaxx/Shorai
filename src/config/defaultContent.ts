@@ -550,10 +550,10 @@ export const defaultSiteContent: SiteContent = {
     },
     segAcademy: {
       badge: 'OUR HERITAGE & FOUNDATION',
-      title: 'Built Upon 15+ Years of ',
-      titleGradient: 'Educational Excellence.',
+      title: 'About ',
+      titleGradient: 'SEG Academy',
       narrative1: 'Skill and Employability Generation Academy (SEG Academy) was established with a singular vision: to empower students with industry-relevant skills and foster genuine technological literacy.',
-      narrative2: 'SHORAI is our specialized institutional initiative, delivering turnkey STEM, AI, and Robotics innovation hubs to forward-thinking schools across India.',
+      narrative2: 'SHORAI is a subsidiary brand of SEG ACADEMY and our specialized institutional initiative, delivering turnkey STEM, AI, and Robotics innovation hubs to forward-thinking schools across India.',
       quote: 'We don\'t just supply equipment; we build a continuous culture of hands-on invention that elevates the school\'s reputation and students\' futures.',
     },
     impact: {
@@ -573,7 +573,7 @@ export const defaultSiteContent: SiteContent = {
     closingCta: {
       title: 'Partner With SEG Academy & Shorai Today',
       subtitle: 'Let\'s build an innovation lab on your campus and empower your students with 21st-century technological fluency.',
-      buttonText: 'To know more about us contact us',
+      buttonText: 'To know more about us',
     },
   },
 

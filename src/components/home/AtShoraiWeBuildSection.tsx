@@ -52,28 +52,14 @@ export default function AtShoraiWeBuildSection() {
 
   // 2. AI DEMO STATE
   const [aiTask, setAiTask] = useState<'neural' | 'vision' | 'nlp'>('vision');
-  const [aiConfidence, setAiConfidence] = useState('99.4%');
 
   // 3. CODING DEMO STATE
   const [selectedLanguage, setSelectedLanguage] = useState<'python' | 'javascript' | 'blocks'>('python');
-  const [activeCodeBlock, setActiveCodeBlock] = useState('bot.arm_motors(power=100)');
-  const [codeOutput, setCodeOutput] = useState('System ready. Initializing microcontrollers...');
   const [isCodeRunning, setIsCodeRunning] = useState(false);
 
   // 4. MARS ROVER DEMO STATE
-  const [roverMode, setRoverMode] = useState<'idle' | 'drive' | 'scan' | 'sample'>('drive');
   const [roverSpeed, setRoverSpeed] = useState('0.8 m/s');
-  const [obstacleDistance, setObstacleDistance] = useState('1.8 m');
   const [armStatus, setArmStatus] = useState<'idle' | 'scanning' | 'sampling'>('scanning');
-
-  const runCodeSimulation = () => {
-    setIsCodeRunning(true);
-    setCodeOutput('Compiling syntax and transmitting to embedded hardware...');
-    setTimeout(() => {
-      setCodeOutput('Execution SUCCESS: Motors armed at 100% duty cycle. Telemetry stream active.');
-      setIsCodeRunning(false);
-    }, 1200);
-  };
 
   return (
     <section id="at-shorai-we-build" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border transition-colors duration-300">
@@ -114,32 +100,32 @@ export default function AtShoraiWeBuildSection() {
             <div className="rounded-3xl bg-card border-2 border-border hover:border-sky-500/50 transition-all duration-300 shadow-xl overflow-hidden flex flex-col justify-between h-full group">
               
               {/* Card Header */}
-              <div className="p-4 sm:p-5 border-b border-border bg-muted/40 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-500 flex items-center justify-center font-bold shadow-sm">
-                    <Plane className="w-5 h-5" />
+              <div className="p-4 sm:p-6 border-b border-border bg-muted/40 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-sky-500/15 text-sky-500 flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                    <Plane className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono font-bold text-sky-500 uppercase tracking-widest">3D AVIONICS MODEL</div>
-                    <h3 className="text-base sm:text-lg font-black text-foreground">Autonomous Drone Simulator</h3>
+                    <div className="text-xs font-mono font-bold text-sky-500 uppercase tracking-widest">3D AVIONICS MODEL</div>
+                    <h3 className="text-lg sm:text-xl font-black text-foreground">Autonomous Drone Simulator</h3>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setIsDroneFlying(!isDroneFlying)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all ${
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold flex items-center gap-1.5 transition-all flex-shrink-0 ${
                     isDroneFlying 
                       ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30' 
                       : 'bg-muted text-muted-foreground border border-border'
                   }`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isDroneFlying ? 'bg-emerald-500 animate-ping' : 'bg-muted-foreground'}`} />
+                  <span className={`w-2.5 h-2.5 rounded-full ${isDroneFlying ? 'bg-emerald-500 animate-ping' : 'bg-muted-foreground'}`} />
                   <span>{isDroneFlying ? 'AIRBORNE' : 'STANDBY'}</span>
                 </button>
               </div>
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
-              <div className="relative h-[240px] sm:h-[270px] bg-slate-950/95 border-b border-border overflow-hidden">
+              <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
                 <Suspense fallback={<CanvasLoadingSpinner />}>
                   <Drone3D 
                     flightMode={droneMode} 
@@ -149,28 +135,34 @@ export default function AtShoraiWeBuildSection() {
                 </Suspense>
 
                 {/* 3D Canvas Overlay HUD */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-sky-500/30 text-[10px] font-mono text-sky-400 pointer-events-none flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-sky-400 animate-spin" style={{ animationDuration: '8s' }} />
+                <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-sky-500/30 text-xs font-mono text-sky-400 pointer-events-none flex items-center gap-2">
+                  <Compass className="w-4 h-4 text-sky-400 animate-spin" style={{ animationDuration: '8s' }} />
                   <span>DRAG TO ROTATE 3D MODEL</span>
                 </div>
 
-                <div className="absolute top-3 right-3 flex items-center gap-2 text-[10px] font-mono text-slate-300 pointer-events-none">
-                  <span className="px-2 py-0.5 rounded bg-black/60 border border-slate-700 flex items-center gap-1">
-                    <Wifi className="w-3 h-3 text-emerald-400" /> 5.8 GHz
+                <div className="absolute top-3.5 right-3.5 flex items-center gap-2 text-xs font-mono text-slate-300 pointer-events-none">
+                  <span className="px-2.5 py-1 rounded-lg bg-black/70 border border-slate-700 flex items-center gap-1.5">
+                    <Wifi className="w-3.5 h-3.5 text-emerald-400" /> 5.8 GHz
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-black/60 border border-slate-700 flex items-center gap-1">
-                    <Battery className="w-3 h-3 text-emerald-400" /> 94%
+                  <span className="px-2.5 py-1 rounded-lg bg-black/70 border border-slate-700 flex items-center gap-1.5">
+                    <Battery className="w-3.5 h-3.5 text-emerald-400" /> 94%
                   </span>
                 </div>
               </div>
 
               {/* Interactive Flight Controls Body */}
-              <div className="p-4 sm:p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                 
+                {/* 3D Model Overview Description */}
+                <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/40 p-4 rounded-2xl border border-border/80">
+                  <strong className="font-bold text-foreground">What Students Learn: </strong>
+                  Build, calibrate, and program quadcopter UAVs with LiDAR sensors and telemetry algorithms for autonomous waypoint navigation, aerodynamics, and aerial flight testing.
+                </div>
+
                 {/* Flight Mode Selector Buttons */}
                 <div>
-                  <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase mb-2">Switch 3D Flight Pattern:</div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="text-xs sm:text-sm font-mono font-bold text-muted-foreground uppercase mb-2.5">Switch 3D Flight Pattern:</div>
+                  <div className="grid grid-cols-3 gap-2.5">
                     {[
                       { id: 'hover', label: 'Stable Hover' },
                       { id: 'orbit', label: '360° Orbit' },
@@ -179,7 +171,7 @@ export default function AtShoraiWeBuildSection() {
                       <button
                         key={m.id}
                         onClick={() => setDroneMode(m.id as any)}
-                        className={`py-2 px-2 rounded-xl text-xs font-bold font-mono transition-all border ${
+                        className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold font-mono transition-all border ${
                           droneMode === m.id
                             ? 'bg-sky-500 text-white border-sky-500 shadow-md scale-105'
                             : 'bg-muted/50 text-muted-foreground hover:text-foreground border-border'
@@ -191,26 +183,10 @@ export default function AtShoraiWeBuildSection() {
                   </div>
                 </div>
 
-                {/* Telemetry Strip */}
-                <div className="grid grid-cols-3 gap-2 text-center py-2 px-3 bg-muted/40 rounded-xl border border-border">
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">ALTITUDE</div>
-                    <div className="text-xs font-black text-sky-500 font-mono">14.8 m</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">VELOCITY</div>
-                    <div className="text-xs font-black text-emerald-500 font-mono">3.4 m/s</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">PATTERN</div>
-                    <div className="text-xs font-black text-foreground font-mono uppercase">{droneMode}</div>
-                  </div>
-                </div>
-
               </div>
 
               {/* Bottom Tag */}
-              <div className="p-3 px-5 border-t border-border bg-muted/20 text-xs font-medium text-muted-foreground flex items-center justify-between">
+              <div className="p-3.5 px-6 border-t border-border bg-muted/20 text-xs sm:text-sm font-medium text-muted-foreground flex items-center justify-between">
                 <span>Autonomous Flight &amp; Telemetry</span>
                 <span className="text-primary font-bold">K-12 Aviation</span>
               </div>
@@ -226,59 +202,64 @@ export default function AtShoraiWeBuildSection() {
             <div className="rounded-3xl bg-card border-2 border-border hover:border-purple-500/50 transition-all duration-300 shadow-xl overflow-hidden flex flex-col justify-between h-full group">
               
               {/* Card Header */}
-              <div className="p-4 sm:p-5 border-b border-border bg-muted/40 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-500 flex items-center justify-center font-bold shadow-sm">
-                    <Brain className="w-5 h-5" />
+              <div className="p-4 sm:p-6 border-b border-border bg-muted/40 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-500 flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                    <Brain className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono font-bold text-purple-500 uppercase tracking-widest">3D NEURAL CORE MODEL</div>
-                    <h3 className="text-base sm:text-lg font-black text-foreground">AI Neural Network Inspector</h3>
+                    <div className="text-xs font-mono font-bold text-purple-500 uppercase tracking-widest">3D NEURAL CORE MODEL</div>
+                    <h3 className="text-lg sm:text-xl font-black text-foreground">AI Neural Network Inspector</h3>
                   </div>
                 </div>
 
-                <div className="px-3 py-1.5 rounded-xl bg-purple-500/15 text-purple-500 border border-purple-500/30 text-xs font-mono font-bold flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 animate-pulse" />
+                <div className="px-3.5 py-2 rounded-xl bg-purple-500/15 text-purple-500 border border-purple-500/30 text-xs sm:text-sm font-mono font-bold flex items-center gap-1.5 flex-shrink-0">
+                  <Activity className="w-4 h-4 animate-pulse" />
                   <span>SYNAPSE ACTIVE</span>
                 </div>
               </div>
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
-              <div className="relative h-[240px] sm:h-[270px] bg-slate-950/95 border-b border-border overflow-hidden">
+              <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
                 <Suspense fallback={<CanvasLoadingSpinner />}>
                   <AIBrain3D mode={aiTask} speed={1.2} />
                 </Suspense>
 
                 {/* 3D Canvas Overlay HUD */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-purple-500/30 text-[10px] font-mono text-purple-400 pointer-events-none flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5 text-purple-400" />
+                <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-purple-500/30 text-xs font-mono text-purple-400 pointer-events-none flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-purple-400" />
                   <span>INTERACTIVE 3D NEURAL SPHERE</span>
                 </div>
 
-                <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-[10px] font-mono text-purple-300 pointer-events-none">
+                <div className="absolute top-3.5 right-3.5 px-3 py-1 rounded-lg bg-black/70 border border-slate-700 text-xs font-mono text-purple-300 pointer-events-none">
                   1.2 ms Edge Latency
                 </div>
               </div>
 
               {/* Interactive AI Controls Body */}
-              <div className="p-4 sm:p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                 
+                {/* 3D Model Overview Description */}
+                <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/40 p-4 rounded-2xl border border-border/80">
+                  <strong className="font-bold text-foreground">What Students Learn: </strong>
+                  Explore neural network architectures, train Computer Vision models for real-time edge object detection, and deploy deep learning natural language classifiers.
+                </div>
+
                 {/* AI Model Task Switcher */}
                 <div>
-                  <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase mb-2">Switch 3D Neural Architecture:</div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="text-xs sm:text-sm font-mono font-bold text-muted-foreground uppercase mb-2.5">Switch 3D Neural Architecture:</div>
+                  <div className="grid grid-cols-3 gap-2.5">
                     {[
-                      { id: 'vision', label: 'Vision CNN', conf: '99.4%' },
-                      { id: 'nlp', label: 'NLP Speech', conf: '98.1%' },
-                      { id: 'neural', label: 'Deep MLP', conf: '96.8%' },
+                      { id: 'vision', label: 'Vision CNN' },
+                      { id: 'nlp', label: 'NLP Speech' },
+                      { id: 'neural', label: 'Deep MLP' },
                     ].map((t) => (
                       <button
                         key={t.id}
                         onClick={() => {
                           setAiTask(t.id as any);
-                          setAiConfidence(t.conf);
                         }}
-                        className={`py-2 px-2 rounded-xl text-xs font-bold font-mono transition-all border ${
+                        className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold font-mono transition-all border ${
                           aiTask === t.id
                             ? 'bg-purple-600 text-white border-purple-600 shadow-md scale-105'
                             : 'bg-muted/50 text-muted-foreground hover:text-foreground border-border'
@@ -290,25 +271,10 @@ export default function AtShoraiWeBuildSection() {
                   </div>
                 </div>
 
-                {/* Confidence Bar */}
-                <div className="p-3 bg-muted/40 rounded-xl border border-border">
-                  <div className="flex justify-between text-xs font-mono text-foreground mb-1">
-                    <span>Classification Accuracy</span>
-                    <span className="text-emerald-500 font-bold">{aiConfidence}</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
-                    <motion.div 
-                      className="h-full bg-gradient-to-r from-purple-500 via-indigo-500 to-emerald-400 rounded-full"
-                      animate={{ width: aiConfidence }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  </div>
-                </div>
-
               </div>
 
               {/* Bottom Tag */}
-              <div className="p-3 px-5 border-t border-border bg-muted/20 text-xs font-medium text-muted-foreground flex items-center justify-between">
+              <div className="p-3.5 px-6 border-t border-border bg-muted/20 text-xs sm:text-sm font-medium text-muted-foreground flex items-center justify-between">
                 <span>Computer Vision &amp; Generative AI</span>
                 <span className="text-primary font-bold">Grade 6-12</span>
               </div>
@@ -324,101 +290,106 @@ export default function AtShoraiWeBuildSection() {
             <div className="rounded-3xl bg-card border-2 border-border hover:border-emerald-500/50 transition-all duration-300 shadow-xl overflow-hidden flex flex-col justify-between h-full group">
               
               {/* Card Header */}
-              <div className="p-4 sm:p-5 border-b border-border bg-muted/40 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center font-bold shadow-sm">
-                    <Code2 className="w-5 h-5" />
+              <div className="p-4 sm:p-6 border-b border-border bg-muted/40 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                    <Code2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest">3D LOGIC ENGINE MODEL</div>
-                    <h3 className="text-base sm:text-lg font-black text-foreground">Robot Logic &amp; Code Compiler</h3>
+                    <div className="text-xs font-mono font-bold text-emerald-500 uppercase tracking-widest">3D LOGIC ENGINE MODEL</div>
+                    <h3 className="text-lg sm:text-xl font-black text-foreground">Robot Logic &amp; Code Compiler</h3>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-muted p-1 rounded-xl border border-border text-xs font-mono">
+                <div className="flex items-center gap-1.5 bg-muted p-1.5 rounded-xl border border-border text-xs sm:text-sm font-mono flex-shrink-0">
                   {(['python', 'javascript'] as const).map((lang) => (
                     <button
                       key={lang}
-                      onClick={() => setSelectedLanguage(lang)}
-                      className={`px-2 py-0.5 rounded-lg font-bold transition-all ${
+                      onClick={() => {
+                        setSelectedLanguage(lang);
+                        setIsCodeRunning(true);
+                        setTimeout(() => setIsCodeRunning(false), 2400);
+                      }}
+                      className={`px-3 py-1 rounded-lg font-bold transition-all ${
                         selectedLanguage === lang
                           ? 'bg-primary text-white shadow-sm'
                           : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      {lang === 'python' ? 'PY' : 'JS'}
+                      {lang === 'python' ? 'Python' : 'JS'}
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
-              <div className="relative h-[240px] sm:h-[270px] bg-slate-950/95 border-b border-border overflow-hidden">
+              <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
                 <Suspense fallback={<CanvasLoadingSpinner />}>
                   <Coding3D 
                     isExecuting={isCodeRunning} 
                     language={selectedLanguage} 
-                    activeCodeBlock={activeCodeBlock}
                   />
                 </Suspense>
 
                 {/* 3D Canvas Overlay HUD */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-emerald-500/30 text-[10px] font-mono text-emerald-400 pointer-events-none flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-emerald-500/30 text-xs font-mono text-emerald-400 pointer-events-none flex items-center gap-2">
+                  <Terminal className="w-4 h-4 text-emerald-400" />
                   <span>3D HOLOGRAPHIC LOGIC CUBE</span>
                 </div>
 
                 <button
-                  onClick={runCodeSimulation}
+                  onClick={() => {
+                    setIsCodeRunning(true);
+                    setTimeout(() => setIsCodeRunning(false), 3000);
+                  }}
                   disabled={isCodeRunning}
-                  className="absolute top-3 right-3 px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 text-[11px] font-bold font-mono flex items-center gap-1.5 hover:bg-emerald-400 transition-all shadow-lg disabled:opacity-50"
+                  className="absolute top-3.5 right-3.5 px-3.5 py-1.5 rounded-xl bg-emerald-500 text-slate-950 text-xs sm:text-sm font-bold font-mono flex items-center gap-1.5 hover:bg-emerald-400 transition-all shadow-lg disabled:opacity-50"
                 >
-                  <Play className="w-3 h-3" />
+                  <Play className="w-3.5 h-3.5 fill-current" />
                   <span>{isCodeRunning ? 'Compiling 3D...' : 'Run 3D Code'}</span>
                 </button>
               </div>
 
               {/* Interactive Coding Sandbox Body */}
-              <div className="p-4 sm:p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                 
-                {/* Logic Block Buttons */}
+                {/* 3D Model Overview Description */}
+                <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/40 p-4 rounded-2xl border border-border/80">
+                  <strong className="font-bold text-foreground">What Students Learn: </strong>
+                  Transition from visual block coding to full-stack Python &amp; JavaScript, compiling live algorithms that control robotics microcontrollers and sensors in real time.
+                </div>
+
+                {/* 3D Active Execution Buttons */}
                 <div>
-                  <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase mb-2">Inject Embedded Logic:</div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="text-xs sm:text-sm font-mono font-bold text-muted-foreground uppercase mb-2.5">Trigger 3D Logic Simulation:</div>
+                  <div className="grid grid-cols-3 gap-2.5">
                     {[
-                      { code: 'bot.arm_motors(power=100)', label: 'Arm Motors' },
-                      { code: 'bot.evade_obstacle(dist=2.0)', label: 'Evade Obstacle' },
-                      { code: 'bot.track_target(camera=1)', label: 'Vision Track' },
-                      { code: 'bot.transmit_telemetry()', label: 'Send Telemetry' },
-                    ].map((b) => (
+                      { id: 'arm', label: 'Arm Motors' },
+                      { id: 'evade', label: 'Evade Obstacle' },
+                      { id: 'orbit', label: 'Execute Loop' },
+                    ].map((btn) => (
                       <button
-                        key={b.label}
+                        key={btn.id}
                         onClick={() => {
-                          setActiveCodeBlock(b.code);
-                          setCodeOutput(`Injected: ${b.code}\nClick 'Run 3D Code' to trigger Hologram.`);
+                          setIsCodeRunning(true);
+                          setTimeout(() => setIsCodeRunning(false), 3000);
                         }}
-                        className={`p-2 rounded-xl text-xs font-mono font-bold text-left transition-all border truncate ${
-                          activeCodeBlock === b.code
-                            ? 'bg-emerald-500/15 border-emerald-500 text-emerald-500 shadow-sm'
-                            : 'bg-muted/50 text-muted-foreground hover:text-foreground border-border'
+                        className={`py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold font-mono transition-all border text-center ${
+                          isCodeRunning
+                            ? 'bg-emerald-500 text-slate-950 border-emerald-500 shadow-md font-black scale-105'
+                            : 'bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted border-border'
                         }`}
                       >
-                        + {b.label}
+                        ⚡ {btn.label}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Output log */}
-                <div className="p-2.5 px-3 bg-muted/40 rounded-xl border border-border text-[11px] font-mono text-muted-foreground flex items-center justify-between">
-                  <span className="truncate">{codeOutput}</span>
-                  <span className="text-emerald-500 font-bold ml-2 shrink-0">ONLINE</span>
-                </div>
-
               </div>
 
               {/* Bottom Tag */}
-              <div className="p-3 px-5 border-t border-border bg-muted/20 text-xs font-medium text-muted-foreground flex items-center justify-between">
+              <div className="p-3.5 px-6 border-t border-border bg-muted/20 text-xs sm:text-sm font-medium text-muted-foreground flex items-center justify-between">
                 <span>Block to Python &amp; JS Real-time Compiler</span>
                 <span className="text-primary font-bold">Grade 3-12</span>
               </div>
@@ -434,25 +405,25 @@ export default function AtShoraiWeBuildSection() {
             <div className="rounded-3xl bg-card border-2 border-border hover:border-amber-500/50 transition-all duration-300 shadow-xl overflow-hidden flex flex-col justify-between h-full group">
               
               {/* Card Header */}
-              <div className="p-4 sm:p-5 border-b border-border bg-muted/40 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center font-bold shadow-sm">
-                    <Bot className="w-5 h-5" />
+              <div className="p-4 sm:p-6 border-b border-border bg-muted/40 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center font-bold shadow-sm flex-shrink-0">
+                    <Bot className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest">3D ROBOTICS &amp; SPACE MODEL</div>
-                    <h3 className="text-base sm:text-lg font-black text-foreground">Mars Rover Explorer &amp; Radar</h3>
+                    <div className="text-xs font-mono font-bold text-amber-500 uppercase tracking-widest">3D ROBOTICS &amp; SPACE MODEL</div>
+                    <h3 className="text-lg sm:text-xl font-black text-foreground">Mars Rover Explorer &amp; Radar</h3>
                   </div>
                 </div>
 
-                <div className="px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-500 border border-amber-500/30 text-xs font-mono font-bold flex items-center gap-1.5">
-                  <Radio className="w-3.5 h-3.5 animate-pulse" />
+                <div className="px-3.5 py-2 rounded-xl bg-amber-500/15 text-amber-500 border border-amber-500/30 text-xs sm:text-sm font-mono font-bold flex items-center gap-1.5 flex-shrink-0">
+                  <Radio className="w-4 h-4 animate-pulse" />
                   <span>ROCKER-BOGIE 6WD</span>
                 </div>
               </div>
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
-              <div className="relative h-[240px] sm:h-[270px] bg-slate-950/95 border-b border-border overflow-hidden">
+              <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
                 <Suspense fallback={<CanvasLoadingSpinner />}>
                   <MarsRover3D 
                     status={armStatus} 
@@ -461,36 +432,41 @@ export default function AtShoraiWeBuildSection() {
                 </Suspense>
 
                 {/* 3D Canvas Overlay HUD */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-amber-500/30 text-[10px] font-mono text-amber-400 pointer-events-none flex items-center gap-1.5">
-                  <Radar className="w-3.5 h-3.5 text-amber-400" />
+                <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-amber-500/30 text-xs font-mono text-amber-400 pointer-events-none flex items-center gap-2">
+                  <Radar className="w-4 h-4 text-amber-400" />
                   <span>DRAG TO ROTATE 3D ROVER</span>
                 </div>
 
-                <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-[10px] font-mono text-amber-300 pointer-events-none">
+                <div className="absolute top-3.5 right-3.5 px-3 py-1 rounded-lg bg-black/70 border border-slate-700 text-xs font-mono text-amber-300 pointer-events-none">
                   Deep Space Telemetry
                 </div>
               </div>
 
               {/* Interactive Rover Sandbox Body */}
-              <div className="p-4 sm:p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                 
+                {/* 3D Model Overview Description */}
+                <div className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/40 p-4 rounded-2xl border border-border/80">
+                  <strong className="font-bold text-foreground">What Students Learn: </strong>
+                  Engineer 6-wheel-drive Rocker-Bogie chassis rovers equipped with ultrasonic radar distance calculation, robotic arm sampling, and planetary exploration logic.
+                </div>
+
                 {/* Rover Action Triggers */}
                 <div>
-                  <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase mb-2">Execute 3D Rover Maneuver:</div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="text-xs sm:text-sm font-mono font-bold text-muted-foreground uppercase mb-2.5">Execute 3D Rover Maneuver:</div>
+                  <div className="grid grid-cols-3 gap-2.5">
                     {[
-                      { label: 'Surface Drive', speed: '0.8 m/s', dist: '3.4 m', arm: 'idle' },
-                      { label: 'Scan Terrain', speed: '0.2 m/s', dist: '1.2 m', arm: 'scanning' },
-                      { label: 'Sample Rock', speed: '0.0 m/s', dist: '0.4 m', arm: 'sampling' },
+                      { label: 'Surface Drive', speed: '0.8 m/s', arm: 'idle' },
+                      { label: 'Scan Terrain', speed: '0.2 m/s', arm: 'scanning' },
+                      { label: 'Sample Rock', speed: '0.0 m/s', arm: 'sampling' },
                     ].map((act) => (
                       <button
                         key={act.label}
                         onClick={() => {
                           setRoverSpeed(act.speed);
-                          setObstacleDistance(act.dist);
                           setArmStatus(act.arm as any);
                         }}
-                        className={`py-2 px-2 rounded-xl text-xs font-bold font-mono transition-all border truncate ${
+                        className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold font-mono transition-all border truncate ${
                           armStatus === act.arm
                             ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-md font-black scale-105'
                             : 'bg-muted/50 text-muted-foreground hover:text-foreground border-border'
@@ -502,26 +478,10 @@ export default function AtShoraiWeBuildSection() {
                   </div>
                 </div>
 
-                {/* Telemetry Strip */}
-                <div className="grid grid-cols-3 gap-2 text-center py-2 px-3 bg-muted/40 rounded-xl border border-border">
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">OBSTACLE</div>
-                    <div className="text-xs font-black text-amber-500 font-mono">{obstacleDistance}</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">SPEED</div>
-                    <div className="text-xs font-black text-emerald-500 font-mono">{roverSpeed}</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] font-mono text-muted-foreground uppercase">ARM STATE</div>
-                    <div className="text-xs font-black text-foreground font-mono uppercase">{armStatus}</div>
-                  </div>
-                </div>
-
               </div>
 
               {/* Bottom Tag */}
-              <div className="p-3 px-5 border-t border-border bg-muted/20 text-xs font-medium text-muted-foreground flex items-center justify-between">
+              <div className="p-3.5 px-6 border-t border-border bg-muted/20 text-xs sm:text-sm font-medium text-muted-foreground flex items-center justify-between">
                 <span>Autonomous Planetary Navigation</span>
                 <span className="text-primary font-bold">Robotics &amp; Space</span>
               </div>

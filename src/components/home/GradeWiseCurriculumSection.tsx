@@ -232,7 +232,11 @@ export default function GradeWiseCurriculumSection() {
               return (
                 <div 
                   key={stage.num}
-                  className="rounded-2xl border border-border/80 bg-background/70 backdrop-blur-sm shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1 hover:border-primary/50"
+                  className="rounded-2xl border border-border/80 bg-background/70 backdrop-blur-sm shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1.5 relative cursor-pointer"
+                  onClick={() => setIsContactOpen(true)}
+                  style={{
+                    borderColor: undefined
+                  }}
                 >
                   {/* Top Header with Stage Number & Hexagon Icon */}
                   <div className="p-4 sm:p-5 pb-3 border-b border-border/60">
@@ -240,14 +244,14 @@ export default function GradeWiseCurriculumSection() {
                     {/* Stage Circle Number */}
                     <div className="flex items-center justify-between mb-3">
                       <div 
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-white font-mono font-black text-xs shadow-md"
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-white font-mono font-black text-xs shadow-md transition-transform duration-300 group-hover:scale-110"
                         style={{ backgroundColor: stage.color }}
                       >
                         {stage.num}
                       </div>
 
                       <div 
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
                         style={{ backgroundColor: stage.color }}
                       >
                         <Icon className="w-5 h-5" />
@@ -276,15 +280,35 @@ export default function GradeWiseCurriculumSection() {
                     ))}
                   </div>
 
-                  {/* Bottom Footer Pill */}
-                  <div 
-                    className="p-3 text-white text-xs font-bold flex items-center gap-2"
-                    style={{ backgroundColor: stage.color }}
-                  >
-                    <FooterIcon className="w-4 h-4 shrink-0" />
-                    <span className="leading-tight text-[11px] sm:text-xs">
-                      {stage.footerText}
-                    </span>
+                  {/* Bottom Footer Pill & Hover "Know More" Button Container */}
+                  <div className="relative overflow-hidden h-11">
+                    {/* Default State: Footer Icon & Text */}
+                    <div 
+                      className="absolute inset-0 p-3 text-white text-xs font-bold flex items-center gap-2 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full"
+                      style={{ backgroundColor: stage.color }}
+                    >
+                      <FooterIcon className="w-4 h-4 shrink-0" />
+                      <span className="leading-tight text-[11px] sm:text-xs truncate">
+                        {stage.footerText}
+                      </span>
+                    </div>
+
+                    {/* Hover State: Know More Action Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsContactOpen(true);
+                      }}
+                      className="absolute inset-0 w-full h-full text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 shadow-lg"
+                      style={{ 
+                        backgroundColor: stage.color,
+                        backgroundImage: `linear-gradient(135deg, ${stage.color}, #6366F1)`
+                      }}
+                    >
+                      <span>Know More</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                    </button>
                   </div>
 
                 </div>

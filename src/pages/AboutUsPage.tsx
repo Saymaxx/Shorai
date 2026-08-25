@@ -59,13 +59,15 @@ export default function AboutUsPage() {
               {cta.subtitle}
             </p>
             <MagneticWrapper>
-              <button
-                onClick={() => setIsContactOpen(true)}
+              <a
+                href="https://www.segacademy.in/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
               >
                 <span>{cta.buttonText}</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
             </MagneticWrapper>
           </div>
         </div>

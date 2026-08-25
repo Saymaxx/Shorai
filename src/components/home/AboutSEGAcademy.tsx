@@ -93,7 +93,7 @@ export default function AboutSEGAcademy() {
 
             <SectionReveal delay={0.1}>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 leading-tight">
-                {seg.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{seg.titleGradient}</span>
+                About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SEG Academy</span>
               </h2>
             </SectionReveal>
 
@@ -102,7 +102,7 @@ export default function AboutSEGAcademy() {
                 {seg.narrative1}
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                {seg.narrative2}
+                SHORAI is a subsidiary brand of SEG ACADEMY and our specialized institutional initiative, delivering turnkey STEM, AI, and Robotics innovation hubs to forward-thinking schools across India.
               </p>
             </SectionReveal>
 
@@ -139,7 +139,7 @@ export default function AboutSEGAcademy() {
                     &ldquo;{seg.quote}&rdquo;
                   </p>
                   <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                    — SEG Academy &amp; Shorai Philosophy
+                    — SEG Academy (Parent Brand) &amp; SHORAI Educational Philosophy
                   </span>
                 </div>
               </div>
@@ -149,13 +149,15 @@ export default function AboutSEGAcademy() {
             <SectionReveal delay={0.3}>
               <div className="flex flex-wrap items-center gap-4 w-full">
                 <MagneticWrapper>
-                  <button
-                    onClick={() => setIsContactOpen(true)}
-                    className="px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-105"
+                  <a
+                    href="https://www.segacademy.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md inline-flex items-center justify-center gap-2 transition-all hover:scale-105"
                   >
-                    <span>To know more about us contact us</span>
+                    <span>To know more about us</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </a>
                 </MagneticWrapper>
 
                 <MagneticWrapper>

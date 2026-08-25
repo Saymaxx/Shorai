@@ -6,7 +6,8 @@ import {
   X, 
   Send, 
   CheckCircle2, 
-  Sparkles
+  Sparkles,
+  MessageCircle
 } from 'lucide-react';
 import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 import { siteConfig } from '@/config/siteConfig';
@@ -37,14 +38,6 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
-
 export default function WelcomeEnquiryPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,7 +48,7 @@ export default function WelcomeEnquiryPopup() {
     email: '',
     contact: '',
     institute: '',
-    purpose: 'School Innovation Lab Setup',
+    purpose: 'School Innovation Lab Setup (AI & Robotics)',
     message: '',
   });
 
@@ -65,7 +58,7 @@ export default function WelcomeEnquiryPopup() {
       if (!hasDismissed) {
         setIsOpen(true);
       }
-    }, 1500);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -73,6 +66,9 @@ export default function WelcomeEnquiryPopup() {
   const handleClose = () => {
     setIsOpen(false);
     sessionStorage.setItem('shorai_welcome_popup_dismissed', 'true');
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('shorai:open-assistant'));
+    }, 300);
   };
 
   useEffect(() => {
@@ -118,177 +114,99 @@ export default function WelcomeEnquiryPopup() {
           role="dialog"
           aria-modal="true"
         >
-          {/* Subtle clean backdrop without heavy blur */}
+          {/* Subtle light backdrop with reduced blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/35 backdrop-blur-[2px]"
           />
 
-          {/* Spacious & Clean Modal Container */}
+          {/* Minimalist & Colorful 2-Column Modal */}
           <motion.div
-            initial={{ scale: 0.94, opacity: 0, y: 25 }}
+            initial={{ scale: 0.93, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.94, opacity: 0, y: 25 }}
+            exit={{ scale: 0.93, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-            className="relative w-full max-w-xl rounded-3xl overflow-hidden bg-card border-2 border-primary/30 shadow-[0_25px_70px_rgba(0,0,0,0.4)] z-10 my-6"
+            className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-card border-2 border-primary/40 shadow-[0_25px_80px_rgba(0,0,0,0.5)] z-10 my-4"
           >
             {/* Top Multi-Color Neon Accent Bar */}
-            <div className="h-2 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]" />
+            <div className="h-2 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#FF3D7F] to-[#00D4FF]" />
 
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all shadow-sm"
+              className="absolute top-3.5 right-3.5 z-30 w-9 h-9 rounded-full bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all shadow-sm"
               aria-label="Close dialog"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            <div className="p-7 sm:p-10 relative">
+            <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px]">
               
-              {/* Header */}
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-2.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>SHORAI STEM PARTNERSHIP</span>
+              {/* ═══════════════════════════════════════════════════════════════
+                  LEFT: BIGGER CENTERED LOGO + 2-LINE TAGLINE + COLORFUL GRADIENT + SOCIALS
+                 ═══════════════════════════════════════════════════════════════ */}
+              <div className="md:col-span-5 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between text-white text-center bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
+                
+                {/* Colorful Glow Lighting Elements */}
+                <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-pink-500/30 blur-[40px] pointer-events-none" />
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-amber-400/30 blur-[40px] pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col items-center">
+                  
+                  {/* Bigger Centered Shorai Logo (Circular crop removes raw image edge line) */}
+                  <div className="relative group mb-5">
+                    <div className="absolute -inset-1.5 rounded-full bg-white/40 opacity-75 blur-md group-hover:opacity-100 transition duration-500 animate-pulse" />
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white p-1 shadow-2xl flex items-center justify-center border-2 border-white/60 overflow-hidden">
+                      <img 
+                        src="/images/shorai_logo.png" 
+                        alt="SHORAI" 
+                        className="w-full h-full object-cover rounded-full scale-[1.04]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <span className="text-2xl sm:text-3xl font-black tracking-tight text-white block leading-none mb-1">SHORAI</span>
+                    <span className="text-[10px] sm:text-[11px] font-mono text-white/90 font-bold uppercase tracking-wider block">
+                      A Subsidiary of SEG Academy
+                    </span>
+                  </div>
+
+                  {/* 2-Line Tagline Headline */}
+                  <div className="space-y-1.5 max-w-xs mx-auto">
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+                      Future-Ready Education
+                    </h3>
+                    <p className="text-xs text-white/90 font-medium leading-relaxed">
+                      Empowering forward-thinking schools with turnkey robotics, AI, and coding innovation hubs.
+                    </p>
+                  </div>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
-                  Enquiry <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">Form</span>
-                </h3>
-                <p className="text-sm text-muted-foreground mt-1 font-medium max-w-md mx-auto">
-                  Connect with our academic team for turnkey school lab setup &amp; programs.
-                </p>
-              </div>
-
-              {isSubmitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="py-12 text-center flex flex-col items-center justify-center space-y-3"
-                >
-                  <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shadow-md border border-emerald-500/40 animate-pulse">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-2xl font-black text-foreground">Enquiry Received!</h4>
-                  <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                    Thank you! Our STEM team will contact you within 24 hours.
-                  </p>
-                </motion.div>
-              ) : (
-                /* Spacious, Clean Form with name, email, contact, institute, purpose, message */
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  
-                  {/* Name & Email (Side-by-side) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Your Name *"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none transition-all shadow-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <input
-                        type="email"
-                        required
-                        placeholder="Email Address *"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none transition-all shadow-sm"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Contact & Institute (Side-by-side) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="Contact / WhatsApp *"
-                        value={formData.contact}
-                        onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none transition-all shadow-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Institute / School Name"
-                        value={formData.institute}
-                        onChange={(e) => setFormData({ ...formData, institute: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none transition-all shadow-sm"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Purpose Selection */}
-                  <div>
-                    <select
-                      value={formData.purpose}
-                      onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
-                      className="w-full px-4 py-3.5 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground focus:outline-none transition-all shadow-sm"
-                    >
-                      <option value="School Innovation Lab Setup">School Innovation Lab Setup (AI &amp; Robotics)</option>
-                      <option value="K-12 STEM Curriculum Partnership">K-12 STEM Curriculum Partnership</option>
-                      <option value="Drone Technology & Aviation">Drone Technology &amp; Aviation</option>
-                      <option value="Teacher Enablement & Certification">Teacher Enablement &amp; Certification</option>
-                      <option value="General Inquiry">General Partnership Inquiry</option>
-                    </select>
-                  </div>
-
-                  {/* Message Textarea */}
-                  <div>
-                    <textarea
-                      rows={3}
-                      placeholder="Your Message / Specific Requirements (Optional)"
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-2xl bg-muted/50 hover:bg-muted/70 focus:bg-background border border-border focus:border-primary text-sm sm:text-base text-foreground placeholder:text-muted-foreground/70 focus:outline-none transition-all resize-none shadow-sm"
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-black text-sm sm:text-base tracking-wide flex items-center justify-center gap-2.5 shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 mt-2"
+                {/* Left Bottom: Icon-only Direct Connect Row */}
+                <div className="relative z-10 pt-4 border-t border-white/25 flex items-center justify-center gap-3">
+                  {/* WhatsApp Icon Button (Consistent with other icons) */}
+                  <a
+                    href={siteConfig.contact.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    aria-label="WhatsApp"
+                    title="WhatsApp"
                   >
-                    {isSubmitting ? (
-                      <span>Sending Request...</span>
-                    ) : (
-                      <>
-                        <span>Submit Enquiry</span>
-                        <Send className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
 
-                </form>
-              )}
-
-              {/* Social Media Action Buttons (Footer) */}
-              <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
-                <span className="text-xs font-mono text-muted-foreground font-bold uppercase">
-                  Follow Shorai:
-                </span>
-
-                <div className="flex items-center gap-2.5">
                   <a
                     href={siteConfig.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-xl bg-muted hover:bg-[#E1306C]/15 border border-border hover:border-[#E1306C]/40 text-muted-foreground hover:text-[#E1306C] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="Instagram"
+                    title="Instagram"
                   >
                     <InstagramIcon className="w-4 h-4" />
                   </a>
@@ -297,32 +215,170 @@ export default function WelcomeEnquiryPopup() {
                     href={siteConfig.social.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-xl bg-muted hover:bg-[#FF0000]/15 border border-border hover:border-[#FF0000]/40 text-muted-foreground hover:text-[#FF0000] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="YouTube"
+                    title="YouTube"
                   >
                     <YouTubeIcon className="w-4 h-4" />
-                  </a>
-
-                  <a
-                    href={siteConfig.social.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-xl bg-muted hover:bg-[#1877F2]/15 border border-border hover:border-[#1877F2]/40 text-muted-foreground hover:text-[#1877F2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
-                    aria-label="Facebook"
-                  >
-                    <FacebookIcon className="w-4 h-4" />
                   </a>
 
                   <a
                     href={siteConfig.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-xl bg-muted hover:bg-[#0A66C2]/15 border border-border hover:border-[#0A66C2]/40 text-muted-foreground hover:text-[#0A66C2] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="LinkedIn"
+                    title="LinkedIn"
                   >
                     <LinkedInIcon className="w-4 h-4" />
                   </a>
                 </div>
+
+              </div>
+
+              {/* ═══════════════════════════════════════════════════════════════
+                  RIGHT: MINIMALIST COLORFUL ENQUIRY FORM
+                 ═══════════════════════════════════════════════════════════════ */}
+              <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-card">
+                
+                <div>
+                  {/* Form Header */}
+                  <div className="mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                      Quick Enquiry <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">Form</span>
+                    </h3>
+                  </div>
+
+                  {isSubmitted ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="py-12 text-center flex flex-col items-center justify-center space-y-3"
+                    >
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center shadow-md border border-emerald-500/40 animate-bounce">
+                        <CheckCircle2 className="w-8 h-8" />
+                      </div>
+                      <h4 className="text-xl font-black text-foreground">Enquiry Received!</h4>
+                      <p className="text-xs text-muted-foreground max-w-xs leading-relaxed">
+                        Thank you for reaching out. Our STEM academic director will contact you within 24 hours.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-3">
+                      
+                      {/* Name & Email */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Your Name <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Dr. Rajesh Sharma"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Email Address <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            placeholder="name@school.edu.in"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Contact & Institute */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Contact / WhatsApp <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="tel"
+                            required
+                            placeholder="+91 98765 43210"
+                            value={formData.contact}
+                            onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            School / Institute Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Delhi Public School"
+                            value={formData.institute}
+                            onChange={(e) => setFormData({ ...formData, institute: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Purpose Selection */}
+                      <div>
+                        <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                          Purpose
+                        </label>
+                        <select
+                          value={formData.purpose}
+                          onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground focus:outline-none transition-all shadow-sm"
+                        >
+                          <option value="School Innovation Lab Setup (AI & Robotics)">School Innovation Lab Setup (AI &amp; Robotics)</option>
+                          <option value="K-12 STEM Curriculum Partnership">K-12 STEM Curriculum Partnership</option>
+                          <option value="Drone Technology & Aviation">Drone Technology &amp; Aviation Lab</option>
+                          <option value="Teacher Enablement & Certification">Teacher Enablement &amp; STEM Certification</option>
+                          <option value="General Inquiry">General Partnership Inquiry</option>
+                        </select>
+                      </div>
+
+                      {/* Message Textarea */}
+                      <div>
+                        <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                          Your Message / Requirements (Optional)
+                        </label>
+                        <textarea
+                          rows={2}
+                          placeholder="Tell us about student strength, target grades, or lab setup requirements..."
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="w-full px-3.5 py-2 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all resize-none shadow-sm"
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-3 px-5 rounded-xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-md shadow-indigo-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 mt-2"
+                      >
+                        {isSubmitting ? (
+                          <span>Sending Request...</span>
+                        ) : (
+                          <>
+                            <span>Submit Enquiry</span>
+                            <Send className="w-3.5 h-3.5" />
+                          </>
+                        )}
+                      </button>
+
+                    </form>
+                  )}
+                </div>
+
               </div>
 
             </div>

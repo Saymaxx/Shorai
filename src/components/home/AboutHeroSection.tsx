@@ -21,7 +21,7 @@ export default function AboutHeroSection() {
   const hero = content.about.hero;
 
   return (
-    <section className="relative pt-32 sm:pt-36 pb-20 sm:pb-28 bg-background overflow-hidden border-b border-border transition-colors duration-300">
+    <section className="relative pt-20 sm:pt-24 pb-10 sm:pb-12 bg-background overflow-hidden border-b border-border transition-colors duration-300">
       
       {/* Background Circuit & Atmospheric Ambient Lighting */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
@@ -32,14 +32,14 @@ export default function AboutHeroSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
         
         {/* ── MAIN HERO GRID (BROCHURE COVER LAYOUT) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16 sm:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-8 sm:mb-10">
           
           {/* LEFT COLUMN: TYPOGRAPHY + SUBTITLE BOX + ACTION CTAS (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col items-start text-left">
             
             {/* Main Headline */}
             <SectionReveal>
-              <div className="space-y-1 mb-6">
+              <div className="space-y-1 mb-5">
                 <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
                   {hero.titleLine1} <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF3D7F] via-[#D946EF] to-[#7928CA]">
@@ -54,7 +54,7 @@ export default function AboutHeroSection() {
 
             {/* Framed Definition Box */}
             <SectionReveal delay={0.08}>
-              <div className="p-5 sm:p-6 rounded-2xl bg-card border-2 border-primary/20 shadow-md mb-6 relative overflow-hidden max-w-xl">
+              <div className="p-4 sm:p-5 rounded-2xl bg-card border-2 border-primary/20 shadow-md mb-5 relative overflow-hidden max-w-xl">
                 <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#FF3D7F] to-[#7928CA]" />
                 <p className="text-base sm:text-lg text-foreground font-semibold italic pl-2 leading-relaxed">
                   &ldquo;{hero.quote}&rdquo;
@@ -64,7 +64,7 @@ export default function AboutHeroSection() {
 
             {/* Mission Tagline */}
             <SectionReveal delay={0.12}>
-              <div className="pl-4 border-l-4 border-[#7928CA] mb-8">
+              <div className="pl-4 border-l-4 border-[#7928CA] mb-6">
                 <p className="text-sm sm:text-base font-bold text-foreground/90">
                   {hero.mission}
                 </p>
@@ -96,14 +96,14 @@ export default function AboutHeroSection() {
           </div>
 
           {/* RIGHT COLUMN: LARGE DIAGONAL FLOATING ROUNDED IMAGES (5 Cols) */}
-          <div className="lg:col-span-5 relative flex flex-col items-center justify-center min-h-[480px] sm:min-h-[560px] lg:min-h-[620px]">
+          <div className="lg:col-span-5 relative flex flex-col items-center justify-center min-h-[420px] sm:min-h-[480px] lg:min-h-[540px]">
             
             {/* Ambient Background Decorative Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-[#7928CA]/25 via-[#FF3D7F]/25 to-[#00D4FF]/25 rounded-full blur-[100px] pointer-events-none" />
 
             {/* Top-Left Diagonal Floating Large Rounded Image */}
             <SectionReveal delay={0.1}>
-              <div className="relative w-[280px] sm:w-[360px] lg:w-[420px] h-[280px] sm:h-[360px] lg:h-[420px] rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:-translate-x-8 sm:-translate-y-6 z-10">
+              <div className="relative w-[280px] sm:w-[340px] lg:w-[380px] h-[280px] sm:h-[340px] lg:h-[380px] rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:-translate-x-8 sm:-translate-y-4 z-10">
                 <Image
                   src="/images/shorai-catalog-robotics-iot.jpg"
                   alt="Indian students learning coding and robotics"
@@ -117,7 +117,7 @@ export default function AboutHeroSection() {
 
             {/* Bottom-Right Diagonal Overlapping Large Rounded Image */}
             <SectionReveal delay={0.16}>
-              <div className="relative w-[240px] sm:w-[320px] lg:w-[360px] h-[240px] sm:h-[320px] lg:h-[360px] rounded-full overflow-hidden border-4 border-[#FF3D7F]/60 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:translate-x-14 sm:-translate-y-24 z-20">
+              <div className="relative w-[240px] sm:w-[300px] lg:w-[330px] h-[240px] sm:h-[300px] lg:h-[330px] rounded-full overflow-hidden border-4 border-[#FF3D7F]/60 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:translate-x-12 sm:-translate-y-20 z-20">
                 <Image
                   src="/images/shorai-quadrant-robotics.jpg"
                   alt="Indian student assembling robotics chassis"
@@ -135,14 +135,14 @@ export default function AboutHeroSection() {
 
         {/* ── BOT SLANTED BANNER: BUILDING FUTURE-READY SCHOOLS ── */}
         <SectionReveal delay={0.2}>
-          <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl border border-white/10 mb-16 sm:mb-20 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <div className="rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl border border-white/10 mb-0 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
             
             {/* Ambient Circuit Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
 
             <div className="flex items-center gap-5 relative z-10">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center shrink-0 shadow-lg">
-                <Bot className="w-10 h-10 text-white animate-pulse" />
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-[#7928CA] to-[#00D4FF] flex items-center justify-center shrink-0 shadow-lg">
+                <Bot className="w-8 h-8 sm:w-10 sm:h-10 text-white animate-pulse" />
               </div>
               <div>
                 <div className="text-xs font-mono font-bold uppercase tracking-widest text-[#00D4FF] mb-1">

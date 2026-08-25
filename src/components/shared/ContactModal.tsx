@@ -1,18 +1,31 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  MessageCircle,
-  ExternalLink,
-  ArrowUpRight
+  Send, 
+  CheckCircle2, 
+  MessageCircle
 } from 'lucide-react';
-import LeadInquiryForm from '@/components/shared/LeadInquiryForm';
+import { submitLeadToGoogleSheet } from '@/lib/leadSubmission';
 import { siteConfig } from '@/config/siteConfig';
+
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+    </svg>
+  );
+}
+
+function YouTubeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.26 5 12 5 12 5s-6.26 0-7.82.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.41 4.81c.23.86.91 1.54 1.77 1.77C5.74 19 12 19 12 19s6.26 0 7.82-.42c.86-.23 1.54-.91 1.76-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z" />
+    </svg>
+  );
+}
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -30,6 +43,18 @@ interface ContactModalProps {
 }
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    contact: '',
+    institute: '',
+    purpose: 'School Innovation Lab Setup (AI & Robotics)',
+    message: '',
+  });
+
   // Handle ESC key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -41,6 +66,32 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await submitLeadToGoogleSheet({
+        name: formData.name,
+        email: formData.email,
+        contact: formData.contact,
+        organisation: formData.institute,
+        purpose: formData.purpose,
+        message: formData.message,
+      });
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setTimeout(() => {
+        onClose();
+        setIsSubmitted(false);
+      }, 2200);
+    } catch {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -48,160 +99,272 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="contact-modal-title"
         >
-          {/* Backdrop */}
+          {/* Subtle light backdrop with reduced blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-xl"
+            className="fixed inset-0 bg-black/35 backdrop-blur-[2px]"
           />
 
-          {/* Modal Container */}
+          {/* Minimalist & Colorful 2-Column Modal */}
           <motion.div
-            initial={{ scale: 0.94, opacity: 0, y: 15 }}
+            initial={{ scale: 0.93, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.94, opacity: 0, y: 15 }}
+            exit={{ scale: 0.93, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-            className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-card border border-border/80 shadow-[0_25px_70px_rgba(0,0,0,0.5)] z-10 my-8"
+            className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-card border-2 border-primary/40 shadow-[0_25px_80px_rgba(0,0,0,0.5)] z-10 my-4"
           >
-            {/* Top Subtle Gradient Accent */}
-            <div className="h-1 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]" />
+            {/* Top Multi-Color Neon Accent Bar */}
+            <div className="h-2 w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] via-[#FF3D7F] to-[#00D4FF]" />
 
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all"
-              aria-label="Close Contact Dialog"
+              className="absolute top-3.5 right-3.5 z-30 w-9 h-9 rounded-full bg-muted/80 hover:bg-muted border border-border flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-105 transition-all shadow-sm"
+              aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="grid md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-border/60">
+            <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px]">
               
-              {/* LEFT: Minimalist Info & Quick Connect Channels */}
-              <div className="md:col-span-5 p-6 sm:p-7 flex flex-col justify-between bg-muted/30">
-                <div>
-                  {/* Brand & Title */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/40 bg-white dark:bg-[#0B0F19] p-0.5 shadow-sm shrink-0">
-                      <img src="/images/shorai_logo.png" alt="SHORAI" className="w-full h-full object-contain rounded-full" />
-                    </div>
-                    <div>
-                      <span className="text-base font-black text-foreground block leading-tight">SHORAI<span className="text-primary">.</span></span>
-                      <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">STEM Labs &amp; AI</span>
-                    </div>
-                  </div>
+              {/* ═══════════════════════════════════════════════════════════════
+                  LEFT: BIGGER CENTERED LOGO + 2-LINE TAGLINE + COLORFUL GRADIENT + SOCIALS
+                 ═══════════════════════════════════════════════════════════════ */}
+              <div className="md:col-span-5 p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between text-white text-center bg-gradient-to-br from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
+                
+                {/* Colorful Glow Lighting Elements */}
+                <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-pink-500/30 blur-[40px] pointer-events-none" />
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-amber-400/30 blur-[40px] pointer-events-none" />
 
-                  <h3 id="contact-modal-title" className="text-xl sm:text-2xl font-black text-foreground mb-1.5 tracking-tight">
-                    Get in Touch
-                  </h3>
+                <div className="relative z-10 flex flex-col items-center">
                   
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-6 font-medium">
-                    Let&apos;s build future-ready innovators in your school. Connect directly with our academic team:
-                  </p>
+                  {/* Bigger Centered Shorai Logo */}
+                  <div className="relative group mb-5">
+                    <div className="absolute -inset-1.5 rounded-full bg-white/40 opacity-75 blur-md group-hover:opacity-100 transition duration-500 animate-pulse" />
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white p-1 shadow-2xl flex items-center justify-center border-2 border-white/60 overflow-hidden">
+                      <img 
+                        src="/images/shorai_logo.png" 
+                        alt="SHORAI" 
+                        className="w-full h-full object-cover rounded-full scale-[1.04]"
+                      />
+                    </div>
+                  </div>
 
-                  {/* 4 Minimalist Channels */}
-                  <div className="space-y-2.5">
-                    
-                    {/* WhatsApp */}
-                    <a
-                      href={siteConfig.contact.whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-card border border-border hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all group"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                          <MessageCircle className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-[9px] font-mono text-muted-foreground uppercase font-bold">WhatsApp / Phone</div>
-                          <div className="text-xs font-bold text-foreground group-hover:text-emerald-500 transition-colors">{siteConfig.contact.phoneDisplay}</div>
-                        </div>
-                      </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
-                    </a>
+                  <div className="mb-4">
+                    <span className="text-2xl sm:text-3xl font-black tracking-tight text-white block leading-none mb-1">SHORAI</span>
+                    <span className="text-[10px] sm:text-[11px] font-mono text-white/90 font-bold uppercase tracking-wider block">
+                      A Subsidiary of SEG Academy
+                    </span>
+                  </div>
 
-                    {/* Instagram */}
-                    <a
-                      href={siteConfig.social.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-card border border-border hover:border-pink-500/50 hover:bg-pink-500/5 transition-all group"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                          <InstagramIcon className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-[9px] font-mono text-muted-foreground uppercase font-bold">Instagram</div>
-                          <div className="text-xs font-bold text-foreground group-hover:text-pink-500 transition-colors">@shorai_stem</div>
-                        </div>
-                      </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-pink-500 transition-colors" />
-                    </a>
-
-                    {/* Email */}
-                    <a
-                      href={`mailto:${siteConfig.contact.email}`}
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                          <Mail className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-[9px] font-mono text-muted-foreground uppercase font-bold">Email</div>
-                          <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">{siteConfig.contact.email}</div>
-                        </div>
-                      </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </a>
-
-                    {/* Locations */}
-                    <a
-                      href={siteConfig.locations.varanasi.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-card border border-border hover:border-secondary/50 hover:bg-secondary/5 transition-all group"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                          <MapPin className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-[9px] font-mono text-muted-foreground uppercase font-bold">Locations</div>
-                          <div className="text-xs font-bold text-foreground group-hover:text-secondary transition-colors">Varanasi • Kolkata</div>
-                        </div>
-                      </div>
-                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-secondary transition-colors" />
-                    </a>
-
+                  {/* 2-Line Tagline Headline */}
+                  <div className="space-y-1.5 max-w-xs mx-auto">
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+                      Future-Ready Education
+                    </h3>
+                    <p className="text-xs text-white/90 font-medium leading-relaxed">
+                      Empowering forward-thinking schools with turnkey robotics, AI, and coding innovation hubs.
+                    </p>
                   </div>
                 </div>
 
-                {/* Subtle Footer Note */}
-                <div className="pt-4 mt-4 border-t border-border/60 flex items-center justify-between text-[10px] text-muted-foreground font-mono">
-                  <span>SEG ACADEMY INITIATIVE</span>
-                  <span>NEP 2020 ALIGNED</span>
+                {/* Left Bottom: Icon-only Direct Connect Row */}
+                <div className="relative z-10 pt-4 border-t border-white/25 flex items-center justify-center gap-3">
+                  {/* WhatsApp Icon Button */}
+                  <a
+                    href={siteConfig.contact.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    aria-label="WhatsApp"
+                    title="WhatsApp"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
+
+                  <a
+                    href={siteConfig.social.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    aria-label="Instagram"
+                    title="Instagram"
+                  >
+                    <InstagramIcon className="w-4 h-4" />
+                  </a>
+
+                  <a
+                    href={siteConfig.social.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    aria-label="YouTube"
+                    title="YouTube"
+                  >
+                    <YouTubeIcon className="w-4 h-4" />
+                  </a>
+
+                  <a
+                    href={siteConfig.social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    aria-label="LinkedIn"
+                    title="LinkedIn"
+                  >
+                    <LinkedInIcon className="w-4 h-4" />
+                  </a>
                 </div>
+
               </div>
 
-              {/* RIGHT: Clean Streamlined Inquiry Form */}
-              <div className="md:col-span-7 p-6 sm:p-7 bg-card flex flex-col justify-center">
-                <div className="mb-3.5">
-                  <h4 className="text-base font-bold text-foreground">Request School Consultation</h4>
-                  <p className="text-[11px] text-muted-foreground">Fill in the details below to receive program guides and a customized STEM lab plan.</p>
+              {/* ═══════════════════════════════════════════════════════════════
+                  RIGHT: MINIMALIST COLORFUL ENQUIRY FORM
+                 ═══════════════════════════════════════════════════════════════ */}
+              <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-card">
+                
+                <div>
+                  {/* Form Header */}
+                  <div className="mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                      Quick Enquiry <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">Form</span>
+                    </h3>
+                  </div>
+
+                  {isSubmitted ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="py-12 text-center flex flex-col items-center justify-center space-y-3"
+                    >
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center shadow-md border border-emerald-500/40 animate-bounce">
+                        <CheckCircle2 className="w-8 h-8" />
+                      </div>
+                      <h4 className="text-xl font-black text-foreground">Enquiry Received!</h4>
+                      <p className="text-xs text-muted-foreground max-w-xs leading-relaxed">
+                        Thank you for reaching out. Our STEM academic director will contact you within 24 hours.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-3">
+                      
+                      {/* Name & Email */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Your Name <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Dr. Rajesh Sharma"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Email Address <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            placeholder="name@school.edu.in"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Contact & Institute */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            Contact / WhatsApp <span className="text-primary">*</span>
+                          </label>
+                          <input
+                            type="tel"
+                            required
+                            placeholder="+91 98765 43210"
+                            value={formData.contact}
+                            onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                            School / Institute Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Delhi Public School"
+                            value={formData.institute}
+                            onChange={(e) => setFormData({ ...formData, institute: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-sm"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Purpose Selection */}
+                      <div>
+                        <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                          Purpose
+                        </label>
+                        <select
+                          value={formData.purpose}
+                          onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground focus:outline-none transition-all shadow-sm"
+                        >
+                          <option value="School Innovation Lab Setup (AI & Robotics)">School Innovation Lab Setup (AI &amp; Robotics)</option>
+                          <option value="K-12 STEM Curriculum Partnership">K-12 STEM Curriculum Partnership</option>
+                          <option value="Drone Technology & Aviation">Drone Technology &amp; Aviation Lab</option>
+                          <option value="Teacher Enablement & Certification">Teacher Enablement &amp; STEM Certification</option>
+                          <option value="General Inquiry">General Partnership Inquiry</option>
+                        </select>
+                      </div>
+
+                      {/* Message Textarea */}
+                      <div>
+                        <label className="block text-[11px] font-mono font-bold text-foreground mb-1">
+                          Your Message / Requirements (Optional)
+                        </label>
+                        <textarea
+                          rows={2}
+                          placeholder="Tell us about student strength, target grades, or lab setup requirements..."
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="w-full px-3.5 py-2 rounded-xl bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-primary text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all resize-none shadow-sm"
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-3 px-5 rounded-xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-md shadow-indigo-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-75 mt-2"
+                      >
+                        {isSubmitting ? (
+                          <span>Sending Request...</span>
+                        ) : (
+                          <>
+                            <span>Submit Enquiry</span>
+                            <Send className="w-3.5 h-3.5" />
+                          </>
+                        )}
+                      </button>
+
+                    </form>
+                  )}
                 </div>
 
-                <LeadInquiryForm 
-                  variant="modal" 
-                  onSuccess={onClose}
-                  submitButtonText="Submit Consultation Request"
-                />
               </div>
 
             </div>
@@ -211,3 +374,4 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     </AnimatePresence>
   );
 }
+

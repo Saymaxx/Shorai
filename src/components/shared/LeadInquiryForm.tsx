@@ -138,9 +138,9 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-name`} 
-            className="block text-[11px] font-semibold text-foreground/85 mb-1"
+            className="block text-[11px] font-mono font-bold text-foreground mb-1"
           >
-            Your Name <span className="text-primary font-bold">*</span>
+            Your Name <span className="text-primary">*</span>
           </label>
           <div className="relative">
             <User className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -148,7 +148,7 @@ export default function LeadInquiryForm({
               id={`${formId}-name`}
               type="text"
               required
-              placeholder="Principal / Educator Name"
+              placeholder="e.g. Dr. Rajesh Sharma"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
@@ -159,16 +159,15 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-school`} 
-            className="block text-[11px] font-semibold text-foreground/85 mb-1"
+            className="block text-[11px] font-mono font-bold text-foreground mb-1"
           >
-            School / Institution <span className="text-primary font-bold">*</span>
+            School / Institute Name
           </label>
           <div className="relative">
             <Building2 className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id={`${formId}-school`}
               type="text"
-              required
               placeholder="e.g. Delhi Public School"
               value={formData.school}
               onChange={(e) => setFormData({ ...formData, school: e.target.value })}
@@ -183,9 +182,9 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-phone`} 
-            className="block text-[11px] font-semibold text-foreground/85 mb-1"
+            className="block text-[11px] font-mono font-bold text-foreground mb-1"
           >
-            Phone / WhatsApp <span className="text-primary font-bold">*</span>
+            Contact / WhatsApp <span className="text-primary">*</span>
           </label>
           <div className="relative">
             <Phone className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -204,9 +203,9 @@ export default function LeadInquiryForm({
         <div>
           <label 
             htmlFor={`${formId}-email`} 
-            className="block text-[11px] font-semibold text-foreground/85 mb-1"
+            className="block text-[11px] font-mono font-bold text-foreground mb-1"
           >
-            Email Address <span className="text-primary font-bold">*</span>
+            Email Address <span className="text-primary">*</span>
           </label>
           <div className="relative">
             <Mail className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -214,7 +213,7 @@ export default function LeadInquiryForm({
               id={`${formId}-email`}
               type="email"
               required
-              placeholder="educator@school.edu.in"
+              placeholder="name@school.edu.in"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className={`w-full pl-9 pr-3 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all ${variant === 'modal' ? 'py-2' : 'py-2.5'}`}
@@ -227,9 +226,9 @@ export default function LeadInquiryForm({
       <div>
         <label 
           htmlFor={`${formId}-purpose`} 
-          className="block text-[11px] font-semibold text-foreground/85 mb-1"
+          className="block text-[11px] font-mono font-bold text-foreground mb-1"
         >
-          Interested Program / Objective
+          Purpose
         </label>
         <select
           id={`${formId}-purpose`}
@@ -249,15 +248,15 @@ export default function LeadInquiryForm({
       <div>
         <label 
           htmlFor={`${formId}-message`} 
-          className="block text-[11px] font-semibold text-foreground/85 mb-1"
+          className="block text-[11px] font-mono font-bold text-foreground mb-1"
         >
-          Message / Requirements <span className="text-muted-foreground font-normal">(Optional)</span>
+          Your Message / Requirements (Optional)
         </label>
         <div className="relative">
           <textarea
             id={`${formId}-message`}
             rows={variant === 'modal' ? 2 : (variant === 'page' ? 4 : 3)}
-            placeholder="Tell us about student strength, grades, or specific goals..."
+            placeholder="Tell us about student strength, target grades, or lab setup requirements..."
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
             className={`w-full p-2.5 rounded-xl bg-muted/40 border border-border text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-all resize-none`}

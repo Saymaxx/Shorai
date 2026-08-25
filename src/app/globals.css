@@ -42,14 +42,14 @@
   --radius-xl: 36px;
 }
 
-/* ── LIGHT THEME (DEFAULT: ENERGETIC, BRIGHT, PLAYFUL, FRIENDLY) ── */
+/* ── LIGHT THEME (MODERN WARM ALABASTER CREAM #FAF7F2) ── */
 :root, .light {
-  --background: #F8FAFC;
+  --background: #FAF7F2;
   --foreground: #0F172A;
 
   --card: #FFFFFF;
   --card-foreground: #0F172A;
-  --card-border: #E2E8F0;
+  --card-border: #E8E3DA;
 
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
@@ -60,7 +60,7 @@
   --secondary: #0284C7;
   --secondary-foreground: #FFFFFF;
 
-  --muted: #F1F5F9;
+  --muted: #F2ECE1;
   --muted-foreground: #64748B;
 
   --accent: #FF6B00;
@@ -69,8 +69,8 @@
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
 
-  --border: #E2E8F0;
-  --input: #E2E8F0;
+  --border: #E8E3DA;
+  --input: #E8E3DA;
   --ring: #6366F1;
 
   --radius: 18px;
@@ -152,7 +152,7 @@
   /* Light mode friendly card & glass surfaces */
   .glass-card {
     background: #FFFFFF;
-    border: 1px solid #E2E8F0;
+    border: 1px solid #E8E3DA;
     box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
     border-radius: var(--radius);
   }
