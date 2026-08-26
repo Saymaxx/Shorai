@@ -16,19 +16,6 @@ export default function HeroContent() {
   return (
     <div className="flex flex-col items-start z-20 relative w-full pr-0 lg:pr-6">
       
-      {/* SEG Academy Eyebrow badge */}
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 mb-3.5 backdrop-blur-xl shadow-sm"
-      >
-        <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-        <span className="text-[11px] font-bold tracking-[0.18em] text-primary uppercase font-mono">
-          {hero.badge}
-        </span>
-      </motion.div>
-
       {/* Main Headline */}
       <motion.h1
         initial={{ opacity: 0, y: 24 }}

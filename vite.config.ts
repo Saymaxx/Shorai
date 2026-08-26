@@ -18,6 +18,11 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
+        configure: (proxy) => {
+          proxy.on('error', () => {
+            // Silently handle proxy ECONNREFUSED when backend server is not running
+          });
+        },
       },
     },
   },

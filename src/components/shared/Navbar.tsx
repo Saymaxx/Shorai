@@ -62,6 +62,9 @@ export default function Navbar() {
   const isBlogActive = pathname === '/blog' || pathname.startsWith('/blog') || pathname.startsWith('/insights');
   const isContactActive = pathname === '/contact';
 
+  const aboutNavLabel = isGalleryActive ? 'Gallery' : 'About';
+  const AboutNavIcon = isGalleryActive ? ImageIcon : Building2;
+
   return (
     <>
       <header
@@ -82,9 +85,6 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <span className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
                   SHORAI<span className="text-primary">.</span>
-                </span>
-                <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-primary/15 text-primary border border-primary/30">
-                  STEM LABS
                 </span>
               </div>
               <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground tracking-tight hidden xs:block sm:block">
@@ -119,7 +119,7 @@ export default function Navbar() {
                 </Link>
               </div>
 
-              {/* About Us (with Hover Dropdown for Gallery) */}
+              {/* About / Gallery (with Hover Dropdown for Gallery) */}
               <div 
                 className="relative"
                 onMouseEnter={() => setAboutDropdownOpen(true)}
@@ -132,45 +132,29 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
-                <button
-                  onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+                <Link
+                  href="/about"
                   className={`relative z-10 px-4 py-2 text-xs xl:text-sm font-black transition-all flex items-center gap-1.5 rounded-full ${
                     isAboutActive || isGalleryActive
                       ? 'text-primary' 
                       : 'text-foreground/80 hover:text-foreground hover:bg-muted/60'
                   }`}
                 >
-                  <Building2 className={`w-4 h-4 ${isAboutActive || isGalleryActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                  <span>About Us</span>
+                  <AboutNavIcon className={`w-4 h-4 ${isAboutActive || isGalleryActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                  <span>{aboutNavLabel}</span>
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${aboutDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
+                </Link>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu - Exclusively Gallery */}
                 <AnimatePresence>
                   {aboutDropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.18 }}
-                      className="absolute top-full left-0 mt-2 w-64 p-2 rounded-2xl bg-card/95 dark:bg-[#0E1322]/95 border-2 border-border shadow-2xl backdrop-blur-2xl z-50 flex flex-col gap-1"
+                      className="absolute top-full left-0 mt-2 w-60 p-2 rounded-2xl bg-card/95 dark:bg-[#0E1322]/95 border-2 border-border shadow-2xl backdrop-blur-2xl z-50 flex flex-col gap-1"
                     >
-                      <Link
-                        href="/about"
-                        onClick={() => setAboutDropdownOpen(false)}
-                        className={`p-3 rounded-xl flex items-start gap-3 transition-colors ${
-                          isAboutActive ? 'bg-primary/15 text-primary' : 'hover:bg-muted text-foreground'
-                        }`}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Building2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-black">About Shorai</div>
-                          <div className="text-[10px] text-muted-foreground">Mission, leadership &amp; SEG Academy</div>
-                        </div>
-                      </Link>
-
                       <Link
                         href="/gallery"
                         onClick={() => setAboutDropdownOpen(false)}
@@ -183,10 +167,10 @@ export default function Navbar() {
                         </div>
                         <div>
                           <div className="text-xs font-black flex items-center gap-1.5">
-                            <span>Campus Gallery</span>
+                            <span>Gallery</span>
                             <span className="text-[9px] font-mono font-bold bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 px-1.5 py-0.5 rounded-full">VAULT</span>
                           </div>
-                          <div className="text-[10px] text-muted-foreground">Photos, student rovers &amp; school launches</div>
+                          <div className="text-[10px] text-muted-foreground">Photos, campus rovers &amp; moments</div>
                         </div>
                       </Link>
                     </motion.div>
@@ -238,7 +222,7 @@ export default function Navbar() {
                 </Link>
               </div>
 
-              {/* Blog & Insights */}
+              {/* Blog */}
               <div className="relative">
                 {isBlogActive && (
                   <motion.div
@@ -256,7 +240,7 @@ export default function Navbar() {
                   }`}
                 >
                   <BookOpen className={`w-4 h-4 ${isBlogActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                  <span>Blog &amp; Insights</span>
+                  <span>Blog</span>
                 </Link>
               </div>
 
@@ -319,33 +303,30 @@ export default function Navbar() {
               </AnimatePresence>
             </button>
 
-            {/* Broader "Contact Us" CTA */}
-            <div className="hidden sm:block">
-              <MagneticWrapper>
-                <Link
-                  href="/contact"
-                  className="group relative min-h-[44px] h-11 px-6 rounded-full font-black text-sm text-white overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(99,102,241,0.4)] hover:shadow-[0_6px_30px_rgba(99,102,241,0.6)] flex items-center gap-2"
-                  style={{
-                    background: 'linear-gradient(135deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
-                  }}
-                >
-                  <span className="relative z-10 flex items-center gap-2 whitespace-nowrap">
-                    Book Consultation
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            {/* Transform Your School Action CTA */}
+            <MagneticWrapper className="hidden sm:block">
+              <button
+                onClick={() => setIsContactModalOpen(true)}
+                className="relative group overflow-hidden rounded-2xl p-[1.5px] transition-all hover:scale-105 active:scale-95 shadow-md hover:shadow-primary/20"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] rounded-2xl animate-gradient-x" />
+                <div className="relative px-5 py-2.5 rounded-[14px] bg-background dark:bg-[#0B0F19] transition-colors group-hover:bg-transparent flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary group-hover:text-white transition-colors animate-pulse" />
+                  <span className="text-xs font-black tracking-wider uppercase text-foreground group-hover:text-white transition-colors">
+                    Transform School
                   </span>
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/15 transition-colors duration-300" />
-                </Link>
-              </MagneticWrapper>
-            </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors group-hover:translate-x-1" />
+                </div>
+              </button>
+            </MagneticWrapper>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Hamburger Toggle Button */}
             <button
-              className="lg:hidden relative z-50 text-foreground min-w-[44px] min-h-[44px] p-2.5 rounded-2xl bg-card/90 border border-border backdrop-blur-md shadow-sm flex items-center justify-center"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-expanded={mobileMenuOpen}
+              className="lg:hidden min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-card border border-border flex items-center justify-center text-foreground transition-all hover:bg-muted active:scale-95 shadow-sm"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 text-primary" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -379,29 +360,28 @@ export default function Navbar() {
 
                 {/* About Accordion with Gallery */}
                 <div className="rounded-2xl border border-border/70 overflow-hidden bg-muted/20">
-                  <button
-                    onClick={() => setMobileAboutExpanded(!mobileAboutExpanded)}
-                    className="w-full flex items-center justify-between py-3 px-4 text-base font-black text-foreground hover:bg-muted"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Building2 className="w-5 h-5 text-muted-foreground" />
-                      <span>About Us &amp; Gallery</span>
-                    </div>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileAboutExpanded ? 'rotate-180' : ''}`} />
-                  </button>
+                  <div className="flex items-center justify-between py-1 px-1">
+                    <Link
+                      href="/about"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex-1 flex items-center gap-3 py-2.5 px-3 text-base font-black rounded-xl transition-colors ${
+                        isAboutActive ? 'bg-primary/15 text-primary' : 'text-foreground hover:bg-muted'
+                      }`}
+                    >
+                      <Building2 className={`w-5 h-5 ${isAboutActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span>About</span>
+                    </Link>
+                    <button
+                      onClick={() => setMobileAboutExpanded(!mobileAboutExpanded)}
+                      className="p-3 text-muted-foreground hover:text-foreground rounded-xl"
+                      aria-label="Toggle About Submenu"
+                    >
+                      <ChevronDown className={`w-4 h-4 transition-transform ${mobileAboutExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                  </div>
 
                   {mobileAboutExpanded && (
                     <div className="px-3 pb-3 space-y-1.5 pt-1 border-t border-border/40">
-                      <Link
-                        href="/about"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center gap-2.5 p-2.5 rounded-xl text-sm font-bold ${
-                          isAboutActive ? 'bg-primary/15 text-primary font-black' : 'text-muted-foreground hover:text-foreground'
-                        }`}
-                      >
-                        <Building2 className="w-4 h-4" />
-                        <span>About Shorai &amp; SEG Academy</span>
-                      </Link>
                       <Link
                         href="/gallery"
                         onClick={() => setMobileMenuOpen(false)}
@@ -410,7 +390,7 @@ export default function Navbar() {
                         }`}
                       >
                         <ImageIcon className="w-4 h-4" />
-                        <span>Campus Stories &amp; Gallery Vault</span>
+                        <span>Gallery Vault</span>
                       </Link>
                     </div>
                   )}
@@ -440,7 +420,7 @@ export default function Navbar() {
                   <span>Shorai for Schools</span>
                 </Link>
 
-                {/* Blog & Insights */}
+                {/* Blog */}
                 <Link
                   href="/blog"
                   onClick={() => setMobileMenuOpen(false)}
@@ -449,7 +429,7 @@ export default function Navbar() {
                   }`}
                 >
                   <BookOpen className={`w-5 h-5 ${isBlogActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                  <span>Blog &amp; Insights</span>
+                  <span>Blog</span>
                 </Link>
 
                 {/* Contact */}
