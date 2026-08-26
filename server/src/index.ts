@@ -7,6 +7,8 @@ import healthRouter from './routes/health.js';
 import leadsRouter from './routes/leads.js';
 import chatRouter from './routes/chat.js';
 import contentRouter from './routes/content.js';
+import galleryRouter from './routes/gallery.js';
+import blogRouter from './routes/blog.js';
 import { rateLimit } from './middleware/rateLimiter.js';
 
 const app: Express = express();
@@ -42,6 +44,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // API Routes Mounting with Rate Limiting
 app.use('/api/health', healthRouter);
 app.use('/api/content', contentRouter);
+app.use('/api/gallery', galleryRouter);
+app.use('/api/blog', blogRouter);
 app.use('/api/leads', rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: 'Too many lead submissions from this IP. Please try again later.' }), leadsRouter);
 app.use('/api/chat', rateLimit({ windowMs: 1 * 60 * 1000, max: 30, message: 'Chat rate limit reached. Please wait a moment.' }), chatRouter);
 

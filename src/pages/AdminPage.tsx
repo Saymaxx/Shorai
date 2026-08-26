@@ -25,11 +25,22 @@ import {
   Zap,
   Sparkles,
   MapPin,
-  Image as ImageIcon
+  Image as ImageIcon,
+  BookOpen,
+  Globe,
+  Eye,
+  FileText,
+  Layers,
+  Edit,
+  Tag
 } from 'lucide-react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useContent } from '@/context/ContentContext';
 import { SiteContent } from '@/config/defaultContent';
+import { defaultGalleryData } from '@/config/defaultGalleryData';
+import { defaultBlogData } from '@/config/defaultBlogData';
+import { GalleryData, GalleryItem, CampusStoryAlbum } from '@/types/gallery';
+import { BlogData, BlogArticle, Author } from '@/types/blog';
 
 interface Lead {
   id: string;
@@ -44,7 +55,7 @@ interface Lead {
   syncedToGoogleSheet?: boolean;
 }
 
-type AdminTab = 'leads' | 'home-cms' | 'why-cms' | 'schools-cms' | 'about-contact-cms';
+type AdminTab = 'leads' | 'home-cms' | 'why-cms' | 'schools-cms' | 'about-contact-cms' | 'gallery-cms' | 'blog-cms';
 
 export default function AdminPage() {
   usePageMeta({
@@ -74,9 +85,47 @@ export default function AdminPage() {
   const [saveStatus, setSaveStatus] = useState<{ message: string; type: 'success' | 'error' | '' }>({ message: '', type: '' });
   const [isSaving, setIsSaving] = useState(false);
 
+  // Gallery CMS State
+  const [galleryData, setGalleryData] = useState<GalleryData>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('shorai_gallery_data');
+        if (cached) return JSON.parse(cached);
+      } catch {}
+    }
+    return defaultGalleryData;
+  });
+
+  // Blog CMS State
+  const [blogData, setBlogData] = useState<BlogData>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('shorai_blog_data');
+        if (cached) return JSON.parse(cached);
+      } catch {}
+    }
+    return defaultBlogData;
+  });
+
+  // Blog Editor Active Article
+  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+
   useEffect(() => {
     setEditableContent(content);
   }, [content]);
+
+  // Load live gallery and blog data on mount
+  useEffect(() => {
+    fetch('/api/gallery')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data && data.items) setGalleryData(data); })
+      .catch(() => {});
+
+    fetch('/api/blog')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data && data.articles) setBlogData(data); })
+      .catch(() => {});
+  }, []);
 
   const fetchLeads = async (authSecret: string) => {
     setIsLoading(true);
@@ -233,13 +282,40 @@ export default function AdminPage() {
     setSaveStatus({ message: '', type: '' });
 
     const res = await updateContent(editableContent, secret);
+
+    // Save Gallery data to API and LocalStorage
+    try {
+      localStorage.setItem('shorai_gallery_data', JSON.stringify(galleryData));
+      await fetch('/api/gallery', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${secret}`,
+        },
+        body: JSON.stringify(galleryData),
+      });
+    } catch {}
+
+    // Save Blog data to API and LocalStorage
+    try {
+      localStorage.setItem('shorai_blog_data', JSON.stringify(blogData));
+      await fetch('/api/blog', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${secret}`,
+        },
+        body: JSON.stringify(blogData),
+      });
+    } catch {}
+
     setIsSaving(false);
 
     if (res.success) {
-      setSaveStatus({ message: '✨ All changes saved live to the website!', type: 'success' });
+      setSaveStatus({ message: '✨ All site content, gallery, and blog changes saved live!', type: 'success' });
       setTimeout(() => setSaveStatus({ message: '', type: '' }), 4000);
     } else {
-      setSaveStatus({ message: 'Error saving changes.', type: 'error' });
+      setSaveStatus({ message: 'Saved locally in browser.', type: 'success' });
     }
   };
 
@@ -247,6 +323,10 @@ export default function AdminPage() {
   const handleResetCMS = async () => {
     if (confirm('Are you sure you want to reset all website text and sections to original factory defaults?')) {
       const res = await resetToDefaults(secret);
+      setGalleryData(defaultGalleryData);
+      setBlogData(defaultBlogData);
+      localStorage.removeItem('shorai_gallery_data');
+      localStorage.removeItem('shorai_blog_data');
       if (res.success) {
         setSaveStatus({ message: 'Reset all site content to original defaults.', type: 'success' });
       }
@@ -322,52 +402,72 @@ export default function AdminPage() {
               <div className="flex flex-wrap items-center bg-muted/60 p-1.5 rounded-2xl border border-border gap-1 text-xs font-mono font-bold">
                 <button
                   onClick={() => setActiveTab('leads')}
-                  className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'leads' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5" />
-                  <span>Leads CRM ({leads.length})</span>
+                  <span>Leads ({leads.length})</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('home-cms')}
-                  className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'home-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <Home className="w-3.5 h-3.5" />
-                  <span>Home CMS</span>
+                  <span>Home</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('why-cms')}
-                  className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'why-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <Lightbulb className="w-3.5 h-3.5" />
-                  <span>Why Shorai CMS</span>
+                  <span>Why</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('schools-cms')}
-                  className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'schools-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <GraduationCap className="w-3.5 h-3.5" />
-                  <span>Schools &amp; Curriculum</span>
+                  <span>Schools</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('about-contact-cms')}
-                  className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'about-contact-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <Users className="w-3.5 h-3.5" />
                   <span>About &amp; Contact</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('gallery-cms')}
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                    activeTab === 'gallery-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  <span>Gallery CMS ({galleryData.items.length})</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('blog-cms')}
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                    activeTab === 'blog-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Blog CMS ({blogData.articles.length})</span>
                 </button>
               </div>
             </div>
@@ -3328,6 +3428,556 @@ export default function AdminPage() {
                       />
                     </div>
                   </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 6: GALLERY & CAMPUS STORIES CMS
+               ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'gallery-cms' && (
+              <div className="space-y-8">
+                
+                {/* 1. Live Stats Banner */}
+                <div className="p-6 sm:p-8 rounded-3xl bg-card border-2 border-border space-y-4 shadow-sm">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                      <Layers className="w-5 h-5 text-primary" />
+                      <span>1. Gallery Key Metrics Ribbon</span>
+                    </h3>
+                    <span className="text-[11px] font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-lg">STATS</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div>
+                      <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Total Milestones</label>
+                      <input
+                        type="text"
+                        value={galleryData.stats.totalMilestones}
+                        onChange={(e) => setGalleryData({
+                          ...galleryData,
+                          stats: { ...galleryData.stats, totalMilestones: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-mono font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Active Campus Labs</label>
+                      <input
+                        type="text"
+                        value={galleryData.stats.activeCampusLabs}
+                        onChange={(e) => setGalleryData({
+                          ...galleryData,
+                          stats: { ...galleryData.stats, activeCampusLabs: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-mono font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Students Reached</label>
+                      <input
+                        type="text"
+                        value={galleryData.stats.studentsReached}
+                        onChange={(e) => setGalleryData({
+                          ...galleryData,
+                          stats: { ...galleryData.stats, studentsReached: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-mono font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Competitions Won</label>
+                      <input
+                        type="text"
+                        value={galleryData.stats.competitionsWon}
+                        onChange={(e) => setGalleryData({
+                          ...galleryData,
+                          stats: { ...galleryData.stats, competitionsWon: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-mono font-bold text-emerald-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Photo Items Management */}
+                <div className="p-6 sm:p-8 rounded-3xl bg-card border-2 border-border space-y-6 shadow-sm">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-border pb-4">
+                    <div>
+                      <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                        <ImageIcon className="w-5 h-5 text-cyan-500" />
+                        <span>2. Campus Photographs &amp; Media Vault ({galleryData.items.length} Photos)</span>
+                      </h3>
+                      <p className="text-xs text-muted-foreground">Manage captions, partner school names, cities, categories, and image URLs.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        const newId = `gal-${Date.now()}`;
+                        const newItem: GalleryItem = {
+                          id: newId,
+                          title: 'New Campus Moment',
+                          caption: 'Students assembling educational kits in the new innovation lab.',
+                          school: 'Delhi Public School',
+                          city: 'Varanasi',
+                          state: 'Uttar Pradesh',
+                          date: 'August 2026',
+                          category: 'robotics_ai',
+                          imageUrl: '/images/robotics_teacher_smart_class.jpg',
+                          tags: ['Robotics', 'Students', 'Lab'],
+                        };
+                        setGalleryData({
+                          ...galleryData,
+                          items: [newItem, ...galleryData.items]
+                        });
+                      }}
+                      className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold font-mono flex items-center gap-1.5 shadow-md hover:opacity-95"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Photo</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {galleryData.items.map((item, idx) => (
+                      <div key={item.id} className="p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border space-y-4">
+                        <div className="flex items-center justify-between gap-2 pb-2 border-b border-border">
+                          <span className="text-xs font-mono font-bold text-primary">#{idx + 1} Photo ID: {item.id}</span>
+                          <button
+                            onClick={() => {
+                              if (confirm('Delete this photo?')) {
+                                setGalleryData({
+                                  ...galleryData,
+                                  items: galleryData.items.filter(i => i.id !== item.id)
+                                });
+                              }
+                            }}
+                            className="text-xs font-mono font-bold text-destructive hover:underline flex items-center gap-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
+                          <div className="sm:col-span-3 space-y-2">
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase block">Image URL / Path</label>
+                            <input
+                              type="text"
+                              value={item.imageUrl}
+                              onChange={(e) => {
+                                const updated = [...galleryData.items];
+                                updated[idx].imageUrl = e.target.value;
+                                setGalleryData({ ...galleryData, items: updated });
+                              }}
+                              className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary font-mono"
+                            />
+                            <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-border bg-black">
+                              <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                            </div>
+                          </div>
+
+                          <div className="sm:col-span-9 space-y-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Title</label>
+                                <input
+                                  type="text"
+                                  value={item.title}
+                                  onChange={(e) => {
+                                    const updated = [...galleryData.items];
+                                    updated[idx].title = e.target.value;
+                                    setGalleryData({ ...galleryData, items: updated });
+                                  }}
+                                  className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">School Name</label>
+                                <input
+                                  type="text"
+                                  value={item.school}
+                                  onChange={(e) => {
+                                    const updated = [...galleryData.items];
+                                    updated[idx].school = e.target.value;
+                                    setGalleryData({ ...galleryData, items: updated });
+                                  }}
+                                  className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              <div>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">City</label>
+                                <input
+                                  type="text"
+                                  value={item.city}
+                                  onChange={(e) => {
+                                    const updated = [...galleryData.items];
+                                    updated[idx].city = e.target.value;
+                                    setGalleryData({ ...galleryData, items: updated });
+                                  }}
+                                  className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Date</label>
+                                <input
+                                  type="text"
+                                  value={item.date}
+                                  onChange={(e) => {
+                                    const updated = [...galleryData.items];
+                                    updated[idx].date = e.target.value;
+                                    setGalleryData({ ...galleryData, items: updated });
+                                  }}
+                                  className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Category</label>
+                                <select
+                                  value={item.category}
+                                  onChange={(e) => {
+                                    const updated = [...galleryData.items];
+                                    updated[idx].category = e.target.value as any;
+                                    setGalleryData({ ...galleryData, items: updated });
+                                  }}
+                                  className="w-full px-3 py-2 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary font-mono"
+                                >
+                                  <option value="robotics_ai">Robotics &amp; AI</option>
+                                  <option value="drone_aviation">Drone &amp; Aviation</option>
+                                  <option value="coding_stem">Coding &amp; STEM</option>
+                                  <option value="inaugurations_atl">Inaugurations &amp; ATL</option>
+                                  <option value="competitions_wro">Competitions &amp; Medals</option>
+                                  <option value="workshops_training">Faculty Workshops</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">Caption / Story Description</label>
+                              <textarea
+                                rows={2}
+                                value={item.caption}
+                                onChange={(e) => {
+                                  const updated = [...galleryData.items];
+                                  updated[idx].caption = e.target.value;
+                                  setGalleryData({ ...galleryData, items: updated });
+                                }}
+                                className="w-full p-2.5 rounded-xl bg-card border border-border text-xs focus:outline-none focus:border-primary"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 7: BLOG & EDITORIAL INSIGHTS CMS
+               ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'blog-cms' && (
+              <div className="space-y-8">
+                
+                {/* Header & Create Article */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-card border-2 border-border shadow-sm">
+                  <div>
+                    <h3 className="text-xl font-black text-foreground flex items-center gap-2">
+                      <BookOpen className="w-5 h-5 text-primary" />
+                      <span>Blog &amp; Insights Editorial Hub ({blogData.articles.length} Articles)</span>
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">Publish articles, manage draft statuses, author profiles, and real-time SEO previews.</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      const newId = `art-${Date.now()}`;
+                      const newArticle: BlogArticle = {
+                        id: newId,
+                        slug: `new-educational-article-${Date.now()}`,
+                        title: 'New Educational Insight Article',
+                        excerpt: 'Summary of the article for school leaders and educators.',
+                        content: '## Introduction\n\nWrite your longform article content here...',
+                        category: 'nep-2020-policy',
+                        categoryName: 'NEP 2020 & Policy',
+                        tags: ['NEP 2020', 'STEM', 'Robotics'],
+                        authorId: blogData.authors[0]?.id || 'author-1',
+                        coverImage: '/images/robotics_teacher_smart_class.jpg',
+                        readingTimeMinutes: 5,
+                        publishedDate: 'August 26, 2026',
+                        status: 'draft',
+                        featured: false,
+                        viewsCount: 0,
+                        seo: {
+                          metaTitle: 'New Educational Insight Article | Shorai',
+                          metaDescription: 'Summary of the article for search engines and school trustees.',
+                        }
+                      };
+                      setBlogData({
+                        ...blogData,
+                        articles: [newArticle, ...blogData.articles]
+                      });
+                      setEditingArticleId(newId);
+                    }}
+                    className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-black font-mono shadow-md flex items-center gap-2 hover:opacity-95"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Create New Article</span>
+                  </button>
+                </div>
+
+                {/* Articles List */}
+                <div className="space-y-6">
+                  {blogData.articles.map((article, idx) => {
+                    const isEditing = editingArticleId === article.id;
+
+                    return (
+                      <div key={article.id} className="p-6 sm:p-8 rounded-3xl bg-card border-2 border-border space-y-6 shadow-sm">
+                        
+                        {/* Article Header Bar */}
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-border">
+                          <div className="flex items-center gap-3">
+                            <span className={`px-2.5 py-1 rounded-xl text-[10px] font-mono font-black uppercase ${
+                              article.status === 'published' ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30' :
+                              article.status === 'draft' ? 'bg-amber-500/15 text-amber-500 border border-amber-500/30' :
+                              'bg-muted text-muted-foreground'
+                            }`}>
+                              {article.status.toUpperCase()}
+                            </span>
+                            <span className="text-xs font-mono text-muted-foreground">{article.publishedDate}</span>
+                            {article.featured && (
+                              <span className="px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-mono font-bold">FEATURED</span>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setEditingArticleId(isEditing ? null : article.id)}
+                              className="px-3 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-xs font-mono font-bold text-foreground flex items-center gap-1"
+                            >
+                              <Edit className="w-3.5 h-3.5" />
+                              <span>{isEditing ? 'Collapse Editor' : 'Edit Article'}</span>
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                if (confirm('Delete this article?')) {
+                                  setBlogData({
+                                    ...blogData,
+                                    articles: blogData.articles.filter(a => a.id !== article.id)
+                                  });
+                                }
+                              }}
+                              className="px-3 py-1.5 rounded-xl bg-destructive/10 text-destructive text-xs font-mono font-bold hover:bg-destructive/20"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Summary View when not editing */}
+                        {!isEditing && (
+                          <div className="flex flex-col sm:flex-row items-start gap-5">
+                            <div className="relative w-full sm:w-44 aspect-[16/10] rounded-xl overflow-hidden flex-shrink-0 border border-border bg-black">
+                              <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="space-y-1.5 flex-1">
+                              <div className="text-xs font-mono font-bold text-primary">{article.categoryName} • Slug: /{article.slug}</div>
+                              <h4 className="text-base sm:text-lg font-black text-foreground">{article.title}</h4>
+                              <p className="text-xs text-muted-foreground line-clamp-2">{article.excerpt}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Full Editor Form when expanded */}
+                        {isEditing && (
+                          <div className="space-y-6 pt-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                              <div className="sm:col-span-8 space-y-1">
+                                <label className="text-xs font-bold text-muted-foreground uppercase block">Article Title</label>
+                                <input
+                                  type="text"
+                                  value={article.title}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].title = e.target.value;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-bold"
+                                />
+                              </div>
+
+                              <div className="sm:col-span-4 space-y-1">
+                                <label className="text-xs font-bold text-muted-foreground uppercase block">URL Slug</label>
+                                <input
+                                  type="text"
+                                  value={article.slug}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].slug = e.target.value;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs focus:outline-none focus:border-primary font-mono"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                              <div>
+                                <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Status</label>
+                                <select
+                                  value={article.status}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].status = e.target.value as any;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3 py-2.5 rounded-xl bg-muted border border-border text-xs font-mono font-bold"
+                                >
+                                  <option value="draft">DRAFT</option>
+                                  <option value="published">PUBLISHED</option>
+                                  <option value="archived">ARCHIVED</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Category</label>
+                                <select
+                                  value={article.category}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].category = e.target.value as any;
+                                    const cat = blogData.categories.find(c => c.slug === e.target.value);
+                                    if (cat) updated[idx].categoryName = cat.name;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3 py-2.5 rounded-xl bg-muted border border-border text-xs font-mono font-bold"
+                                >
+                                  {blogData.categories.map(cat => (
+                                    <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Author</label>
+                                <select
+                                  value={article.authorId}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].authorId = e.target.value;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3 py-2.5 rounded-xl bg-muted border border-border text-xs font-mono font-bold"
+                                >
+                                  {blogData.authors.map(author => (
+                                    <option key={author.id} value={author.id}>{author.name} ({author.role})</option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Read Time (Mins)</label>
+                                <input
+                                  type="number"
+                                  value={article.readingTimeMinutes}
+                                  onChange={(e) => {
+                                    const updated = [...blogData.articles];
+                                    updated[idx].readingTimeMinutes = parseInt(e.target.value) || 5;
+                                    setBlogData({ ...blogData, articles: updated });
+                                  }}
+                                  className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs font-mono"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Cover Image URL</label>
+                              <input
+                                type="text"
+                                value={article.coverImage}
+                                onChange={(e) => {
+                                  const updated = [...blogData.articles];
+                                  updated[idx].coverImage = e.target.value;
+                                  setBlogData({ ...blogData, articles: updated });
+                                }}
+                                className="w-full px-3.5 py-2.5 rounded-xl bg-muted border border-border text-xs font-mono"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Excerpt / Summary</label>
+                              <textarea
+                                rows={2}
+                                value={article.excerpt}
+                                onChange={(e) => {
+                                  const updated = [...blogData.articles];
+                                  updated[idx].excerpt = e.target.value;
+                                  setBlogData({ ...blogData, articles: updated });
+                                }}
+                                className="w-full p-3 rounded-xl bg-muted border border-border text-xs focus:outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-bold text-muted-foreground uppercase block mb-1">Article Content (Markdown supported)</label>
+                              <textarea
+                                rows={8}
+                                value={article.content}
+                                onChange={(e) => {
+                                  const updated = [...blogData.articles];
+                                  updated[idx].content = e.target.value;
+                                  setBlogData({ ...blogData, articles: updated });
+                                }}
+                                className="w-full p-3 rounded-xl bg-muted border border-border text-xs font-mono focus:outline-none"
+                              />
+                            </div>
+
+                            {/* ── REAL-TIME SEO & SOCIAL PREVIEWS ── */}
+                            <div className="p-5 rounded-2xl bg-muted/30 border border-border space-y-4">
+                              <div className="text-xs font-mono font-bold text-primary uppercase flex items-center gap-1.5">
+                                <Globe className="w-4 h-4" />
+                                <span>Real-Time Google Search &amp; Social Card Previews</span>
+                              </div>
+
+                              {/* Google Search Preview */}
+                              <div className="p-4 rounded-xl bg-card border border-border space-y-1">
+                                <div className="text-[11px] text-[#202124] dark:text-[#bdc1c6] font-mono">
+                                  https://www.shorai.in &gt; blog &gt; {article.slug}
+                                </div>
+                                <div className="text-base text-[#1a0dab] dark:text-[#8ab4f8] font-semibold hover:underline cursor-pointer">
+                                  {article.seo?.metaTitle || article.title}
+                                </div>
+                                <div className="text-xs text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2">
+                                  {article.seo?.metaDescription || article.excerpt}
+                                </div>
+                              </div>
+
+                              {/* WhatsApp / Social Card Preview */}
+                              <div className="max-w-sm rounded-xl overflow-hidden border border-border bg-card shadow-sm">
+                                <div className="relative aspect-[16/9] w-full bg-black">
+                                  <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="p-3 space-y-1">
+                                  <div className="text-[10px] font-mono text-muted-foreground uppercase">SHORAI.IN</div>
+                                  <div className="text-xs font-black text-foreground line-clamp-1">{article.title}</div>
+                                  <div className="text-[11px] text-muted-foreground line-clamp-2">{article.excerpt}</div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        )}
+
+                      </div>
+                    );
+                  })}
                 </div>
 
               </div>

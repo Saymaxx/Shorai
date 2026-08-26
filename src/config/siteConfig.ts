@@ -83,6 +83,14 @@ export const siteConfig = {
       title: 'Contact Us | Schedule On-Campus School Lab Consultation',
       description: 'Connect with our academic directors to request an on-campus demonstration, NEP lab audit, or curriculum consultation.',
     },
+    gallery: {
+      title: 'Campus Gallery & Stories | Shorai STEM Inventions & Lab Milestones',
+      description: 'Explore real moments from partner school campuses across India — students building autonomous drones, robotics kits, and turnkey lab inaugurations.',
+    },
+    blog: {
+      title: 'Blog & Insights | K-12 STEM, NEP 2020 & Robotics Education Radar',
+      description: 'Editorial thought leadership on NEP 2020 frameworks, experiential STEM pedagogy, and AI robotics curriculum for Indian schools.',
+    },
   },
 } as const;
 

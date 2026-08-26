@@ -11,6 +11,8 @@ const health_js_1 = __importDefault(require("./routes/health.js"));
 const leads_js_1 = __importDefault(require("./routes/leads.js"));
 const chat_js_1 = __importDefault(require("./routes/chat.js"));
 const content_js_1 = __importDefault(require("./routes/content.js"));
+const gallery_js_1 = __importDefault(require("./routes/gallery.js"));
+const blog_js_1 = __importDefault(require("./routes/blog.js"));
 const rateLimiter_js_1 = require("./middleware/rateLimiter.js");
 const app = (0, express_1.default)();
 // Middlewares
@@ -40,6 +42,8 @@ app.use((req, res, next) => {
 // API Routes Mounting with Rate Limiting
 app.use('/api/health', health_js_1.default);
 app.use('/api/content', content_js_1.default);
+app.use('/api/gallery', gallery_js_1.default);
+app.use('/api/blog', blog_js_1.default);
 app.use('/api/leads', (0, rateLimiter_js_1.rateLimit)({ windowMs: 15 * 60 * 1000, max: 10, message: 'Too many lead submissions from this IP. Please try again later.' }), leads_js_1.default);
 app.use('/api/chat', (0, rateLimiter_js_1.rateLimit)({ windowMs: 1 * 60 * 1000, max: 30, message: 'Chat rate limit reached. Please wait a moment.' }), chat_js_1.default);
 // Root Health Fallback

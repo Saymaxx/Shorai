@@ -11,9 +11,11 @@ interface RouterContextType {
 const ROUTE_LOADERS: Record<string, () => Promise<any>> = {
   '/': () => import('@/pages/HomePage'),
   '/about': () => import('@/pages/AboutUsPage'),
+  '/gallery': () => import('@/pages/GalleryPage'),
   '/why-shorai': () => import('@/pages/WhyShoraiPage'),
   '/schools': () => import('@/pages/SchoolTransformationPage'),
   '/labs': () => import('@/pages/ShoraiLabsPage'),
+  '/blog': () => import('@/pages/BlogPage'),
   '/contact': () => import('@/pages/ContactPage'),
   '/admin': () => import('@/pages/AdminPage'),
 };
@@ -29,12 +31,14 @@ const RouterContext = createContext<RouterContextType>({
 export function normalizePath(path: string): string {
   if (!path || path === '' || path === '/') return '/';
   if (path.startsWith('/about')) return '/about';
+  if (path.startsWith('/gallery')) return path; // preserve /gallery and /gallery/:slug
   if (path.startsWith('/why-shorai') || path.startsWith('/why')) return '/why-shorai';
   if (path.startsWith('/schools') || path.startsWith('/for-schools') || path.startsWith('/transformation')) return '/schools';
-  if (path.startsWith('/contact')) return '/contact';
   if (path.startsWith('/labs')) return '/labs';
+  if (path.startsWith('/blog') || path.startsWith('/insights')) return path; // preserve /blog and /blog/:slug
+  if (path.startsWith('/contact')) return '/contact';
   if (path.startsWith('/admin')) return '/admin';
-  return '/';
+  return path;
 }
 
 export function RouterProvider({ children }: { children: React.ReactNode }) {

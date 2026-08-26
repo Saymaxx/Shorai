@@ -21,21 +21,21 @@ export default function GlobalMouseFollower() {
     };
     const onLeave = () => setIsHovering(false);
 
-    document.addEventListener('mouseover', onEnter);
-    document.addEventListener('mouseout', onLeave);
+    document.addEventListener('mouseover', onEnter, { passive: true });
+    document.addEventListener('mouseout', onLeave, { passive: true });
     return () => {
       document.removeEventListener('mouseover', onEnter);
       document.removeEventListener('mouseout', onLeave);
     };
   }, []);
 
-  const smoothX = useSpring(globalMouseX, { damping: 22, stiffness: 180, mass: 0.4 });
-  const smoothY = useSpring(globalMouseY, { damping: 22, stiffness: 180, mass: 0.4 });
+  const smoothX = useSpring(globalMouseX, { damping: 25, stiffness: 200, mass: 0.3 });
+  const smoothY = useSpring(globalMouseY, { damping: 25, stiffness: 200, mass: 0.3 });
 
-  const slowX = useSpring(globalMouseX, { damping: 35, stiffness: 60, mass: 1 });
-  const slowY = useSpring(globalMouseY, { damping: 35, stiffness: 60, mass: 1 });
+  const slowX = useSpring(globalMouseX, { damping: 40, stiffness: 80, mass: 0.8 });
+  const slowY = useSpring(globalMouseY, { damping: 40, stiffness: 80, mass: 0.8 });
 
-  const orbSize = 460;
+  const orbSize = 400;
   const dotSize = 10;
 
   const orbX = useTransform(slowX, (v) => v - orbSize / 2);
@@ -47,7 +47,7 @@ export default function GlobalMouseFollower() {
 
   return (
     <>
-      {/* Soft playful pastel follower aura */}
+      {/* Soft hardware-accelerated pastel follower aura */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-0 rounded-full hidden md:block"
         style={{
@@ -55,14 +55,16 @@ export default function GlobalMouseFollower() {
           height: orbSize,
           x: orbX,
           y: orbY,
+          willChange: 'transform',
+          transform: 'translateZ(0)',
           background: theme === 'dark'
-            ? 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(56,189,248,0.06) 45%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, rgba(255,107,0,0.05) 50%, transparent 70%)',
-          opacity: 0.9,
+            ? 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(56,189,248,0.04) 45%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(99,102,241,0.06) 0%, rgba(255,107,0,0.04) 50%, transparent 70%)',
+          opacity: 0.8,
         }}
       />
 
-      {/* Playful precision dot cursor */}
+      {/* Hardware-accelerated precision dot cursor */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full hidden md:block"
         style={{
@@ -70,13 +72,15 @@ export default function GlobalMouseFollower() {
           height: dotSize,
           x: dotX,
           y: dotY,
+          willChange: 'transform',
+          transform: 'translateZ(0)',
           background: isHovering ? '#FF6B00' : '#6366F1',
           boxShadow: isHovering
-            ? '0 0 14px rgba(255,107,0,0.7)'
-            : '0 0 14px rgba(99,102,241,0.7)',
+            ? '0 0 12px rgba(255,107,0,0.6)'
+            : '0 0 12px rgba(99,102,241,0.6)',
         }}
-        animate={{ scale: isHovering ? 1.7 : 1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        animate={{ scale: isHovering ? 1.5 : 1 }}
+        transition={{ type: 'spring', stiffness: 450, damping: 30 }}
       />
     </>
   );
