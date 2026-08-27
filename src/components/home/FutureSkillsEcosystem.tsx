@@ -253,7 +253,7 @@ export default function FutureSkillsEcosystem() {
         onClick={() => setSelectedDomain(skill)}
         onMouseEnter={() => setHoveredDomain(skill.id)}
         onMouseLeave={() => setHoveredDomain(null)}
-        className={`w-[290px] sm:w-[330px] lg:w-[350px] shrink-0 p-5 sm:p-6 rounded-3xl bg-card border transition-all duration-300 flex flex-col justify-between cursor-pointer group relative overflow-hidden select-none ${
+        className={`w-[290px] sm:w-[330px] lg:w-[350px] shrink-0 p-5 sm:p-6 rounded-3xl bg-card/85 backdrop-blur-md border transition-all duration-300 flex flex-col justify-between cursor-pointer group relative overflow-hidden select-none ${
           isCategoryActive ? 'opacity-100' : 'opacity-40 grayscale-[50%]'
         } ${
           isHovered 
@@ -325,7 +325,7 @@ export default function FutureSkillsEcosystem() {
   };
 
   return (
-    <section id="skills" className="relative py-24 sm:py-32 bg-background overflow-hidden border-t border-border transition-colors duration-300">
+    <section id="skills" className="relative py-24 sm:py-32 bg-transparent overflow-hidden border-t border-border transition-colors duration-300">
       
       {/* CSS Hardware-Accelerated 120fps Infinite Seamless Marquee Styles */}
       <style>{`
@@ -426,8 +426,8 @@ export default function FutureSkillsEcosystem() {
       <div className="relative w-full overflow-hidden z-10 space-y-6 sm:space-y-8 py-2">
         
         {/* Left & Right Edge Gradient Masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-r from-background/60 to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-32 bg-gradient-to-l from-background/60 to-transparent z-20 pointer-events-none" />
 
         {/* Row 1: Continuous Moving Left Track */}
         <div className="skills-marquee-track-left gap-5 sm:gap-6 px-4">
@@ -444,7 +444,7 @@ export default function FutureSkillsEcosystem() {
       {/* ── BOTTOM SUMMARY CTA STRIP ── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 mt-14 relative z-10">
         <SectionReveal delay={0.2}>
-          <div className="rounded-3xl p-6 sm:p-10 bg-card border border-border shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="rounded-3xl p-6 sm:p-10 bg-card/75 backdrop-blur-xl border border-border shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
             <div>
               <span className="text-xs font-mono font-bold tracking-widest text-primary uppercase block mb-1">
                 COMPREHENSIVE K-12 COVERAGE

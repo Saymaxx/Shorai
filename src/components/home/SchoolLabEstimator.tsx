@@ -13,7 +13,7 @@ export default function SchoolLabEstimator() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <section id="institutional-blueprint" className="relative py-20 sm:py-24 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
+    <section id="institutional-blueprint" className="relative py-20 sm:py-24 px-4 sm:px-6 bg-transparent overflow-hidden border-t border-border">
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] h-[55vw] max-w-[650px] bg-primary/[0.04] rounded-full blur-[140px]" />
@@ -21,10 +21,10 @@ export default function SchoolLabEstimator() {
 
       <div className="max-w-[1000px] mx-auto relative z-10">
         
-        {/* Recommended Blueprint Card */}
-        <div className="bg-gradient-to-b from-card via-card to-primary/[0.04] border-2 border-primary/30 p-6 sm:p-10 lg:p-12 rounded-[2.5rem] shadow-2xl">
+        {/* Recommended Blueprint Card with Watermark Transparency */}
+        <div className="relative bg-card/75 dark:bg-[#0B0F19]/75 backdrop-blur-xl border-2 border-primary/30 p-6 sm:p-10 lg:p-12 rounded-[2.5rem] shadow-2xl overflow-hidden">
           
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-border">
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-border">
             <div>
               <span className="shorai-eyebrow text-primary block text-xs font-mono font-bold tracking-widest uppercase">
                 RECOMMENDED BLUEPRINT

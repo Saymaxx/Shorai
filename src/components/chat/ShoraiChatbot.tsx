@@ -378,29 +378,136 @@ export default function ShoraiChatbot() {
     setIsTyping(true);
 
     try {
-      const chatRes = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: query }),
-      });
+      const historyPayload = messages.slice(-8).map((m) => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        text: m.text,
+      }));
 
-      if (chatRes.ok) {
-        const data = await chatRes.json();
-        setIsTyping(false);
-        if (data?.reply) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: `bot-${Date.now()}`,
-              sender: 'bot',
-              text: data.reply,
-              chips: ['🤖 Explore Labs', '🏫 School Model', '📝 Get in Touch'],
-              linkUrl: '/contact',
-              linkLabel: 'Contact Page',
-            },
-          ]);
-          return;
+      // 1. Try Backend /api/chat
+      let responseText = '';
+      let leadSaved = false;
+
+      try {
+        const chatRes = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            message: query,
+            history: historyPayload
+          }),
+        });
+
+        if (chatRes.ok) {
+          const data = await chatRes.json();
+          if (data?.reply) {
+            responseText = data.reply;
+            leadSaved = !!data.leadSaved;
+          }
         }
+      } catch {
+        // Fall through to direct Gemini API
+      }
+
+      // 2. If backend was not reached, call Google Gemini 2.5-flash directly
+      if (!responseText) {
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyB-80jwRI64mPOtSy_8fEpPYovgbCvj7Eg';
+        if (apiKey) {
+          const formattedContents: Array<{ role: string; parts: Array<{ text: string }> }> = [
+            {
+              role: 'user',
+              parts: [{
+                text: `You are the friendly, intelligent AI Academic Advisor for "SHORAI" (an initiative by SEG Academy).
+Shorai provides K-12 schools with turnkey Robotics, AI, Autonomous Drones, IoT, and Coding Innovation Labs (Grades 1-12) across India, aligned with NEP 2020.
+Centers: Varanasi (Sigra - Mahmoorganj Rd) & Kolkata (Khardaha HQ). Helpline: +91 7880630963, Email: contact@shorai.in.
+
+Instructions:
+- Answer ALL questions intelligently and accurately, whether general science/technology/curiosity questions (e.g. "what is www", "explain quantum computing", "how do drones fly", "what is photosynthesis") or specific inquiries about Shorai programs.
+- Keep answers warm, encouraging, concise (2 to 4 sentences usually), clear, and nicely formatted in markdown.
+- If the user shares contact details (name, email, phone, school), extract them at the end inside: <<<LEAD_JSON:{"name":"...","contact":"...","email":"...","organisation":"..."}>>>.`
+              }]
+            },
+            {
+              role: 'model',
+              parts: [{ text: "Understood. I will answer any academic, tech, or school innovation question clearly, accurately and concisely as Shorai's AI Advisor." }]
+            }
+          ];
+
+          for (const item of historyPayload) {
+            if (!item.text) continue;
+            formattedContents.push({
+              role: item.role === 'user' ? 'user' : 'model',
+              parts: [{ text: item.text }]
+            });
+          }
+
+          formattedContents.push({
+            role: 'user',
+            parts: [{ text: query }]
+          });
+
+          const geminiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: formattedContents,
+                generationConfig: {
+                  temperature: 0.7,
+                  maxOutputTokens: 400,
+                },
+              }),
+            }
+          );
+
+          if (geminiRes.ok) {
+            const gData = await geminiRes.json();
+            const gText = gData?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (gText) {
+              responseText = gText.trim();
+              const leadMatch = responseText.match(/<<<LEAD_JSON:(.*?)>>>/s);
+              if (leadMatch && leadMatch[1]) {
+                try {
+                  const leadJson = JSON.parse(leadMatch[1]);
+                  responseText = responseText.replace(/<<<LEAD_JSON:.*?>>>/s, '').trim();
+                  if (leadJson.name || leadJson.contact || leadJson.email) {
+                    submitLeadToGoogleSheet({
+                      name: leadJson.name || 'Visitor (Chat)',
+                      email: leadJson.email || 'chat@shorai.lead',
+                      contact: leadJson.contact || 'Direct Chat',
+                      organisation: leadJson.organisation || 'K-12 School Inquiry',
+                      purpose: 'AI Chatbot Inquiry',
+                      message: `Query: "${query}"`,
+                    });
+                    leadSaved = true;
+                  }
+                } catch {
+                  // Ignore JSON parse error
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (responseText) {
+        setIsTyping(false);
+        const chips = leadSaved 
+          ? ['✓ Inquiry Saved to Database', '🤖 Explore Labs', '🏫 School Model']
+          : ['🤖 Explore Labs', '🏫 School Model', '📝 Get in Touch'];
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-${Date.now()}`,
+            sender: 'bot',
+            text: responseText,
+            chips,
+            linkUrl: '/contact',
+            linkLabel: 'Contact Page',
+          },
+        ]);
+        return;
       }
     } catch {
       // Backend not available, fallback to local knowledge matcher

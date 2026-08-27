@@ -58,7 +58,7 @@ export default function WelcomeEnquiryPopup() {
       if (!hasDismissed) {
         setIsOpen(true);
       }
-    }, 8000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, []);

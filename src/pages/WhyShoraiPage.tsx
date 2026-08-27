@@ -108,10 +108,10 @@ export default function WhyShoraiPage() {
   const carouselItems = [...techSlides, ...techSlides];
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-20 sm:pt-24 transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-foreground pt-20 sm:pt-24 transition-colors duration-300">
       
       {/* ── Hero Section with Continuous Moving Panoramic Carousel BEHIND ── */}
-      <section className="relative min-h-[600px] sm:min-h-[660px] lg:min-h-[720px] flex flex-col justify-center items-center py-8 sm:py-12 overflow-hidden border-b border-border bg-background">
+      <section className="relative min-h-[600px] sm:min-h-[660px] lg:min-h-[720px] flex flex-col justify-center items-center py-8 sm:py-12 overflow-hidden border-b border-border bg-transparent">
         
         {/* CSS Hardware-Accelerated Jitter-Free Marquee Style */}
         <style dangerouslySetInnerHTML={{

@@ -135,8 +135,6 @@ export default function GalleryPage() {
   const [galleryData, setGalleryData] = useState(defaultGalleryData);
   const [selectedCategory, setSelectedCategory] = useState<ExperienceCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSchool, setSelectedSchool] = useState<string>('all');
-  const [selectedCity, setSelectedCity] = useState<string>('all');
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -199,27 +197,9 @@ export default function GalleryPage() {
     return () => clearInterval(timer);
   }, [isAutoPlaying, spotlightPhotos.length, featuredSpotlightIndex]);
 
-  const uniqueSchools = useMemo(() => {
-    const schools = new Set<string>();
-    galleryData.items.forEach(item => {
-      if (item.school) schools.add(item.school);
-    });
-    return Array.from(schools);
-  }, [galleryData.items]);
-
-  const uniqueCities = useMemo(() => {
-    const cities = new Set<string>();
-    galleryData.items.forEach(item => {
-      if (item.city) cities.add(item.city);
-    });
-    return Array.from(cities);
-  }, [galleryData.items]);
-
   const filteredItems = useMemo(() => {
     return galleryData.items.filter((item) => {
       const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-      const matchesSchool = selectedSchool === 'all' || item.school === selectedSchool;
-      const matchesCity = selectedCity === 'all' || item.city === selectedCity;
 
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -230,9 +210,9 @@ export default function GalleryPage() {
         item.city.toLowerCase().includes(query) ||
         item.tags.some(t => t.toLowerCase().includes(query));
 
-      return matchesCategory && matchesSchool && matchesCity && matchesSearch;
+      return matchesCategory && matchesSearch;
     });
-  }, [galleryData.items, selectedCategory, selectedSchool, selectedCity, searchQuery]);
+  }, [galleryData.items, selectedCategory, searchQuery]);
 
   const displayedItems = useMemo(() => {
     return filteredItems.slice(0, visibleCount);
@@ -280,10 +260,10 @@ export default function GalleryPage() {
   }, [galleryData.items]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300 overflow-x-hidden">
 
       {/* ── 1. CINEMATIC HERO WITH MOVING TECH GRID & PARTICLES ── */}
-      <section className="relative pt-36 sm:pt-44 pb-14 overflow-hidden border-b border-border">
+      <section className="relative z-10 pt-36 sm:pt-44 pb-14 overflow-hidden border-b border-border bg-background">
 
         {/* Floating Holographic Ambient Orbs with hardware-accelerated rendering */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
@@ -517,8 +497,8 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      {/* ── 3. DUAL-ROW INFINITE MOVING CAMPUS MOMENTS REEL (CONTINUOUS MARQUEE) ── */}
-      <section id="moving-stream" className="py-14 bg-background border-b border-border overflow-hidden">
+      {/* ── 3. DUAL-ROW INFINITE MOVING CAMPUS MOMENTS REEL (CONTINUOUS MARQUEE WITH HOVER PAUSE & 2-LINE INFO) ── */}
+      <section id="moving-stream" className="py-14 bg-transparent border-b border-border overflow-hidden gallery-marquee-wrapper">
         <div className="max-w-[1440px] mx-auto px-4 mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
@@ -528,19 +508,13 @@ export default function GalleryPage() {
           </div>
 
           <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline-block">
-            Auto-scrolling 120+ active lab moments
+            Auto-scrolling 120+ active lab moments • Hover to inspect
           </span>
         </div>
 
-        {/* Row 1: Moving Left (Enlarged Clean Photos Without Obstructive Text) */}
+        {/* Row 1: Moving Left */}
         <div className="relative w-full overflow-hidden py-3">
-          <motion.div
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-            whileHover={{ transition: { duration: 999999 } }}
-            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-            className="flex items-center gap-5 w-max cursor-pointer"
-          >
+          <div className="gallery-marquee-stream-left flex items-center gap-5 w-max cursor-pointer">
             {marqueeItemsRow1.map((item, idx) => (
               <div
                 key={`r1-${idx}`}
@@ -554,20 +528,29 @@ export default function GalleryPage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                   sizes="(max-width: 768px) 320px, 420px"
                 />
+
+                {/* Brief 2-line info reveal on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-5 text-left">
+                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono">
+                      <span className="px-2.5 py-0.5 rounded-md bg-primary text-white text-[10px] font-black uppercase shadow-sm">
+                        {item.school}
+                      </span>
+                      <span className="text-white/80 text-[10px] font-semibold">{item.city}</span>
+                    </div>
+                    <h4 className="text-sm font-black text-white leading-snug line-clamp-2">
+                      {item.title}
+                    </h4>
+                  </div>
+                </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* Row 2: Moving Right (Enlarged Clean Photos Without Obstructive Text) */}
+        {/* Row 2: Moving Right */}
         <div className="relative w-full overflow-hidden py-3 mt-2">
-          <motion.div
-            animate={{ x: ['-50%', '0%'] }}
-            transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
-            whileHover={{ transition: { duration: 999999 } }}
-            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-            className="flex items-center gap-5 w-max cursor-pointer"
-          >
+          <div className="gallery-marquee-stream-right flex items-center gap-5 w-max cursor-pointer">
             {marqueeItemsRow2.map((item, idx) => (
               <div
                 key={`r2-${idx}`}
@@ -581,9 +564,24 @@ export default function GalleryPage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                   sizes="(max-width: 768px) 320px, 420px"
                 />
+
+                {/* Brief 2-line info reveal on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-5 text-left">
+                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono">
+                      <span className="px-2.5 py-0.5 rounded-md bg-cyan-500 text-white text-[10px] font-black uppercase shadow-sm">
+                        {item.school}
+                      </span>
+                      <span className="text-white/80 text-[10px] font-semibold">{item.city}</span>
+                    </div>
+                    <h4 className="text-sm font-black text-white leading-snug line-clamp-2">
+                      {item.title}
+                    </h4>
+                  </div>
+                </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -743,7 +741,7 @@ export default function GalleryPage() {
 
       {/* ── 5. INTERACTIVE "FROM CLASSROOM TO CREATION" BEFORE & AFTER EXPERIENCE ── */}
       {galleryData.transformations && galleryData.transformations.length > 0 && (
-        <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-border bg-background">
+        <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-border bg-transparent">
           <div className="max-w-[1440px] mx-auto">
 
             <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
@@ -947,55 +945,25 @@ export default function GalleryPage() {
               })}
             </div>
 
-            {/* School & City Filter Selectors */}
-            <div className="hidden lg:flex items-center gap-4 text-xs font-mono pt-1">
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-semibold">School Campus:</span>
-                <select
-                  value={selectedSchool}
-                  onChange={(e) => setSelectedSchool(e.target.value)}
-                  className="px-3.5 py-2 rounded-xl bg-card border border-border font-bold focus:outline-none focus:border-primary text-foreground"
-                >
-                  <option value="all">All Schools ({uniqueSchools.length})</option>
-                  {uniqueSchools.map(school => (
-                    <option key={school} value={school}>{school}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-semibold">City:</span>
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="px-3.5 py-2 rounded-xl bg-card border border-border font-bold focus:outline-none focus:border-primary text-foreground"
-                >
-                  <option value="all">All Cities ({uniqueCities.length})</option>
-                  {uniqueCities.map(city => (
-                    <option key={city} value={city}>{city}</option>
-                  ))}
-                </select>
-              </div>
-
-              {(selectedCategory !== 'all' || selectedSchool !== 'all' || selectedCity !== 'all' || searchQuery) && (
+            {/* Reset Filter Button if active */}
+            {(selectedCategory !== 'all' || searchQuery) && (
+              <div className="flex justify-end pt-1">
                 <button
                   onClick={() => {
                     setSelectedCategory('all');
-                    setSelectedSchool('all');
-                    setSelectedCity('all');
                     setSearchQuery('');
                   }}
-                  className="text-xs text-primary font-bold hover:underline ml-auto flex items-center gap-1"
+                  className="text-xs text-primary font-bold hover:underline flex items-center gap-1 font-mono"
                 >
                   <X className="w-3.5 h-3.5" />
-                  <span>Reset All Filters</span>
+                  <span>Reset Filters</span>
                 </button>
-              )}
-            </div>
+              </div>
+            )}
 
           </div>
 
-          {/* ── BENTO MASONRY PHOTO CARDS ── */}
+          {/* ── BENTO MASONRY PHOTO CARDS (HOVER-ONLY TEXT REVEAL) ── */}
           {displayedItems.length === 0 ? (
             <div className="py-24 text-center rounded-3xl bg-card border-2 border-border p-8 space-y-4 shadow-sm">
               <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
@@ -1008,8 +976,6 @@ export default function GalleryPage() {
               <button
                 onClick={() => {
                   setSelectedCategory('all');
-                  setSelectedSchool('all');
-                  setSelectedCity('all');
                   setSearchQuery('');
                 }}
                 className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-black font-mono shadow-md hover:scale-105 transition-transform"
@@ -1029,11 +995,11 @@ export default function GalleryPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.45, delay: (idx % 3) * 0.08 }}
-                    className="break-inside-avoid relative rounded-[2rem] overflow-hidden bg-card border-2 border-border hover:border-primary/60 group cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5"
+                    className="break-inside-avoid relative rounded-[2rem] overflow-hidden bg-card border-2 border-border hover:border-primary/80 group cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5"
                     onClick={() => setSelectedImageIndex(idx)}
                   >
-                    {/* Visual Aspect Container */}
-                    <div className={`relative w-full ${item.aspectRatio === 'portrait' ? 'aspect-[3/4]' :
+                    {/* Visual Aspect Container (Full-Bleed Photo Card) */}
+                    <div className={`relative w-full overflow-hidden bg-black ${item.aspectRatio === 'portrait' ? 'aspect-[3/4]' :
                         item.aspectRatio === 'square' ? 'aspect-square' :
                           'aspect-[16/10]'
                       }`}>
@@ -1041,43 +1007,50 @@ export default function GalleryPage() {
                         src={item.imageUrl}
                         alt={item.title}
                         fill
-                        className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
+
+                      {/* Hover Info Reveal Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-5 sm:p-6 text-left">
+                        <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 space-y-2">
+                          <div className="flex items-center justify-between text-[11px] font-mono">
+                            <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase text-white shadow-sm ${catObj.badgeBg}`}>
+                              {catObj.label}
+                            </span>
+                            <span className="text-white/80 font-semibold">{item.date}</span>
+                          </div>
+
+                          <h4 className="text-base font-black text-white tracking-tight leading-snug">
+                            {item.title}
+                          </h4>
+
+                          <div className="text-xs font-bold text-cyan-400 font-mono flex items-center gap-1">
+                            <Building2 className="w-3.5 h-3.5" />
+                            <span>{item.school} • {item.city}</span>
+                          </div>
+
+                          <p className="text-xs text-white/85 line-clamp-2 leading-relaxed">
+                            {item.caption}
+                          </p>
+
+                          {/* Tags & Action */}
+                          <div className="flex items-center justify-between pt-2 border-t border-white/20">
+                            <div className="flex flex-wrap gap-1.5">
+                              {item.tags.slice(0, 2).map((tag, tIdx) => (
+                                <span key={tIdx} className="px-2 py-0.5 rounded-md bg-white/15 text-[10px] font-mono text-white/90 font-semibold backdrop-blur-md">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                            <span className="text-xs font-mono font-black text-cyan-400 flex items-center gap-1">
+                              <span>Expand</span>
+                              <ArrowRight className="w-3 h-3" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
-                    {/* Card Content Footer */}
-                    <div className="p-5 space-y-2.5">
-                      <div className="flex items-center justify-between text-[11px] font-mono">
-                        <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase ${catObj.badgeBg}`}>
-                          {catObj.label}
-                        </span>
-                        <span className="text-muted-foreground font-semibold">{item.date}</span>
-                      </div>
-
-                      <h4 className="text-base font-black text-foreground tracking-tight leading-snug group-hover:text-primary transition-colors">
-                        {item.title}
-                      </h4>
-
-                      <div className="text-xs font-bold text-primary font-mono flex items-center gap-1">
-                        <Building2 className="w-3.5 h-3.5" />
-                        <span>{item.school}</span>
-                      </div>
-
-                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed pt-0.5">
-                        {item.caption}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/70">
-                        {item.tags.slice(0, 3).map((tag, tIdx) => (
-                          <span key={tIdx} className="px-2 py-0.5 rounded-md bg-muted text-[10px] font-mono text-muted-foreground font-semibold">
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
                   </motion.div>
                 );
               })}
@@ -1300,21 +1273,6 @@ export default function GalleryPage() {
                     </button>
                   ))}
                 </div>
-              </div>
-
-              {/* School select */}
-              <div className="space-y-2">
-                <div className="text-xs font-mono font-bold text-muted-foreground uppercase">Partner School</div>
-                <select
-                  value={selectedSchool}
-                  onChange={(e) => setSelectedSchool(e.target.value)}
-                  className="w-full p-3.5 rounded-2xl bg-muted border border-border text-xs font-bold text-foreground focus:outline-none"
-                >
-                  <option value="all">All Schools</option>
-                  {uniqueSchools.map(school => (
-                    <option key={school} value={school}>{school}</option>
-                  ))}
-                </select>
               </div>
 
               <div className="pt-2">

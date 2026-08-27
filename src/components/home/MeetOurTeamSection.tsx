@@ -123,7 +123,7 @@ export default function MeetOurTeamSection() {
   const team = content.about.meetTeam;
 
   return (
-    <section className="relative py-20 sm:py-28 bg-background overflow-hidden border-t border-border transition-colors duration-300">
+    <section className="relative py-20 sm:py-28 bg-transparent overflow-hidden border-t border-border transition-colors duration-300">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
@@ -197,7 +197,7 @@ export default function MeetOurTeamSection() {
         </div>
 
         {/* ── 6 CORE VALUE PILLARS (ROW) ── */}
-        <div className="rounded-3xl p-6 sm:p-8 bg-card border-2 border-border shadow-xl mb-14 sm:mb-18">
+        <div className="rounded-3xl p-6 sm:p-8 bg-card/75 backdrop-blur-xl border-2 border-border shadow-xl mb-14 sm:mb-18">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {CORE_VALUES.map((val, idx) => {
               const Icon = val.icon;
@@ -226,23 +226,22 @@ export default function MeetOurTeamSection() {
           </div>
         </div>
 
-        {/* ── 8 TEAM MEMBERS HEXAGONAL GRID ── */}
+        {/* ── 8 MENTORS & LEADERSHIP GRID (2 ROWS x 4 COLS) ── */}
         <div className="mb-14 sm:mb-18">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary mb-3">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>CORE LEADERSHIP &amp; MASTER TRAINERS</span>
-            </div>
-            <h3 className="text-2xl sm:text-4xl font-black text-foreground">
-              Passionate Minds Driving Innovation
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h3 className="text-2xl sm:text-3xl font-black text-foreground mb-2">
+              Founding Mentors &amp; Technology Specialists
             </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+              Passionate educators and engineers driving experiential K-12 transformation across India.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
             {TEAM_MEMBERS.map((member, idx) => (
               <div 
                 key={idx}
-                className="group rounded-3xl p-5 bg-card border-2 border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1.5"
+                className="group rounded-3xl p-5 bg-card/80 backdrop-blur-md border-2 border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1.5"
               >
                 {/* Hexagon Photo Frame */}
                 <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-4 rounded-3xl overflow-hidden border-3 shadow-lg group-hover:scale-105 transition-transform duration-500" style={{ borderColor: member.color }}>

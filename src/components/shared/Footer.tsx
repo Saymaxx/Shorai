@@ -66,7 +66,7 @@ export default function Footer() {
   const kolkataLoc = siteConfig.locations.kolkata;
 
   return (
-    <footer id="contact" className="bg-card border-t border-border pt-20 pb-12 relative overflow-hidden">
+    <footer id="contact" className="bg-transparent border-t border-border pt-20 pb-12 relative overflow-hidden">
       {/* Ambient background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-1/4 w-[40vw] h-[300px] bg-primary/[0.03] rounded-full blur-[140px]" />
@@ -94,17 +94,6 @@ export default function Footer() {
                   </span>
                 </div>
               </Link>
-
-              {/* SEG Academy Endorsement & MCA Registration Banner */}
-              <div className="p-3.5 rounded-2xl bg-primary/[0.06] border border-primary/20 mb-6">
-                <div className="flex items-center gap-2 text-xs font-black text-primary mb-1">
-                  <Building2 className="w-4 h-4 text-primary shrink-0" />
-                  <span>{foot.segEndorsement}</span>
-                </div>
-                <div className="text-[11px] text-muted-foreground font-mono leading-relaxed">
-                  Registered under Ministry Of Corporate Affairs • CIN: <strong className="text-foreground">{foot.cin}</strong>
-                </div>
-              </div>
 
               {/* Dual Address Cards */}
               <div className="space-y-4 mb-6">
@@ -228,19 +217,6 @@ export default function Footer() {
                   aria-label="Facebook"
                 >
                   <FacebookIcon className="w-5 h-5" />
-                </a>
-              </div>
-
-              {/* Quick Institutional Action: Download Curriculum Blueprint */}
-              <div className="mt-6">
-                <a
-                  href="/brochure.pdf"
-                  download
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-xs font-mono font-bold text-primary transition-all hover:scale-105"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-primary" />
-                  <span>Download NEP 2020 Curriculum Blueprint (PDF)</span>
-                  <ArrowRight className="w-3 h-3" />
                 </a>
               </div>
             </div>

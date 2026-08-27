@@ -88,7 +88,7 @@ export default function InnovationLabs() {
     <section 
       id="innovation-labs" 
       onMouseMove={handleMouseMove}
-      className="relative py-28 bg-background overflow-hidden border-t border-border transition-colors duration-300"
+      className="relative py-28 bg-transparent overflow-hidden border-t border-border transition-colors duration-300"
     >
       {/* Background Atmosphere */}
       <div className="absolute inset-0 z-0 pointer-events-none">

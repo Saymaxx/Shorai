@@ -1,4 +1,6 @@
-// Unified Lead Submission Service (Express Backend + Google Sheets Fallback)
+import { supabase } from './supabaseClient';
+
+// Unified Lead Submission Service (Express Backend + Supabase + Google Sheets Fallback)
 export const GOOGLE_SCRIPT_WEB_APP_URL = 
   ((import.meta as unknown as { env?: { VITE_GOOGLE_SCRIPT_URL?: string } }).env?.VITE_GOOGLE_SCRIPT_URL) || 
   'https://script.google.com/macros/s/AKfycbxA-MijWckNTGLdZIcn768XLjn75ktRMcHYEqB2rTwHRQRiTwZNwvnkjWy8zGvGFTMwAA/exec';
@@ -34,7 +36,30 @@ export async function submitLeadToGoogleSheet(data: LeadFormData): Promise<{ suc
     message: sanitize(data.message),
   };
 
-  // 1. Try submitting to Express backend API
+  // 1. Write directly to Supabase 'leads' table (non-blocking)
+  try {
+    supabase.from('leads').insert([
+      {
+        name: cleanData.name,
+        email: cleanData.email,
+        contact: cleanData.contact,
+        organisation: cleanData.organisation || '',
+        purpose: cleanData.purpose,
+        message: cleanData.message || '',
+        status: 'new'
+      }
+    ]).then(({ error }) => {
+      if (error) {
+        console.warn('[LeadSubmission] Supabase insert note:', error.message);
+      } else {
+        console.log('[LeadSubmission] Successfully saved lead to Supabase!');
+      }
+    });
+  } catch (sbErr) {
+    console.warn('[LeadSubmission] Supabase direct client error:', sbErr);
+  }
+
+  // 2. Try submitting to Express backend API
   try {
     const apiRes = await fetch('/api/leads', {
       method: 'POST',

@@ -34,7 +34,7 @@ export default function SchoolTransformationPage() {
   const closingCta = content.schools.closingCta;
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300">
       {/* Transformation Hero Header with Advanced STEM Classroom Background */}
       <section className="relative pt-40 sm:pt-48 pb-20 sm:pb-28 overflow-hidden border-b border-border">
         {/* Background Image Layer with Atmospheric Gradients */}
@@ -111,20 +111,20 @@ export default function SchoolTransformationPage() {
       {/* Educator Testimonials */}
       <Testimonials />
 
-      {/* Closing CTA */}
-      <section className="py-20 bg-card border-t border-border relative overflow-hidden text-center">
+      {/* Closing CTA: Ready To Schedule Your School Transformation Audit? */}
+      <section className="py-24 bg-transparent border-t border-border relative overflow-hidden text-center">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-4">
+            <h2 className="text-2xl sm:text-4xl font-black text-foreground mb-4">
               {closingCta.title}
             </h2>
-            <p className="text-sm text-muted-foreground mb-8">
+            <p className="text-sm sm:text-base text-muted-foreground mb-8 font-medium">
               {closingCta.subtitle}
             </p>
             <MagneticWrapper>
               <button
                 onClick={() => setIsContactOpen(true)}
-                className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-md inline-flex items-center gap-2 transition-all hover:scale-105"
+                className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-lg inline-flex items-center gap-2 transition-all hover:scale-105"
               >
                 <span>{closingCta.buttonText}</span>
                 <ArrowRight className="w-4 h-4" />

@@ -32,7 +32,12 @@ import {
   FileText,
   Layers,
   Edit,
-  Tag
+  Tag,
+  UploadCloud,
+  Copy,
+  Check,
+  ExternalLink,
+  FolderUp
 } from 'lucide-react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useContent } from '@/context/ContentContext';
@@ -41,6 +46,7 @@ import { defaultGalleryData } from '@/config/defaultGalleryData';
 import { defaultBlogData } from '@/config/defaultBlogData';
 import { GalleryData, GalleryItem, CampusStoryAlbum } from '@/types/gallery';
 import { BlogData, BlogArticle, Author } from '@/types/blog';
+import { uploadImageToSupabase } from '@/lib/supabaseClient';
 
 interface Lead {
   id: string;
@@ -55,7 +61,15 @@ interface Lead {
   syncedToGoogleSheet?: boolean;
 }
 
-type AdminTab = 'leads' | 'home-cms' | 'why-cms' | 'schools-cms' | 'about-contact-cms' | 'gallery-cms' | 'blog-cms';
+interface UploadedMediaItem {
+  id: string;
+  fileName: string;
+  url: string;
+  sizeKb: number;
+  uploadedAt: string;
+}
+
+type AdminTab = 'leads' | 'home-cms' | 'why-cms' | 'schools-cms' | 'about-contact-cms' | 'gallery-cms' | 'blog-cms' | 'media-storage';
 
 export default function AdminPage() {
   usePageMeta({
@@ -110,6 +124,20 @@ export default function AdminPage() {
   // Blog Editor Active Article
   const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
 
+  // Supabase Media Storage State
+  const [uploadedMediaList, setUploadedMediaList] = useState<UploadedMediaItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('shorai_supabase_media');
+        if (cached) return JSON.parse(cached);
+      } catch {}
+    }
+    return [];
+  });
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
+  const [uploadMediaStatus, setUploadMediaStatus] = useState<{ message: string; type: 'success' | 'error' | '' }>({ message: '', type: '' });
+  const [copiedUrlId, setCopiedUrlId] = useState<string | null>(null);
+
   useEffect(() => {
     setEditableContent(content);
   }, [content]);
@@ -126,6 +154,64 @@ export default function AdminPage() {
       .then(data => { if (data && data.articles) setBlogData(data); })
       .catch(() => {});
   }, []);
+
+  const handleUploadMediaFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploadingMedia(true);
+    setUploadMediaStatus({ message: 'Uploading to Supabase bucket "shorai-media"...', type: '' });
+
+    let successCount = 0;
+    const newItems: UploadedMediaItem[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const { url, error } = await uploadImageToSupabase(file, 'shorai-media');
+
+      if (url) {
+        successCount++;
+        const item: UploadedMediaItem = {
+          id: `${Date.now()}_${i}`,
+          fileName: file.name,
+          url,
+          sizeKb: Math.round(file.size / 1024),
+          uploadedAt: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }),
+        };
+        newItems.push(item);
+      } else {
+        console.error('[AdminPage] Upload error for file:', file.name, error);
+      }
+    }
+
+    if (newItems.length > 0) {
+      const updatedList = [...newItems, ...uploadedMediaList];
+      setUploadedMediaList(updatedList);
+      try {
+        localStorage.setItem('shorai_supabase_media', JSON.stringify(updatedList.slice(0, 50)));
+      } catch {}
+      setUploadMediaStatus({ 
+        message: `✨ Successfully uploaded ${successCount} file(s) to Supabase "shorai-media"!`, 
+        type: 'success' 
+      });
+    } else {
+      setUploadMediaStatus({ 
+        message: 'Upload failed. Please ensure your "shorai-media" bucket exists in Supabase and is Public.', 
+        type: 'error' 
+      });
+    }
+
+    setIsUploadingMedia(false);
+    // Reset file input
+    e.target.value = '';
+    setTimeout(() => setUploadMediaStatus({ message: '', type: '' }), 5000);
+  };
+
+  const handleCopyMediaUrl = (id: string, url: string) => {
+    navigator.clipboard.writeText(url);
+    setCopiedUrlId(id);
+    setTimeout(() => setCopiedUrlId(null), 2500);
+  };
 
   const fetchLeads = async (authSecret: string) => {
     setIsLoading(true);
@@ -468,6 +554,16 @@ export default function AdminPage() {
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Blog CMS ({blogData.articles.length})</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('media-storage')}
+                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                    activeTab === 'media-storage' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <UploadCloud className="w-3.5 h-3.5" />
+                  <span>Media Storage ({uploadedMediaList.length})</span>
                 </button>
               </div>
             </div>
@@ -3978,6 +4074,166 @@ export default function AdminPage() {
                       </div>
                     );
                   })}
+                </div>
+
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 7: SUPABASE MEDIA & CLOUD STORAGE UPLOADER
+               ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'media-storage' && (
+              <div className="space-y-8">
+                
+                {/* Header & Status Card */}
+                <div className="p-6 rounded-3xl bg-card border-2 border-border shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2 text-primary text-xs font-mono font-bold uppercase tracking-wider mb-1">
+                      <FolderUp className="w-4 h-4" />
+                      <span>SUPABASE CLOUD STORAGE</span>
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-black text-foreground">
+                      Media &amp; Asset Manager
+                    </h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                      Upload images directly to your Supabase <code className="px-1.5 py-0.5 rounded bg-muted font-bold text-primary font-mono">shorai-media</code> bucket and get instant CDN URLs.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span>BUCKET: shorai-media (ACTIVE)</span>
+                  </div>
+                </div>
+
+                {/* Upload Drag & Drop Zone */}
+                <div className="relative p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-card via-card to-primary/[0.03] border-2 border-dashed border-primary/40 hover:border-primary transition-all text-center flex flex-col items-center justify-center group shadow-md">
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleUploadMediaFile}
+                    disabled={isUploadingMedia}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
+                  />
+                  
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-md">
+                    <UploadCloud className={`w-8 h-8 ${isUploadingMedia ? 'animate-bounce' : ''}`} />
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-black text-foreground mb-1">
+                    {isUploadingMedia ? 'Uploading to Supabase CDN...' : 'Drop Images Here or Click to Upload'}
+                  </h3>
+                  <p className="text-xs text-muted-foreground max-w-md font-medium">
+                    Supports JPG, PNG, WEBP, SVG &amp; GIF. Images are optimized and assigned permanent public CDN URLs.
+                  </p>
+
+                  <div className="mt-4 px-4 py-1.5 rounded-full bg-muted border border-border text-[11px] font-mono text-muted-foreground font-semibold">
+                    {isUploadingMedia ? 'Processing upload...' : 'Select from computer'}
+                  </div>
+                </div>
+
+                {/* Status Notification */}
+                {uploadMediaStatus.message && (
+                  <div className={`p-4 rounded-2xl border text-xs sm:text-sm font-mono font-bold flex items-center gap-2.5 transition-all ${
+                    uploadMediaStatus.type === 'success' 
+                      ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30' 
+                      : uploadMediaStatus.type === 'error'
+                      ? 'bg-destructive/15 text-destructive border-destructive/30'
+                      : 'bg-primary/15 text-primary border-primary/30'
+                  }`}>
+                    {uploadMediaStatus.type === 'success' ? <CheckCircle2 className="w-5 h-5 flex-shrink-0" /> : <AlertCircle className="w-5 h-5 flex-shrink-0" />}
+                    <span>{uploadMediaStatus.message}</span>
+                  </div>
+                )}
+
+                {/* Uploaded Media Gallery */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                      <ImageIcon className="w-5 h-5 text-primary" />
+                      <span>Uploaded Assets ({uploadedMediaList.length})</span>
+                    </h3>
+                    {uploadedMediaList.length > 0 && (
+                      <button
+                        onClick={() => {
+                          if (confirm('Clear uploaded files list from history? (Images stay safe on Supabase)')) {
+                            setUploadedMediaList([]);
+                            localStorage.removeItem('shorai_supabase_media');
+                          }
+                        }}
+                        className="text-xs font-mono text-muted-foreground hover:text-destructive transition-colors"
+                      >
+                        Clear History
+                      </button>
+                    )}
+                  </div>
+
+                  {uploadedMediaList.length === 0 ? (
+                    <div className="p-12 rounded-3xl bg-card border border-border text-center">
+                      <ImageIcon className="w-12 h-12 text-muted-foreground/40 mx-auto mb-3" />
+                      <div className="text-sm font-bold text-foreground">No media uploaded yet</div>
+                      <p className="text-xs text-muted-foreground mt-1">Use the upload box above to upload your first image to Supabase.</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {uploadedMediaList.map((item) => (
+                        <div 
+                          key={item.id}
+                          className="rounded-2xl bg-card border border-border/80 hover:border-primary/50 p-4 transition-all shadow-sm flex flex-col justify-between gap-3 group"
+                        >
+                          <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/40 border border-border/60">
+                            <img src={item.url} alt={item.fileName} className="w-full h-full object-cover" />
+                            <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md text-[10px] font-mono font-bold text-white">
+                              {item.sizeKb} KB
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-xs font-bold text-foreground truncate" title={item.fileName}>
+                              {item.fileName}
+                            </div>
+                            <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                              Uploaded: {item.uploadedAt}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-2 border-t border-border">
+                            <button
+                              onClick={() => handleCopyMediaUrl(item.id, item.url)}
+                              className={`flex-1 py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all ${
+                                copiedUrlId === item.id 
+                                  ? 'bg-emerald-500 text-white shadow-md' 
+                                  : 'bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/20'
+                              }`}
+                            >
+                              {copiedUrlId === item.id ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5" />
+                                  <span>COPIED CDN URL!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5" />
+                                  <span>Copy CDN URL</span>
+                                </>
+                              )}
+                            </button>
+
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground transition-all"
+                              title="Open image in new tab"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
               </div>

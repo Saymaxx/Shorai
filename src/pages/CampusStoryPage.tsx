@@ -67,7 +67,7 @@ export default function CampusStoryPage({ slug }: CampusStoryPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 pt-28 sm:pt-36 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300 pt-28 sm:pt-36 overflow-x-hidden">
       
       {/* ── Top Breadcrumb Strip ── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 mb-6">

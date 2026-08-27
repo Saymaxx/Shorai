@@ -13,7 +13,7 @@ export default function FinalCTA() {
   const cta = content.whyShorai.finalCta;
 
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden py-28 px-4 sm:px-6 bg-background border-t border-border transition-colors duration-300">
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden py-28 px-4 sm:px-6 bg-transparent border-t border-border transition-colors duration-300">
       
       {/* ── MOTION GRAPHIC: Rotating Cybernetic Concentric Warp Portal ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">

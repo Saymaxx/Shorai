@@ -271,6 +271,38 @@
     font-family: var(--font-mono);
   }
 
+  /* ── Gallery Live Marquee Stream with Pure CSS Hover Pause ── */
+  @keyframes gallery-marquee-left {
+    0% { transform: translate3d(0%, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+
+  @keyframes gallery-marquee-right {
+    0% { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0%, 0, 0); }
+  }
+
+  .gallery-marquee-stream-left {
+    display: flex;
+    width: max-content;
+    animation: gallery-marquee-left 42s linear infinite;
+    will-change: transform;
+  }
+
+  .gallery-marquee-stream-right {
+    display: flex;
+    width: max-content;
+    animation: gallery-marquee-right 45s linear infinite;
+    will-change: transform;
+  }
+
+  .gallery-marquee-stream-left:hover,
+  .gallery-marquee-stream-right:hover,
+  .gallery-marquee-wrapper:hover .gallery-marquee-stream-left,
+  .gallery-marquee-wrapper:hover .gallery-marquee-stream-right {
+    animation-play-state: paused !important;
+  }
+
   /* ── Motion Accessibility: WCAG 2.1 AA Compliance ── */
   @media (prefers-reduced-motion: reduce) {
 

@@ -175,13 +175,11 @@ export default function BlogPage() {
   // 5-Stage Progressive Pedagogy automated slideshow state
   const [activeStageIndex, setActiveStageIndex] = useState(0);
   const [isStageAutoPlaying, setIsStageAutoPlaying] = useState(true);
-  const [isStageHovered, setIsStageHovered] = useState(false);
   const [stageProgress, setStageProgress] = useState(0);
 
   // Automated Featured Spotlight Carousel
   const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isFeaturedHovered, setIsFeaturedHovered] = useState(false);
   const [slideProgress, setSlideProgress] = useState(0);
 
   // Load from local storage or backend if available
@@ -216,9 +214,9 @@ export default function BlogPage() {
 
   const currentFeatured = featuredArticles[activeFeaturedIndex] || featuredArticles[0];
 
-  // Automated slideshow timer for 5-Stage Progressive Learning Cycle (pauses on hover)
+  // Automated continuous slideshow timer for 5-Stage Progressive Learning Cycle (auto-cycles continuously)
   useEffect(() => {
-    if (!isStageAutoPlaying || isStageHovered) return;
+    if (!isStageAutoPlaying) return;
 
     const intervalTime = 4500;
     const stepTime = 50;
@@ -237,11 +235,11 @@ export default function BlogPage() {
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [isStageAutoPlaying, isStageHovered, activeStageIndex]);
+  }, [isStageAutoPlaying, activeStageIndex]);
 
-  // Auto-playing timer for featured article spotlight (pauses on hover)
+  // Auto-playing continuous timer for featured article spotlight (auto-cycles continuously)
   useEffect(() => {
-    if (!isAutoPlaying || isFeaturedHovered || featuredArticles.length <= 1) return;
+    if (!isAutoPlaying || featuredArticles.length <= 1) return;
 
     const intervalTime = 5000;
     const stepTime = 50;
@@ -260,7 +258,7 @@ export default function BlogPage() {
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [isAutoPlaying, isFeaturedHovered, featuredArticles.length, activeFeaturedIndex]);
+  }, [isAutoPlaying, featuredArticles.length, activeFeaturedIndex]);
 
   const filteredArticles = useMemo(() => {
     return blogData.articles.filter(article => {
@@ -298,26 +296,10 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300 overflow-x-hidden">
 
       {/* ── 1. CINEMATIC EDITORIAL HERO WITH FLOATING RESEARCH PRISMS ── */}
       <section className="relative pt-36 sm:pt-44 pb-16 overflow-hidden border-b border-border">
-        {/* Giant Glowing SHORAI Text Watermark (Matching Contact Page) */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-          <motion.span 
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="text-[15vw] sm:text-[18vw] lg:text-[20vw] font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#00D4FF]/20 via-[#7928CA]/15 to-transparent leading-none"
-            style={{ 
-              filter: 'blur(0.5px)',
-              letterSpacing: '-0.05em',
-              maxWidth: '100%'
-            }}
-          >
-            SHORAI
-          </motion.span>
-        </div>
 
         {/* Holographic Glowing Orbs with hardware-accelerated rendering */}
         <div className="absolute inset-0 pointer-events-none will-change-transform">
@@ -423,8 +405,6 @@ export default function BlogPage() {
 
       {/* ── 3. AUTOMATED 5-STAGE PROGRESSIVE LEARNING JOURNEY EXPLORER ── */}
       <section 
-        onMouseEnter={() => setIsStageHovered(true)}
-        onMouseLeave={() => setIsStageHovered(false)}
         className="py-16 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-background via-muted/15 to-background"
       >
         <div className="max-w-[1440px] mx-auto">
@@ -439,7 +419,7 @@ export default function BlogPage() {
                 5-Stage Progressive Learning Cycle
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-                Automatically cycling through each progressive grade band. Hover anywhere to pause and explore details.
+                Automatically cycling through each progressive grade band in real time.
               </p>
             </div>
 
@@ -494,7 +474,7 @@ export default function BlogPage() {
                   }`}
                 >
                   {/* Active Tab Linear Progress Indicator */}
-                  {active && isStageAutoPlaying && !isStageHovered && (
+                  {active && isStageAutoPlaying && (
                     <div 
                       className="absolute bottom-0 left-0 h-1 bg-white/40 transition-all duration-75"
                       style={{ width: `${stageProgress}%` }}
@@ -518,7 +498,7 @@ export default function BlogPage() {
               className="relative rounded-[2.5rem] p-[2px] bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] shadow-[0_12px_40px_rgba(99,102,241,0.25)] max-w-4xl mx-auto overflow-hidden"
             >
               {/* Top Smooth Progress Bar */}
-              {isStageAutoPlaying && !isStageHovered && (
+              {isStageAutoPlaying && (
                 <div className="w-full h-1 bg-black/20">
                   <div 
                     className="h-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] transition-all duration-75"
@@ -612,10 +592,8 @@ export default function BlogPage() {
               </div>
             </div>
 
-            {/* Glowing Gradient Container Frame with Hover Pause */}
+            {/* Glowing Gradient Container Frame */}
             <div 
-              onMouseEnter={() => setIsFeaturedHovered(true)}
-              onMouseLeave={() => setIsFeaturedHovered(false)}
               className="relative rounded-[2.5rem] p-[2px] bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] shadow-[0_12px_45px_rgba(99,102,241,0.25)]"
             >
               <div className="rounded-[2.4rem] bg-card overflow-hidden transition-all duration-300">

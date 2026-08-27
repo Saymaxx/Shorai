@@ -133,29 +133,12 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-20 transition-colors duration-300 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground pt-20 transition-colors duration-300 overflow-x-hidden">
       
       {/* ═══════════════════════════════════════════════════════════════
           1. HERO HEADER WITH GIANT "SHORAI" LIGHT BLUE/VIOLET WATERMARK
          ═══════════════════════════════════════════════════════════════ */}
-      <section className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background to-background">
-        
-        {/* Giant Glowing SHORAI Text Watermark */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-          <motion.span 
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="text-[15vw] sm:text-[18vw] lg:text-[20vw] font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#00D4FF]/20 via-[#7928CA]/15 to-transparent leading-none"
-            style={{ 
-              filter: 'blur(0.5px)',
-              letterSpacing: '-0.05em',
-              maxWidth: '100%'
-            }}
-          >
-            SHORAI
-          </motion.span>
-        </div>
+      <section className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-background/40 to-transparent">
 
         {/* Ambient Glowing Color Orbs */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gradient-to-tr from-[#7928CA]/25 via-[#6366F1]/20 to-[#00D4FF]/25 blur-[90px] pointer-events-none" />

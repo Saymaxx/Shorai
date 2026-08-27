@@ -28,7 +28,7 @@ export default function AboutSEGAcademy() {
   const seg = content.about.segAcademy;
 
   return (
-    <section id="about-seg" className="relative py-24 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
+    <section id="about-seg" className="relative py-24 sm:py-28 px-4 sm:px-6 bg-transparent overflow-hidden border-t border-border">
       {/* Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 -left-20 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.04] rounded-full blur-[140px]" />

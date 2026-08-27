@@ -25,4 +25,8 @@ export const ENV = {
 
   // Admin API Secret for accessing leads dashboard
   ADMIN_SECRET: process.env.ADMIN_SECRET || 'shorai_admin_secret_2026',
+
+  // Supabase Configuration
+  SUPABASE_URL: process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://lyxwbkbehnlqychblifz.supabase.co',
+  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_MnAyQM4EC1gTdNS1Oe2SdQ_D-d0E3Zp',
 };

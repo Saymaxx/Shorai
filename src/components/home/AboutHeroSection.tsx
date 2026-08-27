@@ -21,7 +21,7 @@ export default function AboutHeroSection() {
   const hero = content.about.hero;
 
   return (
-    <section className="relative pt-20 sm:pt-24 pb-10 sm:pb-12 bg-background overflow-hidden border-b border-border transition-colors duration-300">
+    <section className="relative pt-20 sm:pt-24 pb-10 sm:pb-12 bg-transparent overflow-hidden border-b border-border transition-colors duration-300">
       
       {/* Background Circuit & Atmospheric Ambient Lighting */}
       <div className="absolute inset-0 pointer-events-none opacity-40">

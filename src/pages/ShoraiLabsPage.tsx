@@ -38,7 +38,7 @@ export default function ShoraiLabsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300">
       {/* 1. Futuristic Shorai Labs Hero Header */}
       <section className="relative pt-40 sm:pt-48 pb-20 overflow-hidden border-b border-border">
         {/* Ambient background glow & grid pattern */}

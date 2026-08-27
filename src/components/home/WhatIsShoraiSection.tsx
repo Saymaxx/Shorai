@@ -22,7 +22,7 @@ export default function WhatIsShoraiSection() {
   const whatIs = content.home.whatIsShorai;
 
   return (
-    <section id="what-is-shorai" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
+    <section id="what-is-shorai" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-transparent overflow-hidden border-t border-border">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">

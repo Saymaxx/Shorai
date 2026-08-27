@@ -13,10 +13,12 @@ router.post('/', async (req, res) => {
             res.status(400).json({ success: false, message: 'Message text is required.' });
             return;
         }
-        const reply = await aiChatService_js_1.AIChatService.generateResponse(message, history || []);
+        const result = await aiChatService_js_1.AIChatService.generateResponse(message, history || []);
         res.json({
             success: true,
-            reply,
+            reply: result.reply,
+            leadSaved: result.leadSaved,
+            leadDetails: result.leadDetails,
             timestamp: new Date().toISOString(),
         });
     }

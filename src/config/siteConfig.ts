@@ -42,8 +42,8 @@ export const siteConfig = {
   },
 
   social: {
-    instagram: 'https://instagram.com/shorai_stem',
-    linkedin: 'https://linkedin.com/company/shorai-labs',
+    instagram: 'https://www.instagram.com/shorai.in?utm_source=qr&igsh=cW9odDRpemNqd2x2',
+    linkedin: 'https://www.linkedin.com/company/shorai.in',
     youtube: 'https://youtube.com/@shorai-stem',
     facebook: 'https://facebook.com/shorai.stem',
   },

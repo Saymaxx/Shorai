@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { supabaseServer } from './supabase';
 
 export interface StoredLead {
   id: string;
@@ -66,6 +67,36 @@ export class Database {
 
     leads.unshift(newLead);
     this.writeLeads(leads);
+
+    // Asynchronously push to Supabase table
+    Promise.resolve(
+      supabaseServer
+        .from('leads')
+        .insert({
+          id: newLead.id,
+          name: newLead.name,
+          email: newLead.email,
+          contact: newLead.contact,
+          school_name: newLead.organisation,
+          purpose: newLead.purpose,
+          message: newLead.message || '',
+          status: newLead.status,
+          ip_address: newLead.ipAddress || '',
+          user_agent: newLead.userAgent || '',
+          created_at: newLead.createdAt,
+        })
+    )
+      .then((res: any) => {
+        if (res?.error) {
+          console.warn('[Supabase Sync] Lead insert note (check if table is created):', res.error.message);
+        } else {
+          console.log('[Supabase Sync] Lead successfully synced to Supabase database.');
+        }
+      })
+      .catch((err: any) => {
+        console.warn('[Supabase Sync] Async lead push error:', err?.message || err);
+      });
+
     return newLead;
   }
 

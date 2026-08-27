@@ -74,12 +74,16 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 // Start Server (only when running as standalone Node process, not in Vercel serverless)
 if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
-  app.listen(ENV.PORT, () => {
+  app.listen(ENV.PORT, async () => {
     console.log(`\n=================================================`);
     console.log(`🚀 SHORAI BACKEND API SERVER RUNNING`);
     console.log(`📡 URL: http://localhost:${ENV.PORT}`);
     console.log(`⚡ Environment: ${ENV.NODE_ENV}`);
+    console.log(`🗄️ Supabase URL: ${ENV.SUPABASE_URL}`);
     console.log(`=================================================\n`);
+    
+    const { testSupabaseConnection } = await import('./db/supabase.js');
+    await testSupabaseConnection();
   });
 }
 

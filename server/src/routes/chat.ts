@@ -15,11 +15,13 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const reply = await AIChatService.generateResponse(message, history || []);
+    const result = await AIChatService.generateResponse(message, history || []);
 
     res.json({
       success: true,
-      reply,
+      reply: result.reply,
+      leadSaved: result.leadSaved,
+      leadDetails: result.leadDetails,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

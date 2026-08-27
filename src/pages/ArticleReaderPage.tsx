@@ -148,7 +148,7 @@ export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 pt-28 sm:pt-36 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300 pt-28 sm:pt-36 overflow-x-hidden">
       
       {/* ── Dynamic JSON-LD Structured Data Schema ── */}
       <script

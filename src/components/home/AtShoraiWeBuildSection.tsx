@@ -62,7 +62,7 @@ export default function AtShoraiWeBuildSection() {
   const [armStatus, setArmStatus] = useState<'idle' | 'scanning' | 'sampling'>('scanning');
 
   return (
-    <section id="at-shorai-we-build" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-background overflow-hidden border-t border-border transition-colors duration-300">
+    <section id="at-shorai-we-build" className="relative py-20 sm:py-28 px-4 sm:px-6 bg-transparent overflow-hidden border-t border-border transition-colors duration-300">
       
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">

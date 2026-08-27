@@ -2,87 +2,177 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AIChatService = void 0;
 const env_js_1 = require("../config/env.js");
-const SHORAI_KNOWLEDGE_BASE = `
-You are the official AI Academic Advisor for SHORAI (an initiative by Skill and Employability Generation Academy - SEG Academy Pvt. Ltd., CIN: U80902WB2021PTC247995).
+const database_js_1 = require("../db/database.js");
+const SHORAI_SYSTEM_PROMPT = `
+You are the friendly, expert AI Academic Advisor for "SHORAI" (a flagship K-12 STEM & Education Innovation initiative by SEG Academy Pvt. Ltd.).
 
-Key Information about Shorai:
-1. Core Mission: Transforming K-12 school education across India with NEP 2020-aligned experiential AI, Robotics, Autonomous Drone Aviation, and Coding Labs.
-2. What We Build:
-   - Robotics & IoT Labs (modular microcontrollers, Arduino, ESP32, sensors, actuators, Rocker-Bogie Mars rovers).
-   - Autonomous Drone Aviation Labs (UAV aerodynamics, flight simulators, LiDAR scanning, drone coding).
-   - AI & Computer Vision Labs (Neural networks, OpenCV, NLP, machine learning models for students).
-   - Coding & Microcontrollers (Scratch Block coding for Primary, Python & C++ for Middle/High School).
-3. Grade-Wise Curriculum Tracks:
-   - Grades 1-2 (Foundation): Visual block coding, basic sensors, computational logic.
-   - Grades 3-5 (Explorers): Sensor-driven robots, block-to-code compiler, game logic.
-   - Grades 6-8 (Innovators): Autonomous robotics, Python programming, IoT breadboarding, beginner aerodynamics.
-   - Grades 9-12 (Advanced Engineers): Neural vision CNNs, autonomous UAV piloting, Raspberry Pi robotics, hackathons.
-4. School Partnership Tracks:
-   - Full Turnkey Setup (Hardware + 30-day Lab fitout + Dedicated on-campus trainer + LMS).
-   - Curriculum & Teacher Enablement (Syllabus licensing + Teacher certification).
-   - Experiential STEM Workshops & Bootcamps.
-5. Locations & Contacts:
-   - Varanasi Center: 59/98, 3rd floor, Sampoornand, UBI Building, Sigra - Mahmoorganj Rd, Mahmoorganj, Varanasi, Uttar Pradesh 221010.
-   - Kolkata HQ: 119/114, Ramkrishna Road, Khardaha, Kolkata, West Bengal 700116.
-   - Helpline: +91 7880630963 | Email: contact@shorai.in / info@segacademy.com.
+═══════════════════════════════════════════════════════════════
+SHORAI CORE KNOWLEDGE & ECOSYSTEM:
+═══════════════════════════════════════════════════════════════
+1. What Shorai Does:
+   - Transforms regular school classrooms into futuristic 360° Innovation Labs (Robotics, AI, Autonomous Drones, IoT, Coding) in 21–30 days turnkey.
+   - 100% aligned with NEP 2020 (National Education Policy), CBSE/ICSE skill education mandates, and Viksit Bharat @2047 frameworks.
+   - Provides turnkey hardware, hands-on student kits, digital LMS curriculum, teacher training & certification, and national competition mentoring (WRO, Olympiads).
 
-Guidelines for Answers:
-- Keep answers warm, encouraging, professional, concise, and structured.
-- Invite teachers/principals to schedule a live on-campus demonstration or lab consultation.
+2. Core Technology Labs & Hardware:
+   - Robotics & IoT: Arduino, ESP32, Raspberry Pi, Rocker-Bogie Mars rovers, sensor suites (ultrasonic, IR, gyro, line trackers), robotic arms.
+   - AI & Computer Vision: Object classification, facial landmark tracking, neural networks, OpenCV, machine learning in Python.
+   - Autonomous Drones & Aviation: Aerodynamic flight principles, safe indoor flight simulators, LiDAR telemetry, autonomous mission coding.
+   - Progressive Coding: Block-based Scratch/Blockly (Grades 1-5), transitioning to Python, C++, and app development (Grades 6-12).
+
+3. 5-Stage Progressive Learning Cycle:
+   - Stage 1: Learn (Foundational curiosity & logic)
+   - Stage 2: Build (Hands-on circuit assembly & hardware engineering)
+   - Stage 3: Test (Telemetry, sensor debugging, flight simulation)
+   - Stage 4: Solve (Real-world problem solving & NEP skill projects)
+   - Stage 5: Present (Exhibitions, Hackathons & WRO Olympiads)
+
+4. Partnership Models & Pricing:
+   - Full Turnkey Setup: Custom lab interior design, all hardware kits, workstation setup, LMS access, dedicated on-campus trainer.
+   - Curriculum & Teacher Certification: Structured syllabus, grade-wise workbooks, teacher workshops.
+   - Pricing is customized per school based on student strength and grade range (School directors can request a free blueprint & proposal).
+
+5. Official Contact Details & Centers:
+   - Varanasi Center: 59/98, 3rd Floor, Sampoornand, UBI Building, Sigra - Mahmoorganj Rd, Sigra, Varanasi, Uttar Pradesh 221010.
+   - Kolkata Center (HQ): 119/114, Ramkrishna Road, Khudiram, Khardaha, Kolkata, West Bengal 700116.
+   - Helpline Phone: +91 7880630963
+   - Official Email: contact@shorai.in
+   - Website: https://shorai.in
+
+═══════════════════════════════════════════════════════════════
+BEHAVIOR & LEAD EXTRACTION INSTRUCTIONS:
+═══════════════════════════════════════════════════════════════
+- Answer questions in a polite, knowledgeable, engaging, and professional tone.
+- Keep responses concise (2 to 4 sentences usually), clear, and formatted nicely in markdown.
+- If a user expresses interest in setting up a lab, booking a demo, or asking for pricing/proposals, encourage them to share their Name, Phone number, Email, and School/City.
+- When the user provides contact details (such as their name, phone/contact number, email, or school name), ALWAYS extract this information at the very end of your response inside a hidden JSON block format:
+<<<LEAD_JSON:{"name":"...","email":"...","contact":"...","organisation":"...","purpose":"...","message":"..."}>>>
+(Only include the fields that the user provided. The system will automatically save this lead to the database).
 `;
 class AIChatService {
     static async generateResponse(userMessage, history = []) {
         const trimmed = userMessage.trim();
-        if (!trimmed)
-            return "Hello! How can I help you learn more about Shorai's AI & Robotics school programs today?";
+        if (!trimmed) {
+            return {
+                reply: "Hello! I am Shorai's AI Academic Advisor. How can I help you explore our Robotics, AI, and Drone Innovation labs today?",
+                leadSaved: false,
+            };
+        }
+        let rawReply = '';
         // 1. If Gemini API Key exists, call Google Gemini API
         if (env_js_1.ENV.GEMINI_API_KEY) {
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${env_js_1.ENV.GEMINI_API_KEY}`, {
+                // Format previous multi-turn conversation
+                const formattedContents = [];
+                // Add system instruction prompt in first turn
+                formattedContents.push({
+                    role: 'user',
+                    parts: [{ text: `${SHORAI_SYSTEM_PROMPT}\n\n[SYSTEM INSTRUCTION LOADED. Please adhere to these guidelines for all responses].` }]
+                });
+                formattedContents.push({
+                    role: 'model',
+                    parts: [{ text: "Understood. I am Shorai's AI Academic Advisor and will answer questions accurately, assist school educators, and extract lead information in the specified format." }]
+                });
+                // Add recent conversation history (last 6 turns)
+                const recentHistory = history.slice(-6);
+                for (const item of recentHistory) {
+                    const text = item.text || item.content;
+                    if (!text)
+                        continue;
+                    formattedContents.push({
+                        role: item.role === 'user' ? 'user' : 'model',
+                        parts: [{ text }]
+                    });
+                }
+                // Add current user prompt
+                formattedContents.push({
+                    role: 'user',
+                    parts: [{ text: trimmed }]
+                });
+                // Call Gemini 2.5-flash
+                const modelName = 'gemini-2.5-flash';
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${env_js_1.ENV.GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [{ text: `${SHORAI_KNOWLEDGE_BASE}\n\nUser Question: ${trimmed}` }]
-                            }
-                        ],
+                        contents: formattedContents,
                         generationConfig: {
-                            temperature: 0.7,
-                            maxOutputTokens: 300,
+                            temperature: 0.65,
+                            maxOutputTokens: 450,
                         }
                     })
                 });
                 if (response.ok) {
                     const data = await response.json();
                     const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (aiText)
-                        return aiText.trim();
+                    if (aiText) {
+                        rawReply = aiText.trim();
+                    }
+                }
+                else {
+                    console.warn(`[AIChatService] Gemini API returned status ${response.status}:`, await response.text());
                 }
             }
             catch (err) {
-                console.warn('[AIChatService] Gemini API call failed, falling back to knowledge matcher:', err);
+                console.warn('[AIChatService] Gemini API call failed, using intelligent fallback:', err);
             }
         }
-        // 2. Intelligent Knowledge Matcher Fallback
+        // 2. Intelligent Knowledge Fallback if API was unavailable
+        if (!rawReply) {
+            rawReply = this.getFallbackReply(trimmed);
+        }
+        // 3. Automated Lead Extraction & Database Persistence
+        let leadSaved = false;
+        let leadDetails;
+        const leadMatch = rawReply.match(/<<<LEAD_JSON:(.*?)>>>/s);
+        if (leadMatch && leadMatch[1]) {
+            try {
+                leadDetails = JSON.parse(leadMatch[1]);
+                rawReply = rawReply.replace(/<<<LEAD_JSON:.*?>>>/s, '').trim();
+                if (leadDetails && (leadDetails.contact || leadDetails.email || leadDetails.name)) {
+                    const contactVal = leadDetails.contact || leadDetails.phone || 'Direct Chat';
+                    const nameVal = leadDetails.name || 'Website Visitor (Chat)';
+                    const emailVal = leadDetails.email || `${contactVal.replace(/\D/g, '') || 'chat'}@shorai.lead`;
+                    database_js_1.Database.insertLead({
+                        name: nameVal,
+                        email: emailVal,
+                        contact: contactVal,
+                        organisation: leadDetails.organisation || leadDetails.institute || leadDetails.school || 'K-12 School Inquiry',
+                        purpose: leadDetails.purpose || 'AI Chatbot Consultation',
+                        message: leadDetails.message || `Captured via AI Advisor: "${trimmed}"`,
+                    });
+                    leadSaved = true;
+                    console.log(`[AIChatService] Lead captured and saved to Supabase & SQLite:`, leadDetails);
+                }
+            }
+            catch (e) {
+                console.error('[AIChatService] Failed to parse extracted lead JSON:', e);
+            }
+        }
+        return {
+            reply: rawReply,
+            leadSaved,
+            leadDetails,
+        };
+    }
+    static getFallbackReply(trimmed) {
         const q = trimmed.toLowerCase();
         if (q.includes('drone') || q.includes('aviation') || q.includes('fly')) {
-            return "Shorai's Drone Aviation Lab introduces students in Grades 6–12 to UAV aerodynamics, flight simulator physics, block-to-Python flight coding, and autonomous LiDAR scanning. Would you like to schedule a drone demonstration at your school?";
+            return "Shorai's Autonomous Drone Lab introduces K-12 students to aerodynamics, safe indoor flight simulators, LiDAR telemetry, and block-to-Python flight coding. Would you like us to schedule a live drone demonstration at your school?";
         }
         if (q.includes('curriculum') || q.includes('grade') || q.includes('class') || q.includes('syllabus')) {
-            return "Our NEP 2020 aligned curriculum spans Grades 1 to 12 in 4 distinct tiers: Foundation (Grades 1-2), Explorers (3-5), Innovators (6-8), and Advanced AI/Robotics (9-12). Each grade includes hands-on student project kits, digital workbooks, and teacher lesson plans.";
+            return "Our NEP 2020 aligned curriculum covers Grades 1 to 12 across 4 progressive tiers: Foundation (Grades 1-2), Explorers (3-5), Innovators (6-8), and Advanced AI/Robotics (9-12). Each grade includes hands-on student hardware kits, digital workbooks, and certified teacher lesson plans.";
         }
-        if (q.includes('cost') || q.includes('price') || q.includes('budget') || q.includes('fee')) {
-            return "We offer flexible partnership models ranging from Full Turnkey Lab Setups to Curriculum Licensing. Our Academic Director will provide a customized quote and lab blueprint based on your student enrollment. Please submit our quick enquiry form or call +91 7880630963.";
+        if (q.includes('cost') || q.includes('price') || q.includes('budget') || q.includes('fee') || q.includes('quote')) {
+            return "We offer flexible partnership models ranging from Full Turnkey Lab fitouts (with hardware & trainers) to Curriculum Licensing. Our Academic Director will share a customized lab blueprint and institutional proposal. Please share your school name and phone number so we can connect!";
         }
         if (q.includes('contact') || q.includes('phone') || q.includes('number') || q.includes('address') || q.includes('location')) {
-            return "You can reach us directly at +91 7880630963 or email contact@shorai.in. Our main centers are located in Varanasi (Sigra - Mahmoorganj Rd) and Kolkata (Khardaha Innovation HQ).";
+            return "You can reach Shorai directly at **+91 7880630963** or email **contact@shorai.in**. Our main centers are located in **Varanasi** (Sigra - Mahmoorganj Rd) and **Kolkata** (Khardaha Innovation HQ).";
         }
         if (q.includes('ai') || q.includes('robot') || q.includes('mars') || q.includes('rover')) {
-            return "At Shorai, students build real 6-wheel Rocker-Bogie Mars rovers, autonomous obstacle-avoiding bots, and computer vision neural networks using Python and OpenCV. Everything is 100% hands-on!";
+            return "At Shorai, students build real 6-wheel Rocker-Bogie Mars rovers, autonomous obstacle-avoiding bots, and computer vision neural networks using Python and OpenCV. Everything is 100% experiential and hands-on!";
         }
-        return "Thank you for reaching out! Shorai provides turnkey AI, Robotics, Drone & Coding Labs for K-12 schools across India. You can submit an enquiry on our homepage or call +91 7880630963 to schedule a free on-campus demonstration.";
+        return "Shorai equips K-12 schools across India with turnkey Robotics, AI, Drone, and Coding Innovation Labs in 21–30 days. Feel free to ask about our hardware, curriculum, or share your contact info to get a custom proposal!";
     }
 }
 exports.AIChatService = AIChatService;

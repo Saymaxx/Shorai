@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Database = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const supabase_1 = require("./supabase");
 const DATA_DIR = path_1.default.resolve(process.cwd(), 'server', 'data');
 const DB_FILE = path_1.default.join(DATA_DIR, 'leads.json');
 // Ensure data directory and database file exist
@@ -52,6 +53,33 @@ class Database {
         };
         leads.unshift(newLead);
         this.writeLeads(leads);
+        // Asynchronously push to Supabase table
+        Promise.resolve(supabase_1.supabaseServer
+            .from('leads')
+            .insert({
+            id: newLead.id,
+            name: newLead.name,
+            email: newLead.email,
+            contact: newLead.contact,
+            school_name: newLead.organisation,
+            purpose: newLead.purpose,
+            message: newLead.message || '',
+            status: newLead.status,
+            ip_address: newLead.ipAddress || '',
+            user_agent: newLead.userAgent || '',
+            created_at: newLead.createdAt,
+        }))
+            .then((res) => {
+            if (res?.error) {
+                console.warn('[Supabase Sync] Lead insert note (check if table is created):', res.error.message);
+            }
+            else {
+                console.log('[Supabase Sync] Lead successfully synced to Supabase database.');
+            }
+        })
+            .catch((err) => {
+            console.warn('[Supabase Sync] Async lead push error:', err?.message || err);
+        });
         return newLead;
     }
     static getAllLeads() {

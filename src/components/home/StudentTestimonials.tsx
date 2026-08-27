@@ -49,7 +49,7 @@ export default function StudentTestimonials() {
   const carouselItems = [...reviewsList, ...reviewsList, ...reviewsList];
 
   return (
-    <section id="student-testimonials" className="relative py-20 sm:py-24 px-4 sm:px-6 bg-background overflow-hidden border-t border-border">
+    <section id="student-testimonials" className="relative py-20 sm:py-24 px-4 sm:px-6 bg-transparent overflow-hidden border-t border-border">
       
       {/* CSS Animation Keyframes for 120fps hardware-accelerated pause-on-hover */}
       <style>{`
@@ -109,8 +109,8 @@ export default function StudentTestimonials() {
       <div className="relative w-full overflow-hidden z-10 py-2">
         
         {/* Left & Right Gradient Soft Fade Masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-28 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-28 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-28 bg-gradient-to-r from-background/60 to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-28 bg-gradient-to-l from-background/60 to-transparent z-20 pointer-events-none" />
 
         {/* Continuous Side-Scrolling Track */}
         <div className="testimonial-marquee-track gap-5 sm:gap-6 px-4">
@@ -119,7 +119,7 @@ export default function StudentTestimonials() {
             return (
               <div
                 key={`${item.id}-${idx}`}
-                className="w-[320px] sm:w-[380px] shrink-0 rounded-3xl p-6 sm:p-7 bg-card border border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+                className="w-[320px] sm:w-[380px] shrink-0 rounded-3xl p-6 sm:p-7 bg-card/85 backdrop-blur-md border border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
               >
                 {/* Subtle top color highlight */}
                 <div 
