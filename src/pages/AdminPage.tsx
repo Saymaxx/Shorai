@@ -217,29 +217,72 @@ export default function AdminPage() {
     setIsLoading(true);
     setAuthError('');
 
+    const cleanSecret = authSecret.trim();
+    const envSecret = (import.meta as any).env?.VITE_ADMIN_SECRET;
+    const defaultSecrets = ['shorai_admin_secret_2026', envSecret].filter(Boolean);
+    const isDirectMatch = defaultSecrets.includes(cleanSecret);
+
+    // 1. If password matches default secret or env secret, grant instant access
+    if (isDirectMatch) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('shorai_admin_secret', cleanSecret);
+    }
+
+    // 2. Query Express backend if available
+    let backendSuccess = false;
     try {
       const res = await fetch('/api/leads', {
-        headers: { 'Authorization': `Bearer ${authSecret}` },
+        headers: { 'Authorization': `Bearer ${cleanSecret}` },
       });
-
-      if (res.status === 401) {
-        setAuthError('Invalid Admin Secret key.');
-        setIsLoading(false);
-        return;
-      }
 
       if (res.ok) {
         const data = await res.json();
-        setLeads(data.leads || []);
-        setStats(data.stats || { totalLeads: 0, newLeads: 0, contactedLeads: 0, scheduledLeads: 0 });
-        setIsAuthenticated(true);
-        sessionStorage.setItem('shorai_admin_secret', authSecret);
+        if (data && data.leads) {
+          setLeads(data.leads || []);
+          setStats(data.stats || { totalLeads: 0, newLeads: 0, contactedLeads: 0, scheduledLeads: 0 });
+          setIsAuthenticated(true);
+          sessionStorage.setItem('shorai_admin_secret', cleanSecret);
+          backendSuccess = true;
+        }
       }
     } catch {
-      setAuthError('Could not connect to backend API server.');
-    } finally {
-      setIsLoading(false);
+      // Backend not running on server, continue to Supabase
     }
+
+    // 3. Query Supabase directly for live leads if authenticated
+    if (isDirectMatch || backendSuccess) {
+      try {
+        const { supabase } = await import('@/lib/supabaseClient');
+        const { data: sbLeads } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+
+        if (sbLeads && sbLeads.length > 0) {
+          const mappedLeads: Lead[] = sbLeads.map((l: any) => ({
+            id: String(l.id),
+            name: l.name || 'Anonymous',
+            email: l.email || '',
+            contact: l.contact || '',
+            organisation: l.organisation || '',
+            purpose: l.purpose || 'School Innovation Lab Setup',
+            message: l.message || '',
+            status: (l.status as any) || 'new',
+            createdAt: l.created_at || new Date().toISOString(),
+          }));
+          setLeads(mappedLeads);
+          setStats({
+            totalLeads: mappedLeads.length,
+            newLeads: mappedLeads.filter(l => l.status === 'new').length,
+            contactedLeads: mappedLeads.filter(l => l.status === 'contacted').length,
+            scheduledLeads: mappedLeads.filter(l => l.status === 'scheduled').length,
+          });
+        }
+      } catch (sbErr) {
+        console.warn('[AdminPage] Supabase direct read note:', sbErr);
+      }
+    } else {
+      setAuthError('Invalid Admin Secret key. Please check the password.');
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
