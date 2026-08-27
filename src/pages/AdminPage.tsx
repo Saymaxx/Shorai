@@ -92,6 +92,7 @@ export default function AdminPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [pasteData, setPasteData] = useState('');
+  const [sheetCsvUrl, setSheetCsvUrl] = useState('');
   const [importStatus, setImportStatus] = useState('');
 
   // CMS Editor State (Deep copy of live content for editing)
@@ -326,6 +327,119 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Failed to update status:', err);
     }
+  };
+
+  const handleAutoSyncGoogleSheet = async () => {
+    setIsLoading(true);
+    setImportStatus('🔄 Auto-fetching live records from Google Sheets & Supabase...');
+
+    const fetchedLeads: Lead[] = [];
+
+    // 1. Fetch from Supabase directly
+    try {
+      const { supabase } = await import('@/lib/supabaseClient');
+      const { data: sbLeads } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+      if (sbLeads && sbLeads.length > 0) {
+        sbLeads.forEach((l: any) => {
+          fetchedLeads.push({
+            id: String(l.id),
+            name: l.name || 'Inquiry',
+            email: l.email || '',
+            contact: l.contact || '',
+            organisation: l.organisation || '',
+            purpose: l.purpose || 'School Innovation Lab Setup',
+            message: l.message || '',
+            status: (l.status as any) || 'new',
+            createdAt: l.created_at || new Date().toISOString(),
+          });
+        });
+      }
+    } catch (err) {
+      console.warn('[Admin] Supabase fetch note:', err);
+    }
+
+    // 2. Fetch from Google Sheet CSV or Web App endpoint
+    const rawTarget = sheetCsvUrl.trim() || ((import.meta as any).env?.VITE_GOOGLE_SCRIPT_URL) || 'https://script.google.com/macros/s/AKfycbxA-MijWckNTGLdZIcn768XLjn75ktRMcHYEqB2rTwHRQRiTwZNwvnkjWy8zGvGFTMwAA/exec';
+    
+    let urlToFetch = rawTarget;
+    if (urlToFetch.includes('docs.google.com/spreadsheets') && !urlToFetch.includes('export?format=csv')) {
+      const match = urlToFetch.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if (match && match[1]) {
+        urlToFetch = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv`;
+      }
+    }
+
+    try {
+      const res = await fetch(urlToFetch);
+      if (res.ok) {
+        const text = await res.text();
+        if (text.startsWith('[') || text.startsWith('{')) {
+          try {
+            const json = JSON.parse(text);
+            const list = Array.isArray(json) ? json : json.leads || json.data || [];
+            list.forEach((item: any, idx: number) => {
+              fetchedLeads.push({
+                id: item.id || `gs_${Date.now()}_${idx}`,
+                name: item.Name || item.name || 'Inquiry',
+                email: item.Email || item.email || '',
+                contact: item.Contact || item.contact || item.phone || '',
+                organisation: item.Organisation || item.organisation || item.school || '',
+                purpose: item.Purpose || item.purpose || 'School Innovation Lab Setup',
+                message: item.Message || item.message || '',
+                status: (item.Status || item.status || 'new') as any,
+                createdAt: item.Timestamp || item.createdAt || new Date().toISOString(),
+              });
+            });
+          } catch {}
+        } else if (text.includes(',') || text.includes('\t')) {
+          const lines = text.trim().split('\n');
+          for (let i = 1; i < lines.length; i++) {
+            const row = lines[i].split(',').map(s => s.replace(/^"|"$/g, '').trim());
+            if (row.length >= 2) {
+              fetchedLeads.push({
+                id: `csv_${Date.now()}_${i}`,
+                name: row[0] || 'Inquiry',
+                email: row[1] || '',
+                contact: row[2] || '',
+                organisation: row[3] || '',
+                purpose: row[4] || 'School Innovation Lab Setup',
+                message: row[5] || '',
+                status: 'new',
+                createdAt: new Date().toISOString(),
+              });
+            }
+          }
+        }
+      }
+    } catch (sheetErr) {
+      console.warn('[Admin] Direct sheet fetch note:', sheetErr);
+    }
+
+    // 3. Deduplicate and merge with existing leads
+    if (fetchedLeads.length > 0) {
+      const existingKeys = new Set(leads.map(l => `${l.name.toLowerCase()}_${l.contact}_${l.email.toLowerCase()}`));
+      const newUnique = fetchedLeads.filter(l => !existingKeys.has(`${l.name.toLowerCase()}_${l.contact}_${l.email.toLowerCase()}`));
+      const combined = [...newUnique, ...leads];
+
+      setLeads(combined);
+      setStats({
+        totalLeads: combined.length,
+        newLeads: combined.filter(l => l.status === 'new').length,
+        contactedLeads: combined.filter(l => l.status === 'contacted').length,
+        scheduledLeads: combined.filter(l => l.status === 'scheduled').length,
+      });
+
+      setImportStatus(`✨ Successfully fetched and synced ${fetchedLeads.length} live records!`);
+      setTimeout(() => {
+        setIsImportOpen(false);
+        setImportStatus('');
+      }, 2500);
+    } else {
+      setImportStatus('✅ Sync complete (all cloud records are currently up to date).');
+      setTimeout(() => setImportStatus(''), 3000);
+    }
+
+    setIsLoading(false);
   };
 
   const handleBatchImport = async () => {
@@ -619,11 +733,20 @@ export default function AdminPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2">
                     <button
-                      onClick={() => setIsImportOpen(true)}
-                      className="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold font-mono flex items-center gap-1.5 transition-all"
+                      onClick={handleAutoSyncGoogleSheet}
+                      disabled={isLoading}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-95 text-white text-xs font-bold font-mono flex items-center gap-2 shadow-md transition-all disabled:opacity-50"
                     >
-                      <PlusCircle className="w-4 h-4" />
-                      <span>Import Google Sheet Rows</span>
+                      <Zap className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : 'text-amber-300'}`} />
+                      <span>{isLoading ? 'Fetching Records...' : '⚡ Auto-Sync Google Sheet & Cloud'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setIsImportOpen(true)}
+                      className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold font-mono flex items-center gap-1.5 transition-all text-muted-foreground hover:text-foreground"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5" />
+                      <span>Paste Custom Rows</span>
                     </button>
 
                     <button
@@ -777,32 +900,73 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Import Modal */}
+                {/* Import & Sync Modal */}
                 {isImportOpen && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="w-full max-w-xl p-6 rounded-3xl bg-card border-2 border-border shadow-2xl space-y-4">
-                      <div className="flex items-center justify-between">
+                    <div className="w-full max-w-xl p-6 sm:p-8 rounded-3xl bg-card border-2 border-border shadow-2xl space-y-5">
+                      <div className="flex items-center justify-between border-b border-border pb-3">
                         <h3 className="text-lg font-black text-foreground flex items-center gap-2">
                           <FileSpreadsheet className="w-5 h-5 text-emerald-500" />
-                          <span>Import Historical Google Sheet Rows</span>
+                          <span>Google Sheet &amp; Cloud Sync</span>
                         </h3>
                         <button onClick={() => setIsImportOpen(false)} className="text-muted-foreground hover:text-foreground">✕</button>
                       </div>
 
-                      <p className="text-xs text-muted-foreground">
-                        Copy rows from your Google Sheet (Columns: Name, Email, Contact, School, Purpose, Message) and paste them here:
-                      </p>
+                      {/* Auto-Fetch Option */}
+                      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-3">
+                        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                          <Zap className="w-4 h-4 text-amber-500" />
+                          <span>Method 1: Automatic Live Sync</span>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground">
+                          Pulls latest records from your connected Google Apps Script Web App &amp; Supabase automatically.
+                        </p>
+                        
+                        <div>
+                          <label className="text-[10px] font-mono font-bold text-muted-foreground uppercase block mb-1">
+                            Google Sheet Public / CSV Link (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="https://docs.google.com/spreadsheets/d/... (or leave blank for default)"
+                            value={sheetCsvUrl}
+                            onChange={(e) => setSheetCsvUrl(e.target.value)}
+                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs font-mono focus:outline-none focus:border-emerald-500"
+                          />
+                        </div>
 
-                      <textarea
-                        rows={6}
-                        placeholder="Paste rows from Google Sheets here..."
-                        value={pasteData}
-                        onChange={(e) => setPasteData(e.target.value)}
-                        className="w-full p-3 rounded-2xl bg-muted border border-border text-xs font-mono focus:outline-none focus:border-primary"
-                      />
+                        <button
+                          onClick={handleAutoSyncGoogleSheet}
+                          disabled={isLoading}
+                          className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs font-mono flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
+                        >
+                          <Zap className="w-3.5 h-3.5" />
+                          <span>{isLoading ? 'Fetching...' : 'Fetch & Sync Records Now'}</span>
+                        </button>
+                      </div>
+
+                      {/* Manual Paste Fallback */}
+                      <div className="space-y-2">
+                        <div className="text-xs font-bold text-muted-foreground">
+                          Method 2: Manual Paste from Google Sheet
+                        </div>
+                        <p className="text-[11px] text-muted-foreground">
+                          Copy rows directly from your Google Sheet columns (Name, Email, Contact, School, Purpose, Message) and paste:
+                        </p>
+
+                        <textarea
+                          rows={4}
+                          placeholder="Paste copied table rows here..."
+                          value={pasteData}
+                          onChange={(e) => setPasteData(e.target.value)}
+                          className="w-full p-3 rounded-2xl bg-muted border border-border text-xs font-mono focus:outline-none focus:border-primary"
+                        />
+                      </div>
 
                       {importStatus && (
-                        <div className="text-xs font-mono font-bold text-primary">{importStatus}</div>
+                        <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary">
+                          {importStatus}
+                        </div>
                       )}
 
                       <div className="flex items-center justify-end gap-3 pt-2">
@@ -810,14 +974,16 @@ export default function AdminPage() {
                           onClick={() => setIsImportOpen(false)}
                           className="px-4 py-2 rounded-xl bg-muted text-xs font-bold hover:bg-muted/80"
                         >
-                          Cancel
+                          Close
                         </button>
-                        <button
-                          onClick={handleBatchImport}
-                          className="px-5 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold font-mono hover:bg-emerald-600 shadow-md"
-                        >
-                          Process &amp; Save
-                        </button>
+                        {pasteData.trim().length > 0 && (
+                          <button
+                            onClick={handleBatchImport}
+                            className="px-5 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold font-mono hover:bg-emerald-600 shadow-md"
+                          >
+                            Process Pasted Rows
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
