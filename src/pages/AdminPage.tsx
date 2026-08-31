@@ -35,7 +35,8 @@ import {
   Copy,
   Check,
   ExternalLink,
-  FolderUp
+  FolderUp,
+  Zap
 } from 'lucide-react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useContent } from '@/context/ContentContext';
