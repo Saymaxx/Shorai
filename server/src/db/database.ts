@@ -79,33 +79,32 @@ export class Database {
     this.writeLeads(leads);
 
     // Asynchronously push to Supabase table
+    // Note: Supabase table uses auto-increment integer id (omit our local string id)
     Promise.resolve(
       supabaseServer
         .from('leads')
         .insert({
-          id: newLead.id,
           name: newLead.name,
           email: newLead.email,
           contact: newLead.contact,
-          school_name: newLead.organisation,
+          organisation: newLead.organisation,   // actual column name in table
           purpose: newLead.purpose,
           message: newLead.message || '',
           status: newLead.status,
-          ip_address: newLead.ipAddress || '',
-          user_agent: newLead.userAgent || '',
           created_at: newLead.createdAt,
         })
     )
       .then((res: any) => {
         if (res?.error) {
-          console.warn('[Supabase Sync] Lead insert note (check if table is created):', res.error.message);
+          console.warn('[Supabase Sync] Lead insert error:', res.error.message);
         } else {
-          console.log('[Supabase Sync] Lead successfully synced to Supabase database.');
+          console.log('[Supabase Sync] Lead successfully synced to Supabase.');
         }
       })
       .catch((err: any) => {
         console.warn('[Supabase Sync] Async lead push error:', err?.message || err);
       });
+
 
     return newLead;
   }

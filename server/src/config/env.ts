@@ -9,9 +9,8 @@ export const ENV = {
   PORT: parseInt(process.env.PORT || '5000', 10),
   NODE_ENV: process.env.NODE_ENV || 'development',
   
-  // Google Sheets Webhook fallback
-  GOOGLE_SCRIPT_URL: process.env.GOOGLE_SCRIPT_URL || 
-    'https://script.google.com/macros/s/AKfycbxA-MijWckNTGLdZIcn768XLjn75ktRMcHYEqB2rTwHRQRiTwZNwvnkjWy8zGvGFTMwAA/exec',
+  // Google Sheets integration removed — Supabase is the primary data store
+  GOOGLE_SCRIPT_URL: process.env.GOOGLE_SCRIPT_URL || '',
 
   // Email Notification Config (SMTP / Nodemailer)
   SMTP_HOST: process.env.SMTP_HOST || 'smtp.gmail.com',

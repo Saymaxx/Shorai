@@ -2,13 +2,21 @@ import { Router, Request, Response } from 'express';
 import { LeadService } from '../services/leadService.js';
 import { Database, StoredLead } from '../db/database.js';
 import { ENV } from '../config/env.js';
+import { rateLimit } from '../middleware/rateLimiter.js';
 
 const router = Router();
 
+// Rate limit only applies to new lead submissions (POST), not admin reads
+const leadSubmitRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: 'Too many lead submissions from this IP. Please try again later.',
+});
+
 /**
- * POST /api/leads - Create new lead inquiry
+ * POST /api/leads - Create new lead inquiry (rate-limited)
  */
-router.post('/', async (req: Request, res: Response): Promise<void> => {
+router.post('/', leadSubmitRateLimit, async (req: Request, res: Response): Promise<void> => {
   try {
     const meta = {
       ip: req.ip || req.socket.remoteAddress,
