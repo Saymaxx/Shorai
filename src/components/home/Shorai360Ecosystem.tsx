@@ -260,9 +260,9 @@ export default function Shorai360Ecosystem() {
       
       {/* Background Ambient Glows */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[15%] left-[8%] w-[55vw] h-[55vw] max-w-[650px] bg-primary/[0.04] rounded-full blur-[160px]" />
-        <div className="absolute bottom-[15%] right-[8%] w-[50vw] h-[50vw] max-w-[600px] bg-secondary/[0.04] rounded-full blur-[160px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-accent/[0.02] rounded-full blur-[180px]" />
+        <div className="absolute top-[15%] left-[8%] w-[55vw] h-[55vw] max-w-[650px] bg-primary/[0.04] rounded-full blur-[40px] md:blur-[120px]" />
+        <div className="absolute bottom-[15%] right-[8%] w-[50vw] h-[50vw] max-w-[600px] bg-secondary/[0.04] rounded-full blur-[40px] md:blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 md:w-[700px] h-80 md:h-[700px] bg-accent/[0.02] rounded-full blur-[40px] md:blur-[120px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">

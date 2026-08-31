@@ -175,12 +175,10 @@ export default function BlogPage() {
   // 5-Stage Progressive Pedagogy automated slideshow state
   const [activeStageIndex, setActiveStageIndex] = useState(0);
   const [isStageAutoPlaying, setIsStageAutoPlaying] = useState(true);
-  const [stageProgress, setStageProgress] = useState(0);
 
   // Automated Featured Spotlight Carousel
   const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [slideProgress, setSlideProgress] = useState(0);
 
   // Load from local storage or backend if available
   useEffect(() => {
@@ -214,51 +212,27 @@ export default function BlogPage() {
 
   const currentFeatured = featuredArticles[activeFeaturedIndex] || featuredArticles[0];
 
-  // Automated continuous slideshow timer for 5-Stage Progressive Learning Cycle (auto-cycles continuously)
+  // Automated continuous slideshow timer for 5-Stage Progressive Learning Cycle (single interval)
   useEffect(() => {
     if (!isStageAutoPlaying) return;
 
-    const intervalTime = 4500;
-    const stepTime = 50;
-    let currentStep = 0;
-    const totalSteps = intervalTime / stepTime;
-
     const timer = setInterval(() => {
-      currentStep += 1;
-      setStageProgress((currentStep / totalSteps) * 100);
-
-      if (currentStep >= totalSteps) {
-        currentStep = 0;
-        setStageProgress(0);
-        setActiveStageIndex((prev) => (prev + 1) % PEDAGOGY_STAGES.length);
-      }
-    }, stepTime);
+      setActiveStageIndex((prev) => (prev + 1) % PEDAGOGY_STAGES.length);
+    }, 4500);
 
     return () => clearInterval(timer);
-  }, [isStageAutoPlaying, activeStageIndex]);
+  }, [isStageAutoPlaying]);
 
-  // Auto-playing continuous timer for featured article spotlight (auto-cycles continuously)
+  // Auto-playing continuous timer for featured article spotlight (single interval)
   useEffect(() => {
     if (!isAutoPlaying || featuredArticles.length <= 1) return;
 
-    const intervalTime = 5000;
-    const stepTime = 50;
-    let currentStep = 0;
-    const totalSteps = intervalTime / stepTime;
-
     const timer = setInterval(() => {
-      currentStep += 1;
-      setSlideProgress((currentStep / totalSteps) * 100);
-
-      if (currentStep >= totalSteps) {
-        currentStep = 0;
-        setSlideProgress(0);
-        setActiveFeaturedIndex((prev) => (prev + 1) % featuredArticles.length);
-      }
-    }, stepTime);
+      setActiveFeaturedIndex((prev) => (prev + 1) % featuredArticles.length);
+    }, 5000);
 
     return () => clearInterval(timer);
-  }, [isAutoPlaying, featuredArticles.length, activeFeaturedIndex]);
+  }, [isAutoPlaying, featuredArticles.length]);
 
   const filteredArticles = useMemo(() => {
     return blogData.articles.filter(article => {
@@ -286,12 +260,10 @@ export default function BlogPage() {
   const activeStage = PEDAGOGY_STAGES[activeStageIndex];
 
   const handlePrevStage = () => {
-    setStageProgress(0);
     setActiveStageIndex((prev) => (prev === 0 ? PEDAGOGY_STAGES.length - 1 : prev - 1));
   };
 
   const handleNextStage = () => {
-    setStageProgress(0);
     setActiveStageIndex((prev) => (prev + 1) % PEDAGOGY_STAGES.length);
   };
 
@@ -301,15 +273,15 @@ export default function BlogPage() {
       {/* ── 1. CINEMATIC EDITORIAL HERO WITH FLOATING RESEARCH PRISMS ── */}
       <section className="relative pt-36 sm:pt-44 pb-16 overflow-hidden border-b border-border">
 
-        {/* Holographic Glowing Orbs with hardware-accelerated rendering */}
-        <div className="absolute inset-0 pointer-events-none will-change-transform">
+        {/* Holographic Glowing Orbs */}
+        <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute top-10 left-1/3 w-[520px] h-[520px] bg-[#7928CA]/25 rounded-full blur-[130px] animate-pulse"
-            style={{ animationDuration: '8s', transform: 'translateZ(0)' }}
+            className="absolute top-10 left-1/3 w-72 md:w-[520px] h-72 md:h-[520px] bg-[#7928CA]/25 rounded-full blur-[50px] md:blur-[120px] animate-pulse"
+            style={{ animationDuration: '8s' }}
           />
           <div
-            className="absolute top-20 right-1/4 w-[480px] h-[480px] bg-[#00D4FF]/25 rounded-full blur-[130px] animate-pulse"
-            style={{ animationDuration: '10s', transform: 'translateZ(0)' }}
+            className="absolute top-20 right-1/4 w-72 md:w-[480px] h-72 md:h-[480px] bg-[#00D4FF]/25 rounded-full blur-[50px] md:blur-[120px] animate-pulse"
+            style={{ animationDuration: '10s' }}
           />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800e_1px,transparent_1px),linear-gradient(to_bottom,#8080800e_1px,transparent_1px)] bg-[size:36px_36px]" />
         </div>
@@ -463,10 +435,7 @@ export default function BlogPage() {
               return (
                 <button
                   key={s.stage}
-                  onClick={() => {
-                    setStageProgress(0);
-                    setActiveStageIndex(idx);
-                  }}
+                  onClick={() => setActiveStageIndex(idx)}
                   className={`relative overflow-hidden px-4 sm:px-5 py-2.5 rounded-2xl text-xs font-mono font-bold transition-all duration-300 flex items-center gap-2 border ${
                     active
                       ? `bg-gradient-to-r ${s.color} text-white shadow-lg scale-105 border-white/20 font-black`
@@ -476,8 +445,11 @@ export default function BlogPage() {
                   {/* Active Tab Linear Progress Indicator */}
                   {active && isStageAutoPlaying && (
                     <div 
-                      className="absolute bottom-0 left-0 h-1 bg-white/40 transition-all duration-75"
-                      style={{ width: `${stageProgress}%` }}
+                      key={activeStageIndex}
+                      className="absolute bottom-0 left-0 h-1 w-full bg-white/40 origin-left"
+                      style={{
+                        animation: 'shoraiProgress 4.5s linear forwards',
+                      }}
                     />
                   )}
                   <Icon className={`w-3.5 h-3.5 ${active ? 'text-white' : 'text-primary'}`} />
@@ -499,10 +471,13 @@ export default function BlogPage() {
             >
               {/* Top Smooth Progress Bar */}
               {isStageAutoPlaying && (
-                <div className="w-full h-1 bg-black/20">
+                <div className="w-full h-1 bg-black/20 overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] transition-all duration-75"
-                    style={{ width: `${stageProgress}%` }}
+                    key={activeStageIndex}
+                    className="h-full w-full bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] origin-left"
+                    style={{
+                      animation: 'shoraiProgress 4.5s linear forwards',
+                    }}
                   />
                 </div>
               )}
@@ -526,27 +501,38 @@ export default function BlogPage() {
                   {activeStage.desc}
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border space-y-1">
+                {/* Key Deliverables Grid */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/80 space-y-1">
                     <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase flex items-center gap-1.5">
-                      <Layers className="w-3.5 h-3.5 text-primary" />
-                      <span>Hardware &amp; Kits Spec</span>
+                      <GraduationCap className="w-3.5 h-3.5 text-primary" />
+                      Target Grade Band
                     </div>
-                    <div className="text-xs sm:text-sm font-bold text-foreground">
-                      {activeStage.kitHighlight}
+                    <div className="text-sm font-bold text-foreground">
+                      {activeStage.name}
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border space-y-1">
+                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/80 space-y-1">
                     <div className="text-[11px] font-mono font-bold text-muted-foreground uppercase flex items-center gap-1.5">
-                      <Target className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Key Measurable Outcome</span>
+                      <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                      Lab Hardware & LMS Rig
                     </div>
-                    <div className="text-xs sm:text-sm font-bold text-emerald-400">
-                      {activeStage.outcome}
+                    <div className="text-sm font-bold text-foreground">
+                      {activeStage.kitHighlight}
                     </div>
                   </div>
                 </div>
+
+                {/* Measurable Student Outcome */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-primary/10 to-cyan-500/10 border border-primary/20 flex items-center gap-3">
+                  <Award className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  <div className="text-xs sm:text-sm font-bold text-foreground">
+                    <span className="text-primary font-black uppercase text-[11px] font-mono block">Documented Milestone: </span>
+                    {activeStage.outcome}
+                  </div>
+                </div>
+
               </div>
             </motion.div>
           </AnimatePresence>
@@ -554,38 +540,41 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* ── 4. AUTO-ADVANCING FEATURED ESSAY CAROUSEL WITH DYNAMIC PROGRESS ── */}
+      {/* ── 4. EDITORIAL SPOTLIGHT HERO ARTICLE WITH SMOOTH PROGRESS BAR ── */}
       {currentFeatured && (
-        <section className="py-14 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-muted/20 to-background">
+        <section className="py-16 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-background via-muted/15 to-background">
           <div className="max-w-[1440px] mx-auto">
-
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-mono font-black">
-                <Flame className="w-3.5 h-3.5 fill-amber-400" />
-                <span>FEATURED PUBLICATION // SPOTLIGHT ({activeFeaturedIndex + 1}/{featuredArticles.length})</span>
+            
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/25 text-xs font-mono font-black mb-2">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>CURATED RESEARCH // FEATURED SPOTLIGHT</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">
+                  Flagship Editorial Article
+                </h2>
               </div>
 
-              {/* Carousel Controls */}
-              <div className="flex items-center gap-2">
+              {/* Controls */}
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                  className="px-3.5 py-1.5 rounded-xl bg-card border border-border text-xs font-mono font-bold flex items-center gap-1.5 hover:border-primary transition-colors"
+                  className="px-3.5 py-1.5 rounded-xl bg-card border border-border text-xs font-mono font-bold flex items-center gap-1.5 hover:border-primary transition-colors shadow-sm"
                 >
                   {isAutoPlaying ? <Pause className="w-3 h-3 text-amber-400" /> : <Play className="w-3 h-3 text-emerald-400" />}
-                  <span>{isAutoPlaying ? 'Pause' : 'Play'}</span>
+                  <span>{isAutoPlaying ? 'Pause Spotlight' : 'Auto-Play Spotlight'}</span>
                 </button>
 
-                <div className="flex items-center gap-1">
-                  {featuredArticles.map((_, idx) => (
+                <div className="flex items-center gap-1.5">
+                  {featuredArticles.map((_, fIdx) => (
                     <button
-                      key={idx}
-                      onClick={() => {
-                        setActiveFeaturedIndex(idx);
-                        setSlideProgress(0);
-                      }}
-                      className={`h-2 rounded-full transition-all ${activeFeaturedIndex === idx ? 'w-6 bg-primary' : 'w-2 bg-muted hover:bg-muted-foreground'
-                        }`}
-                      aria-label={`Slide ${idx + 1}`}
+                      key={fIdx}
+                      onClick={() => setActiveFeaturedIndex(fIdx)}
+                      className={`w-2.5 h-2.5 rounded-full transition-all ${
+                        activeFeaturedIndex === fIdx ? 'w-8 bg-primary' : 'bg-muted hover:bg-muted-foreground/50'
+                      }`}
+                      aria-label={`Slide ${fIdx + 1}`}
                     />
                   ))}
                 </div>
@@ -600,10 +589,13 @@ export default function BlogPage() {
                 
                 {/* Progress bar */}
                 {isAutoPlaying && (
-                  <div className="w-full h-1 bg-muted">
+                  <div className="w-full h-1 bg-muted overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-[#7928CA] to-[#00D4FF] transition-all duration-75"
-                      style={{ width: `${slideProgress}%` }}
+                      key={activeFeaturedIndex}
+                      className="h-full w-full bg-gradient-to-r from-[#7928CA] to-[#00D4FF] origin-left"
+                      style={{
+                        animation: 'shoraiProgress 5s linear forwards',
+                      }}
                     />
                   </div>
                 )}

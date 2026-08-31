@@ -21,10 +21,9 @@ import {
   ExternalLink,
   Zap,
   Flame,
-  Layers,
-  Award
+  Award,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import Footer from '@/components/shared/Footer';
 import ContactModal from '@/components/shared/ContactModal';
 import { usePageMeta } from '@/hooks/usePageMeta';
@@ -54,9 +53,15 @@ interface ArticleReaderPageProps {
 
 export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
   const [blogData] = useState(defaultBlogData);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   // Find matching article
   const article = useMemo(() => {
@@ -85,19 +90,6 @@ export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
     title: article.seo?.metaTitle || `${article.title} | Shorai Insights`,
     description: article.seo?.metaDescription || article.excerpt,
   });
-
-  // Track scroll progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setScrollProgress((window.scrollY / totalHeight) * 100);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleCopyShare = () => {
     if (typeof window !== 'undefined') {
@@ -156,12 +148,12 @@ export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── Fixed Reading Progress Bar with Luminous Glow ── */}
+      {/* ── Fixed Hardware-Accelerated Reading Progress Bar ── */}
       <div className="fixed top-0 left-0 w-full h-1.5 z-50 bg-border/40 pointer-events-none">
-        <div 
-          className="h-full transition-all duration-150 shadow-[0_0_12px_rgba(99,102,241,0.8)]"
+        <motion.div 
+          className="h-full w-full origin-left shadow-[0_0_12px_rgba(99,102,241,0.8)]"
           style={{
-            width: `${scrollProgress}%`,
+            scaleX,
             background: 'linear-gradient(90deg, #7928CA 0%, #6366F1 50%, #00D4FF 100%)',
           }}
         />

@@ -204,6 +204,7 @@ export default function MarsRover3D({ status = 'scanning', speed = 1 }: MarsRove
     <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
       <Canvas
         camera={{ position: [2.8, 2.2, 3.2], fov: 42 }}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.9} />

@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { globalNormalizedMouse as globalMouse } from '@/lib/mouse';
 
 // ─── Cute Sci-Fi PBR Materials ────────────────────────────────────────
 const materials = {
@@ -28,17 +29,18 @@ const materials = {
     roughness: 0.08,
   },
   screenDark: {
-    color: '#060914',
+    color: '#030712',
     metalness: 0.92,
-    roughness: 0.05,
+    roughness: 0.12,
   },
 
-  // Cyber Neon Emissives
+  // Glowing Neon LED Accents
   cyanGlow: {
     color: '#00f0ff',
     emissive: '#00f0ff',
-    emissiveIntensity: 4.6,
-    roughness: 0.05,
+    emissiveIntensity: 3.8,
+    metalness: 0.3,
+    roughness: 0.15,
   },
   electricBlue: {
     color: '#0066ff',
@@ -69,9 +71,6 @@ const materials = {
   },
 };
 
-// Global normalized mouse coordinates [-1, 1]
-const globalMouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-
 // ─── 1. 360° Revolving 3D Planet ──────────────────────────────────────
 function OrbitingPlanet({
   orbitSpeed = 0.45,
@@ -89,7 +88,7 @@ function OrbitingPlanet({
   const [hovered, setHovered] = useState(false);
 
   useFrame((state, delta) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || (typeof document !== 'undefined' && document.hidden)) return;
     const t = state.clock.getElapsedTime() * orbitSpeed + phaseOffset;
 
     // 360° continuous orbital coordinates
@@ -124,7 +123,7 @@ function OrbitingPlanet({
     >
       {/* Core Planet */}
       <mesh>
-        <sphereGeometry args={[0.55, 36, 36]} />
+        <sphereGeometry args={[0.55, 24, 24]} />
         <meshStandardMaterial
           color="#0c173c"
           metalness={0.82}
@@ -136,7 +135,7 @@ function OrbitingPlanet({
 
       {/* Atmospheric Cloud Latitude Mesh */}
       <mesh scale={[1.015, 1.015, 1.015]}>
-        <sphereGeometry args={[0.55, 24, 24]} />
+        <sphereGeometry args={[0.55, 18, 18]} />
         <meshStandardMaterial
           color="#00f0ff"
           wireframe
@@ -147,7 +146,7 @@ function OrbitingPlanet({
 
       {/* Glowing Atmosphere Outer Shell */}
       <mesh scale={[1.09, 1.09, 1.09]}>
-        <sphereGeometry args={[0.55, 24, 24]} />
+        <sphereGeometry args={[0.55, 18, 18]} />
         <meshBasicMaterial
           color="#00f0ff"
           transparent
@@ -159,7 +158,7 @@ function OrbitingPlanet({
       {/* Tilted Saturn-style Rings */}
       <group rotation={[1.15, 0.35, -0.2]}>
         <mesh ref={ringRef}>
-          <ringGeometry args={[0.72, 1.12, 48]} />
+          <ringGeometry args={[0.72, 1.12, 28]} />
           <meshStandardMaterial
             color="#00f0ff"
             emissive="#00f0ff"
@@ -170,7 +169,7 @@ function OrbitingPlanet({
           />
         </mesh>
         <mesh>
-          <ringGeometry args={[1.18, 1.30, 48]} />
+          <ringGeometry args={[1.18, 1.30, 28]} />
           <meshStandardMaterial
             color="#a83aff"
             emissive="#a83aff"
@@ -202,7 +201,7 @@ function OrbitingRocket({
   const [hovered, setHovered] = useState(false);
 
   useFrame((state, delta) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || (typeof document !== 'undefined' && document.hidden)) return;
     const elapsed = state.clock.getElapsedTime();
     const t = elapsed * orbitSpeed + phaseOffset;
 
@@ -222,7 +221,6 @@ function OrbitingRocket({
     groupRef.current.position.z = THREE.MathUtils.damp(groupRef.current.position.z, targetZ, 5.0, delta);
 
     // Tangent flight banking: Point the rocket nose along its orbital velocity vector
-    // Derivative of position: dx/dt = -sin(t), dz/dt = cos(t)
     const forwardX = -Math.sin(orbitAngle);
     const forwardZ = Math.cos(orbitAngle);
     const forwardY = -Math.cos(orbitAngle) * 0.35;
@@ -249,25 +247,25 @@ function OrbitingRocket({
     >
       {/* Fuselage */}
       <mesh position={[0, 0.15, 0]}>
-        <cylinderGeometry args={[0.18, 0.25, 1.0, 24]} />
+        <cylinderGeometry args={[0.18, 0.25, 1.0, 16]} />
         <meshStandardMaterial {...materials.metallicSilver} />
       </mesh>
 
       {/* Nosecone */}
       <mesh position={[0, 0.80, 0]}>
-        <coneGeometry args={[0.18, 0.50, 24]} />
+        <coneGeometry args={[0.18, 0.50, 16]} />
         <meshStandardMaterial {...materials.shoraiOrange} />
       </mesh>
 
       {/* Cockpit Canopy */}
       <mesh position={[0, 0.34, 0.14]} rotation={[0.22, 0, 0]}>
-        <capsuleGeometry args={[0.06, 0.18, 10, 16]} />
+        <capsuleGeometry args={[0.06, 0.18, 8, 12]} />
         <meshStandardMaterial {...materials.cyanGlow} />
       </mesh>
 
       {/* Dark Graphite Accent Band */}
       <mesh position={[0, 0.02, 0]}>
-        <cylinderGeometry args={[0.22, 0.22, 0.12, 24]} />
+        <cylinderGeometry args={[0.22, 0.22, 0.12, 16]} />
         <meshStandardMaterial {...materials.darkGraphite} />
       </mesh>
 
@@ -624,17 +622,10 @@ function CuteRobotHeadModel() {
 
   const [isBlinking, setIsBlinking] = useState(false);
 
-  // Global mouse listener attached to window
-  useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
-      globalMouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
-      globalMouse.targetY = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMouseMove);
-  }, []);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useFrame((state, delta) => {
+    if (typeof document !== 'undefined' && document.hidden) return;
     const t = state.clock.getElapsedTime();
 
     // Smooth damp global mouse coords
@@ -674,11 +665,15 @@ function CuteRobotHeadModel() {
 
   return (
     <>
-      <HolographicOrbitalRings />
-      {/* 360° Continuous Orbiting Elements */}
-      <OrbitingPlanet />
-      <OrbitingRocket />
-      <OrbitingLightBulb />
+      {!isMobile && (
+        <>
+          <HolographicOrbitalRings />
+          {/* 360° Continuous Orbiting Elements */}
+          <OrbitingPlanet />
+          <OrbitingRocket />
+          <OrbitingLightBulb />
+        </>
+      )}
 
       <group ref={floatGroupRef}>
         <group ref={headGroupRef} position={[0, 0.04, 0]} scale={0.96}>
@@ -686,13 +681,13 @@ function CuteRobotHeadModel() {
           {/* ── 1. CERVICAL BASE & FLOATING MAGNETIC COLLAR ───────── */}
           {/* Hydraulic Neck Cylinder */}
           <mesh position={[0, -0.58, -0.04]}>
-            <cylinderGeometry args={[0.22, 0.26, 0.20, 28]} />
+            <cylinderGeometry args={[0.22, 0.26, 0.20, 18]} />
             <meshStandardMaterial {...materials.gunmetal} />
           </mesh>
 
           {/* Floating Cyan Conduit Collar Ring */}
           <mesh position={[0, -0.50, -0.02]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.28, 0.026, 16, 36]} />
+            <torusGeometry args={[0.28, 0.026, 12, 24]} />
             <meshStandardMaterial {...materials.cyanGlow} emissiveIntensity={3.2} />
           </mesh>
 
@@ -711,11 +706,11 @@ function CuteRobotHeadModel() {
 
           {/* Top Cute Antenna with Glowing Beacon */}
           <mesh position={[0, 0.68, -0.05]}>
-            <cylinderGeometry args={[0.016, 0.026, 0.28, 16]} />
+            <cylinderGeometry args={[0.016, 0.026, 0.28, 12]} />
             <meshStandardMaterial {...materials.chromeTrim} />
           </mesh>
           <mesh ref={antennaOrbRef} position={[0, 0.86, -0.05]}>
-            <sphereGeometry args={[0.065, 20, 20]} />
+            <sphereGeometry args={[0.065, 14, 14]} />
             <meshStandardMaterial {...materials.cyanGlow} emissiveIntensity={4.8} />
           </mesh>
 
@@ -744,11 +739,11 @@ function CuteRobotHeadModel() {
 
           {/* Cute Soft Pink Blush Dots */}
           <mesh position={[-0.38, -0.10, 0.42]}>
-            <circleGeometry args={[0.045, 16]} />
+            <circleGeometry args={[0.045, 14]} />
             <meshBasicMaterial color="#ff3d7f" transparent opacity={0.50} />
           </mesh>
           <mesh position={[0.38, -0.10, 0.42]}>
-            <circleGeometry args={[0.045, 16]} />
+            <circleGeometry args={[0.045, 14]} />
             <meshBasicMaterial color="#ff3d7f" transparent opacity={0.50} />
           </mesh>
 
@@ -756,15 +751,15 @@ function CuteRobotHeadModel() {
           {/* Left Ear Cup */}
           <group position={[-0.66, 0.04, -0.04]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh>
-              <cylinderGeometry args={[0.22, 0.22, 0.12, 28]} />
+              <cylinderGeometry args={[0.22, 0.22, 0.12, 18]} />
               <meshStandardMaterial {...materials.chromeTrim} />
             </mesh>
             <mesh position={[0, 0.07, 0]}>
-              <cylinderGeometry args={[0.16, 0.16, 0.04, 24]} />
+              <cylinderGeometry args={[0.16, 0.16, 0.04, 16]} />
               <meshStandardMaterial {...materials.darkGraphite} />
             </mesh>
             <mesh position={[0, 0.10, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-              <ringGeometry args={[0.08, 0.13, 28]} />
+              <ringGeometry args={[0.08, 0.13, 18]} />
               <meshStandardMaterial {...materials.cyanGlow} emissiveIntensity={3.5} side={THREE.DoubleSide} />
             </mesh>
           </group>
@@ -772,15 +767,15 @@ function CuteRobotHeadModel() {
           {/* Right Ear Cup */}
           <group position={[0.66, 0.04, -0.04]} rotation={[0, Math.PI / 2, 0]}>
             <mesh>
-              <cylinderGeometry args={[0.22, 0.22, 0.12, 28]} />
+              <cylinderGeometry args={[0.22, 0.22, 0.12, 18]} />
               <meshStandardMaterial {...materials.chromeTrim} />
             </mesh>
             <mesh position={[0, 0.07, 0]}>
-              <cylinderGeometry args={[0.16, 0.16, 0.04, 24]} />
+              <cylinderGeometry args={[0.16, 0.16, 0.04, 16]} />
               <meshStandardMaterial {...materials.darkGraphite} />
             </mesh>
             <mesh position={[0, 0.10, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-              <ringGeometry args={[0.08, 0.13, 28]} />
+              <ringGeometry args={[0.08, 0.13, 18]} />
               <meshStandardMaterial {...materials.shoraiOrange} emissiveIntensity={3.0} side={THREE.DoubleSide} />
             </mesh>
           </group>
@@ -796,22 +791,16 @@ function CinematicLighting() {
   return (
     <>
       {/* Key Frontal Light: Crisp metallic highlights */}
-      <directionalLight position={[3.5, 4.5, 5.0]} intensity={3.6} color="#ffffff" />
+      <directionalLight position={[3.5, 4.5, 5.0]} intensity={3.8} color="#ffffff" />
 
-      {/* Soft Front Fill Light */}
-      <directionalLight position={[-3.5, 2.5, 4.0]} intensity={2.4} color="#d8ebff" />
+      {/* Soft Front Cyan/Blue Fill Light */}
+      <directionalLight position={[-3.5, 2.5, 3.5]} intensity={2.8} color="#d8ebff" />
 
-      {/* Electric Cyan Rim Light (Strikes left metallic contours) */}
-      <directionalLight position={[-5.5, 2.0, -2.0]} intensity={7.0} color="#00f0ff" />
+      {/* Electric Neon Rim Light (Strikes metallic contours) */}
+      <directionalLight position={[4.5, 2.0, -2.0]} intensity={6.5} color="#a83aff" />
 
-      {/* Neon Purple/Magenta Rim Light (Strikes right metallic contours) */}
-      <directionalLight position={[5.5, 2.0, -2.0]} intensity={6.0} color="#a83aff" />
-
-      {/* Warm Orange Low-Angle Accent Fill */}
-      <pointLight position={[0, -2.8, 2.5]} intensity={4.5} color="#ff6b00" distance={9} />
-
-      {/* Ambient Atmosphere */}
-      <ambientLight intensity={1.2} color="#182236" />
+      {/* Low-Angle Ambient Fill */}
+      <ambientLight intensity={1.4} color="#182236" />
     </>
   );
 }
@@ -844,7 +833,7 @@ export default function Robot3DCanvas({
       {isVisible && (
         <Canvas
           camera={{ position: [0, 0.05, 5.0], fov: 38 }}
-          dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1.5] : [1, 2]}
+          dpr={[1, 1.5]}
           gl={{
             antialias: true,
             alpha: true,

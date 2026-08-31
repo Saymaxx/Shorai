@@ -65,7 +65,6 @@ export default function StudentTestimonials() {
           display: flex;
           width: max-content;
           animation: testimonialMarquee 26s linear infinite;
-          will-change: transform;
         }
         .testimonial-marquee-track:hover {
           animation-play-state: paused;
@@ -74,7 +73,7 @@ export default function StudentTestimonials() {
 
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-[#7928CA]/10 via-[#6366F1]/10 to-[#00D4FF]/10 rounded-full blur-[140px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 md:w-[700px] h-48 md:h-[350px] bg-gradient-to-tr from-[#7928CA]/10 via-[#6366F1]/10 to-[#00D4FF]/10 rounded-full blur-[40px] md:blur-[120px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto relative z-10">

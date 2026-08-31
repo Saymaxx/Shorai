@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, Terminal, Play, RotateCcw, CheckCircle2, Sparkles, Cpu, Bot, Plane, Layers, LucideIcon, ArrowRight } from 'lucide-react';
-import Coding3D from '@/components/3d/Coding3D';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import Lazy3DCanvas from '@/components/3d/Lazy3DCanvas';
+
+const Coding3D = React.lazy(() => import('@/components/3d/Coding3D'));
 
 type CodeLanguage = 'blocks' | 'python' | 'javascript';
 
@@ -266,7 +268,9 @@ export default function CodingEducationSection() {
 
             {/* 3D Simulation Canvas */}
             <div className="h-[300px] sm:h-[340px] rounded-3xl bg-card border border-border shadow-xl relative overflow-hidden p-2">
-              <Coding3D isExecuting={isRunning} language={activeLanguage} />
+              <Lazy3DCanvas minHeight="280px" fallbackText="INITIALIZING 3D LOGIC CUBE...">
+                <Coding3D isExecuting={isRunning} language={activeLanguage} />
+              </Lazy3DCanvas>
             </div>
 
             {/* Console Log Terminal */}

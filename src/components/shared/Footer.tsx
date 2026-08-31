@@ -69,8 +69,8 @@ export default function Footer() {
     <footer id="contact" className="bg-transparent border-t border-border pt-20 pb-12 relative overflow-hidden">
       {/* Ambient background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/4 w-[40vw] h-[300px] bg-primary/[0.03] rounded-full blur-[140px]" />
-        <div className="absolute bottom-0 right-1/4 w-[40vw] h-[300px] bg-secondary/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 left-1/4 w-[40vw] h-[300px] bg-primary/[0.03] rounded-full blur-[40px] md:blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[40vw] h-[300px] bg-secondary/[0.03] rounded-full blur-[40px] md:blur-[120px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">

@@ -112,6 +112,7 @@ router.post('/import', (req: Request, res: Response): void => {
  * GET /api/leads/stats - Public summary stats
  */
 router.get('/stats', (req: Request, res: Response): void => {
+  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=180');
   const stats = LeadService.getStats();
   res.json({ success: true, stats });
 });

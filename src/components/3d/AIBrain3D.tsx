@@ -199,7 +199,7 @@ export default function AIBrain3D({
     <div className="w-full h-full relative flex items-center justify-center">
       <Canvas
         camera={{ position: [0, 0, 5.5], fov: 45 }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.5} />
@@ -212,7 +212,7 @@ export default function AIBrain3D({
         {mode === 'vision' && <AIObjectBoundingBoxes />}
 
         <Sparkles
-          count={100}
+          count={50}
           scale={7}
           size={2}
           speed={0.6 * speed}

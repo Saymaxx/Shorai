@@ -90,7 +90,6 @@ export default function Testimonials() {
           display: flex;
           width: max-content;
           animation: educatorTestimonialMarquee 34s linear infinite;
-          will-change: transform;
         }
         .educator-testimonial-track:hover {
           animation-play-state: paused;
@@ -99,8 +98,8 @@ export default function Testimonials() {
 
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.03] rounded-full blur-[140px]" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-secondary/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-primary/[0.03] rounded-full blur-[40px] md:blur-[120px]" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[45vw] h-[45vw] max-w-[600px] bg-secondary/[0.03] rounded-full blur-[40px] md:blur-[120px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto relative z-10">

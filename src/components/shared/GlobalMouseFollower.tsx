@@ -11,6 +11,11 @@ export default function GlobalMouseFollower() {
   const { theme } = useTheme();
 
   useEffect(() => {
+    // Respect user reduced-motion preference: 0 extra listeners or follower orbs
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     setIsMounted(true);
 
     const onEnter = (e: MouseEvent) => {

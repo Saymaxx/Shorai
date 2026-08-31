@@ -220,10 +220,9 @@ export default function AdminPage() {
 
     const cleanSecret = authSecret.trim();
     const envSecret = (import.meta as any).env?.VITE_ADMIN_SECRET;
-    const defaultSecrets = ['shorai_admin_secret_2026', envSecret].filter(Boolean);
-    const isDirectMatch = defaultSecrets.includes(cleanSecret);
+    const isDirectMatch = Boolean(envSecret && cleanSecret === envSecret);
 
-    // 1. If password matches default secret or env secret, grant instant access
+    // 1. If password matches configured env secret, grant instant access
     if (isDirectMatch) {
       setIsAuthenticated(true);
       sessionStorage.setItem('shorai_admin_secret', cleanSecret);

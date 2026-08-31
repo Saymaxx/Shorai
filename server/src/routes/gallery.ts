@@ -7,41 +7,84 @@ const router = Router();
 const DATA_DIR = path.resolve(process.cwd(), 'server', 'data');
 const GALLERY_FILE = path.join(DATA_DIR, 'gallery.json');
 
-function ensureFile() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+let memoryGalleryData: any = null;
+
+function safeEnsureDir() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch {
+    // Read-only filesystem in serverless environments
   }
 }
 
 function getGalleryData(): any {
-  ensureFile();
-  if (fs.existsSync(GALLERY_FILE)) {
-    try {
+  if (memoryGalleryData) {
+    return memoryGalleryData;
+  }
+
+  try {
+    safeEnsureDir();
+    if (fs.existsSync(GALLERY_FILE)) {
       const raw = fs.readFileSync(GALLERY_FILE, 'utf-8');
-      return JSON.parse(raw);
-    } catch {
-      return null;
+      memoryGalleryData = JSON.parse(raw);
+      return memoryGalleryData;
     }
+  } catch {
+    // Read-only fs fallback
   }
   return null;
 }
 
 function saveGalleryData(data: any): boolean {
-  ensureFile();
+  memoryGalleryData = data;
   try {
+    safeEnsureDir();
     fs.writeFileSync(GALLERY_FILE, JSON.stringify(data, null, 2), 'utf-8');
     return true;
   } catch {
-    return false;
+    return true; // Memory cache updated
   }
 }
 
 /**
- * GET /api/gallery - Fetch all gallery items, albums, and milestones
+ * GET /api/gallery - Fetch gallery items with optional pagination & filtering
+ * Query params: ?page=1&limit=12&category=robotics
  */
 router.get('/', (req: Request, res: Response) => {
-  const data = getGalleryData();
-  res.json(data || {});
+  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
+  const data = getGalleryData() || {};
+
+  const page = parseInt(req.query.page as string, 10);
+  const limit = parseInt(req.query.limit as string, 10);
+  const category = req.query.category as string | undefined;
+
+  // If pagination is requested
+  if (!isNaN(page) && !isNaN(limit) && Array.isArray(data.albums)) {
+    let filteredAlbums = data.albums;
+    if (category && category !== 'all') {
+      filteredAlbums = filteredAlbums.filter((a: any) => a.category === category);
+    }
+
+    const total = filteredAlbums.length;
+    const startIndex = (page - 1) * limit;
+    const paginatedAlbums = filteredAlbums.slice(startIndex, startIndex + limit);
+
+    res.json({
+      success: true,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+      albums: paginatedAlbums,
+      categories: data.categories || [],
+      milestones: data.milestones || [],
+    });
+    return;
+  }
+
+  res.json(data);
 });
 
 /**

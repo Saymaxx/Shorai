@@ -23,8 +23,8 @@ export const ENV = {
   // Gemini / AI API Key
   GEMINI_API_KEY: process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '',
 
-  // Admin API Secret for accessing leads dashboard
-  ADMIN_SECRET: process.env.ADMIN_SECRET || 'shorai_admin_secret_2026',
+  // Admin API Secret for accessing leads dashboard (configured via server environment variable)
+  ADMIN_SECRET: process.env.ADMIN_SECRET || process.env.VITE_ADMIN_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'dev_admin_local_secret'),
 
   // Supabase Configuration
   SUPABASE_URL: process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://lyxwbkbehnlqychblifz.supabase.co',

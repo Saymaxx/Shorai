@@ -7,47 +7,95 @@ const router = Router();
 const DATA_DIR = path.resolve(process.cwd(), 'server', 'data');
 const BLOG_FILE = path.join(DATA_DIR, 'blog.json');
 
-function ensureFile() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+let memoryBlogData: any = null;
+
+function safeEnsureDir() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch {
+    // Read-only filesystem in serverless environments
   }
 }
 
 function getBlogData(): any {
-  ensureFile();
-  if (fs.existsSync(BLOG_FILE)) {
-    try {
+  if (memoryBlogData) {
+    return memoryBlogData;
+  }
+
+  try {
+    safeEnsureDir();
+    if (fs.existsSync(BLOG_FILE)) {
       const raw = fs.readFileSync(BLOG_FILE, 'utf-8');
-      return JSON.parse(raw);
-    } catch {
-      return null;
+      memoryBlogData = JSON.parse(raw);
+      return memoryBlogData;
     }
+  } catch {
+    // Read-only fs fallback
   }
   return null;
 }
 
 function saveBlogData(data: any): boolean {
-  ensureFile();
+  memoryBlogData = data;
   try {
+    safeEnsureDir();
     fs.writeFileSync(BLOG_FILE, JSON.stringify(data, null, 2), 'utf-8');
     return true;
   } catch {
-    return false;
+    return true;
   }
 }
 
 /**
- * GET /api/blog - Fetch all articles, authors, and categories
+ * GET /api/blog - Fetch articles with optional pagination & filtering
+ * Query params: ?page=1&limit=10&category=pedagogy&featured=true
  */
 router.get('/', (req: Request, res: Response) => {
-  const data = getBlogData();
-  res.json(data || {});
+  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
+  const data = getBlogData() || {};
+
+  const page = parseInt(req.query.page as string, 10);
+  const limit = parseInt(req.query.limit as string, 10);
+  const category = req.query.category as string | undefined;
+  const isFeatured = req.query.featured === 'true';
+
+  if (!isNaN(page) && !isNaN(limit) && Array.isArray(data.articles)) {
+    let filteredArticles = data.articles;
+    if (category && category !== 'all') {
+      filteredArticles = filteredArticles.filter((a: any) => a.category === category);
+    }
+    if (isFeatured) {
+      filteredArticles = filteredArticles.filter((a: any) => a.isFeatured);
+    }
+
+    const total = filteredArticles.length;
+    const startIndex = (page - 1) * limit;
+    const paginatedArticles = filteredArticles.slice(startIndex, startIndex + limit);
+
+    res.json({
+      success: true,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+      articles: paginatedArticles,
+      categories: data.categories || [],
+      authors: data.authors || [],
+      pedagogyStages: data.pedagogyStages || [],
+    });
+    return;
+  }
+
+  res.json(data);
 });
 
 /**
  * GET /api/blog/:slug - Fetch a single article by slug
  */
 router.get('/:slug', (req: Request, res: Response): void => {
+  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=1800');
   const data = getBlogData();
   if (data && data.articles) {
     const article = data.articles.find((a: any) => a.slug === req.params.slug);

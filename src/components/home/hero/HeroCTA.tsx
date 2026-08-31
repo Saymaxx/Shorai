@@ -36,17 +36,18 @@ export default function HeroCTA({ onContactClick }: HeroCTAProps) {
         </button>
       </motion.div>
 
-      {/* Secondary CTA: Explore 360° Ecosystem */}
+      {/* Secondary CTA: Explore Innovation Labs */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
         className="w-full sm:w-auto"
       >
-        <Link href="#ecosystem" className="block w-full sm:w-auto outline-none">
-          <button className="w-full sm:w-auto flex items-center justify-center px-6 h-13 rounded-xl border border-border bg-card/80 hover:bg-card text-foreground font-semibold text-sm tracking-wide transition-all duration-300 backdrop-blur-md shadow-sm hover:border-primary/40">
-            Explore 360° Ecosystem
-          </button>
+        <Link 
+          href="#innovation-labs" 
+          className="w-full sm:w-auto flex items-center justify-center px-6 h-13 rounded-xl border border-border bg-card/80 hover:bg-card text-foreground font-semibold text-sm tracking-wide transition-all duration-300 backdrop-blur-md shadow-sm hover:border-primary/40 outline-none"
+        >
+          Explore Innovation Labs
         </Link>
       </motion.div>
       

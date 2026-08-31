@@ -2,8 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ── Fonts: Outfit for friendly headings, Inter for clear body ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+/* ── Fonts loaded via preconnected <link> in index.html for zero render blocking ── */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -286,14 +285,12 @@
     display: flex;
     width: max-content;
     animation: gallery-marquee-left 42s linear infinite;
-    will-change: transform;
   }
 
   .gallery-marquee-stream-right {
     display: flex;
     width: max-content;
     animation: gallery-marquee-right 45s linear infinite;
-    will-change: transform;
   }
 
   .gallery-marquee-stream-left:hover,
@@ -301,6 +298,16 @@
   .gallery-marquee-wrapper:hover .gallery-marquee-stream-left,
   .gallery-marquee-wrapper:hover .gallery-marquee-stream-right {
     animation-play-state: paused !important;
+  }
+
+  /* ── Hardware-Accelerated Dynamic Progress Animation ── */
+  @keyframes shoraiProgress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
   }
 
   /* ── Motion Accessibility: WCAG 2.1 AA Compliance ── */

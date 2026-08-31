@@ -124,7 +124,6 @@ export default function WhyShoraiPage() {
               display: flex;
               width: max-content;
               animation: marqueeContinuous 52s linear infinite;
-              will-change: transform;
               transform: translate3d(0, 0, 0);
               backface-visibility: hidden;
               perspective: 1000px;

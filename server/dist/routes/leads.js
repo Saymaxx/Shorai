@@ -99,6 +99,7 @@ router.post('/import', (req, res) => {
  * GET /api/leads/stats - Public summary stats
  */
 router.get('/stats', (req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=180');
     const stats = leadService_js_1.LeadService.getStats();
     res.json({ success: true, stats });
 });

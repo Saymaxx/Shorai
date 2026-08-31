@@ -70,27 +70,34 @@ export default function RobotGuideUI() {
   const [isExpanded, setIsExpanded] = useState<boolean>(false); // start collapsed
   const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
 
-  // Auto-detect scroll section
+  // Auto-detect scroll section with RAF batching
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight / 3;
-      const sectionMap: { id: string; key: string }[] = [
-        { id: 'coding', key: 'coding' },
-        { id: 'drones', key: 'drones' },
-        { id: 'ai', key: 'ai' },
-        { id: 'programs', key: 'transformation' },
-        { id: 'robotics', key: 'robotics' },
-        { id: 'innovation-labs', key: 'robotics' },
-      ];
-      let found = 'hero';
-      for (const s of sectionMap) {
-        const el = document.getElementById(s.id);
-        if (el && scrollPos >= el.offsetTop) {
-          found = s.key;
-          break;
-        }
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + window.innerHeight / 3;
+          const sectionMap: { id: string; key: string }[] = [
+            { id: 'coding', key: 'coding' },
+            { id: 'drones', key: 'drones' },
+            { id: 'ai', key: 'ai' },
+            { id: 'programs', key: 'transformation' },
+            { id: 'robotics', key: 'robotics' },
+            { id: 'innovation-labs', key: 'robotics' },
+          ];
+          let found = 'hero';
+          for (const s of sectionMap) {
+            const el = document.getElementById(s.id);
+            if (el && scrollPos >= el.offsetTop) {
+              found = s.key;
+              break;
+            }
+          }
+          setActiveSection(found);
+          ticking = false;
+        });
+        ticking = true;
       }
-      setActiveSection(found);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);

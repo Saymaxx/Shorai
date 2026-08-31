@@ -6,6 +6,13 @@ export default function MotionGraphicsBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Respect reduced-motion and skip canvas particle loop on mobile for battery preservation
+    if (typeof window !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth < 768;
+      if (prefersReduced || isMobile) return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -16,11 +23,15 @@ export default function MotionGraphicsBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     let isVisible = true;
+    let resizeTimeout: number;
 
     const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, 150);
     };
 
     const handleVisibilityChange = () => {
@@ -115,7 +126,7 @@ export default function MotionGraphicsBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-50 will-change-transform">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-50">
       {/* Interactive Particle Network Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 

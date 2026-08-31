@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, Eye, MessageSquare, Zap, Activity, Sliders, Play, CheckCircle2, RefreshCw, LucideIcon, ArrowRight, Sparkles } from 'lucide-react';
-import AIBrain3D from '@/components/3d/AIBrain3D';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import Lazy3DCanvas from '@/components/3d/Lazy3DCanvas';
+
+const AIBrain3D = React.lazy(() => import('@/components/3d/AIBrain3D'));
 
 type AIMode = 'neural' | 'vision' | 'nlp';
 
@@ -173,14 +175,14 @@ export default function AIEducationSection() {
             </div>
 
             {/* 3D Brain Canvas Component */}
-            <div className="w-full h-full relative">
+            <Lazy3DCanvas minHeight="380px" fallbackText="INITIALIZING 3D NEURAL CORE...">
               <AIBrain3D
                 mode={activeMode}
                 density={density}
                 speed={speed}
                 onNodeClick={(id, info) => setSelectedNodeInfo(info)}
               />
-            </div>
+            </Lazy3DCanvas>
 
             {/* Live Model Stats Overlay */}
             <div className="absolute bottom-4 left-4 right-4 z-20 grid grid-cols-3 gap-2 bg-card/90 border border-border rounded-2xl p-3 text-center backdrop-blur-md shadow-md">

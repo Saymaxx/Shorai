@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { supabaseServer } from './supabase';
+import { supabaseServer } from './supabase.js';
 
 export interface StoredLead {
   id: string;
@@ -20,38 +20,48 @@ export interface StoredLead {
 const DATA_DIR = path.resolve(process.cwd(), 'server', 'data');
 const DB_FILE = path.join(DATA_DIR, 'leads.json');
 
-// Ensure data directory and database file exist
-function initDB() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify([], null, 2), 'utf-8');
-  }
-}
-
-initDB();
-
 export class Database {
-  private static readLeads(): StoredLead[] {
+  private static memoryLeads: StoredLead[] = [];
+  private static initialized = false;
+
+  private static safeEnsureDir() {
     try {
-      initDB();
-      const raw = fs.readFileSync(DB_FILE, 'utf-8');
-      return JSON.parse(raw) as StoredLead[];
-    } catch (err) {
-      console.error('[DB] Failed to read database:', err);
-      return [];
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+    } catch {
+      // Read-only filesystem in serverless environments (Vercel)
     }
   }
 
-  private static writeLeads(leads: StoredLead[]): boolean {
+  private static readLeads(): StoredLead[] {
+    if (this.initialized) {
+      return this.memoryLeads;
+    }
+
     try {
-      initDB();
+      this.safeEnsureDir();
+      if (fs.existsSync(DB_FILE)) {
+        const raw = fs.readFileSync(DB_FILE, 'utf-8');
+        this.memoryLeads = JSON.parse(raw) as StoredLead[];
+      }
+    } catch {
+      // Keep memoryLeads
+    }
+
+    this.initialized = true;
+    return this.memoryLeads;
+  }
+
+  private static writeLeads(leads: StoredLead[]): boolean {
+    this.memoryLeads = leads;
+    try {
+      this.safeEnsureDir();
       fs.writeFileSync(DB_FILE, JSON.stringify(leads, null, 2), 'utf-8');
       return true;
-    } catch (err) {
-      console.error('[DB] Failed to write database:', err);
-      return false;
+    } catch {
+      // In serverless, in-memory state is preserved for the lifecycle
+      return true;
     }
   }
 

@@ -11,6 +11,7 @@ let cachedDefaultContent: any = null;
  * GET /api/content - Fetch current live website content
  */
 router.get('/', (req: Request, res: Response) => {
+  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
   const content = ContentStore.getContent(cachedDefaultContent || {});
   res.json({
     success: true,

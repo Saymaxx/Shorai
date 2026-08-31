@@ -3,22 +3,21 @@
 import { useState, useEffect } from 'react';
 import HeroContent from './HeroContent';
 import HeroVisual from './HeroVisual';
-import { motion } from 'framer-motion';
+import { motion, useTransform } from 'framer-motion';
+import { globalMouseX, globalMouseY } from '@/lib/mouse';
 
 export default function HeroSection() {
-  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const [activeSection, setActiveSection] = useState('hero');
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  // Hardware-accelerated ambient translations without React state re-renders
+  const cloud1X = useTransform(globalMouseX, (v) => (v / (typeof window !== 'undefined' ? window.innerWidth || 1 : 1)) * -15);
+  const cloud1Y = useTransform(globalMouseY, (v) => (v / (typeof window !== 'undefined' ? window.innerHeight || 1 : 1)) * -15);
+  
+  const cloud2X = useTransform(globalMouseX, (v) => (v / (typeof window !== 'undefined' ? window.innerWidth || 1 : 1)) * 15);
+  const cloud2Y = useTransform(globalMouseY, (v) => (v / (typeof window !== 'undefined' ? window.innerHeight || 1 : 1)) * 15);
+
+  const cloud3X = useTransform(globalMouseX, (v) => (v / (typeof window !== 'undefined' ? window.innerWidth || 1 : 1)) * 12);
+  const cloud3Y = useTransform(globalMouseY, (v) => (v / (typeof window !== 'undefined' ? window.innerHeight || 1 : 1)) * 12);
 
   // Track scroll to pass section state to robot
   useEffect(() => {
@@ -29,8 +28,10 @@ export default function HeroSection() {
         { id: 'drones', key: 'drones' },
         { id: 'ai', key: 'ai' },
         { id: 'skills', key: 'transformation' },
-        { id: 'ecosystem', key: 'robotics' },
-        { id: 'technology', key: 'robotics' },
+        { id: 'innovation-labs', key: 'robotics' },
+        { id: 'what-is-shorai', key: 'robotics' },
+        { id: 'why-shorai', key: 'robotics' },
+        { id: 'shorai-360-ecosystem', key: 'robotics' },
       ];
       let found = 'hero';
       for (const s of sections) {
@@ -60,19 +61,19 @@ export default function HeroSection() {
         aria-hidden="true"
       >
         {/* Soft Violet/Purple cloud (top-left) */}
-        <div
+        <motion.div
           className="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] max-w-[750px] max-h-[750px] bg-primary/[0.07] rounded-full blur-[140px]"
-          style={{ transform: `translate(${mousePosition.x * -15}px, ${mousePosition.y * -15}px)` }}
+          style={{ x: cloud1X, y: cloud1Y }}
         />
         {/* Sunny Peach/Orange glow (center-right) */}
-        <div
+        <motion.div
           className="absolute top-[15%] -right-[10%] w-[55vw] h-[55vw] max-w-[800px] max-h-[800px] bg-accent/[0.06] rounded-full blur-[150px]"
-          style={{ transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)` }}
+          style={{ x: cloud2X, y: cloud2Y }}
         />
         {/* Sky Blue / Cyan depth (bottom-left) */}
-        <div
+        <motion.div
           className="absolute bottom-[5%] left-[25%] w-[45vw] h-[45vw] max-w-[650px] max-h-[650px] bg-secondary/[0.06] rounded-full blur-[130px]"
-          style={{ transform: `translate(${mousePosition.x * 12}px, ${mousePosition.y * 12}px)` }}
+          style={{ x: cloud3X, y: cloud3Y }}
         />
 
         {/* Subtle playful grid */}
@@ -98,7 +99,7 @@ export default function HeroSection() {
 
         {/* RIGHT — Friendly, Interactive 3D Robot Companion */}
         <div className="relative z-20 w-full h-[360px] sm:h-[460px] lg:h-[640px] flex items-center justify-center">
-          <HeroVisual mousePosition={mousePosition} activeSection={activeSection} />
+          <HeroVisual activeSection={activeSection} />
         </div>
 
       </div>

@@ -111,11 +111,12 @@ export default function FinalCTA() {
             </MagneticWrapper>
 
             {/* Secondary CTA */}
-            <Link href="/labs" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-14 px-8 rounded-2xl font-bold text-sm sm:text-base text-foreground bg-card border border-border hover:border-primary/40 transition-all duration-300 backdrop-blur-md shadow-sm hover:shadow-md flex items-center justify-center gap-2">
-                <Rocket className="w-4 h-4 text-primary" />
-                <span>{cta.secondaryButtonText}</span>
-              </button>
+            <Link 
+              href="/labs" 
+              className="w-full sm:w-auto h-14 px-8 rounded-2xl font-bold text-sm sm:text-base text-foreground bg-card border border-border hover:border-primary/40 transition-all duration-300 backdrop-blur-md shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            >
+              <Rocket className="w-4 h-4 text-primary" />
+              <span>{cta.secondaryButtonText}</span>
             </Link>
           </div>
         </SectionReveal>

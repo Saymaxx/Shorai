@@ -1,6 +1,6 @@
-'use client';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// ... (rest of imports and type definitions remain intact)
 import { defaultSiteContent, SiteContent } from '@/config/defaultContent';
 
 interface ContentContextType {
@@ -84,14 +84,14 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     fetchContent();
   }, []);
 
-  const updateContent = async (newContent: SiteContent, secret?: string): Promise<{ success: boolean; message?: string }> => {
+  const updateContent = useCallback(async (newContent: SiteContent, secret?: string): Promise<{ success: boolean; message?: string }> => {
     // 1. Immediately update local state & localStorage for instant preview
     setContent(newContent);
     localStorage.setItem('shorai_site_content', JSON.stringify(newContent));
     setIsCustomized(true);
 
     // 2. Persist to backend server if secret provided
-    const authSecret = secret || sessionStorage.getItem('shorai_admin_secret') || 'shorai_admin_secret_2026';
+    const authSecret = secret || sessionStorage.getItem('shorai_admin_secret') || '';
 
     try {
       const res = await fetch('/api/content', {
@@ -111,14 +111,14 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     } catch {
       return { success: true, message: 'Saved locally in browser.' };
     }
-  };
+  }, []);
 
-  const resetToDefaults = async (secret?: string): Promise<{ success: boolean; message?: string }> => {
+  const resetToDefaults = useCallback(async (secret?: string): Promise<{ success: boolean; message?: string }> => {
     setContent(defaultSiteContent);
     localStorage.removeItem('shorai_site_content');
     setIsCustomized(false);
 
-    const authSecret = secret || sessionStorage.getItem('shorai_admin_secret') || 'shorai_admin_secret_2026';
+    const authSecret = secret || sessionStorage.getItem('shorai_admin_secret') || '';
 
     try {
       await fetch('/api/content/reset', {
@@ -133,10 +133,18 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     } catch {
       return { success: true, message: 'Reset locally.' };
     }
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    content,
+    updateContent,
+    resetToDefaults,
+    isLoading,
+    isCustomized,
+  }), [content, updateContent, resetToDefaults, isLoading, isCustomized]);
 
   return (
-    <ContentContext.Provider value={{ content, updateContent, resetToDefaults, isLoading, isCustomized }}>
+    <ContentContext.Provider value={contextValue}>
       {children}
     </ContentContext.Provider>
   );

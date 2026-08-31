@@ -144,7 +144,6 @@ export default function GalleryPage() {
   // Automated Featured Spotlight Carousel
   const [featuredSpotlightIndex, setFeaturedSpotlightIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [slideProgress, setSlideProgress] = useState(0);
 
   // Interactive Transformation comparison toggle
   const [activeTransformationTab, setActiveTransformationTab] = useState<'after' | 'before'>('after');
@@ -174,28 +173,16 @@ export default function GalleryPage() {
     return galleryData.items.filter(i => featuredAlbum?.galleryItemIds.includes(i.id)) || [];
   }, [galleryData.items, featuredAlbum]);
 
-  // Automated slideshow timer for Spotlight
+  // Automated slideshow timer for Spotlight (single interval without re-rendering progress loops)
   useEffect(() => {
     if (!isAutoPlaying || spotlightPhotos.length <= 1) return;
 
-    const intervalTime = 4000;
-    const stepTime = 50;
-    let currentStep = 0;
-    const totalSteps = intervalTime / stepTime;
-
     const timer = setInterval(() => {
-      currentStep += 1;
-      setSlideProgress((currentStep / totalSteps) * 100);
-
-      if (currentStep >= totalSteps) {
-        currentStep = 0;
-        setSlideProgress(0);
-        setFeaturedSpotlightIndex((prev) => (prev + 1) % spotlightPhotos.length);
-      }
-    }, stepTime);
+      setFeaturedSpotlightIndex((prev) => (prev + 1) % spotlightPhotos.length);
+    }, 4000);
 
     return () => clearInterval(timer);
-  }, [isAutoPlaying, spotlightPhotos.length, featuredSpotlightIndex]);
+  }, [isAutoPlaying, spotlightPhotos.length]);
 
   const filteredItems = useMemo(() => {
     return galleryData.items.filter((item) => {
@@ -265,17 +252,17 @@ export default function GalleryPage() {
       {/* ── 1. CINEMATIC HERO WITH MOVING TECH GRID & PARTICLES ── */}
       <section className="relative z-10 pt-36 sm:pt-44 pb-14 overflow-hidden border-b border-border bg-background">
 
-        {/* Floating Holographic Ambient Orbs with hardware-accelerated rendering */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
+        {/* Floating Holographic Ambient Orbs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute top-10 left-1/4 w-[480px] h-[480px] bg-[#7928CA]/25 rounded-full blur-[130px] animate-pulse"
-            style={{ animationDuration: '8s', transform: 'translateZ(0)' }}
+            className="absolute top-10 left-1/4 w-72 md:w-[480px] h-72 md:h-[480px] bg-[#7928CA]/25 rounded-full blur-[50px] md:blur-[120px] animate-pulse"
+            style={{ animationDuration: '8s' }}
           />
           <div
-            className="absolute top-28 right-1/4 w-[500px] h-[500px] bg-[#00D4FF]/25 rounded-full blur-[140px] animate-pulse"
-            style={{ animationDuration: '10s', transform: 'translateZ(0)' }}
+            className="absolute top-28 right-1/4 w-72 md:w-[500px] h-72 md:h-[500px] bg-[#00D4FF]/25 rounded-full blur-[50px] md:blur-[120px] animate-pulse"
+            style={{ animationDuration: '10s' }}
           />
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[550px] h-[250px] bg-[#6366F1]/15 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-80 md:w-[550px] h-48 md:h-[250px] bg-[#6366F1]/15 rounded-full blur-[40px] md:blur-[100px]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800e_1px,transparent_1px),linear-gradient(to_bottom,#8080800e_1px,transparent_1px)] bg-[size:40px_40px]" />
         </div>
 
@@ -634,12 +621,15 @@ export default function GalleryPage() {
             <div className="relative rounded-[2.5rem] p-[2px] bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] shadow-[0_10px_40px_rgba(99,102,241,0.25)]">
               <div className="rounded-[2.4rem] bg-card p-6 sm:p-8 lg:p-10">
 
-                {/* Auto-play progress bar */}
+                {/* Auto-play hardware-accelerated progress bar */}
                 {isAutoPlaying && (
                   <div className="w-full h-1 bg-muted rounded-full mb-6 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-[#7928CA] to-[#00D4FF] transition-all duration-75"
-                      style={{ width: `${slideProgress}%` }}
+                      key={featuredSpotlightIndex}
+                      className="h-full w-full bg-gradient-to-r from-[#7928CA] to-[#00D4FF] origin-left"
+                      style={{
+                        animation: 'shoraiProgress 4s linear forwards',
+                      }}
                     />
                   </div>
                 )}
@@ -656,7 +646,7 @@ export default function GalleryPage() {
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.98 }}
                           transition={{ duration: 0.45 }}
-                          className="relative w-full h-full"
+                          className="absolute inset-0"
                         >
                           <Image
                             src={spotlightPhotos[featuredSpotlightIndex]?.imageUrl || featuredAlbum.heroImage}
@@ -676,10 +666,7 @@ export default function GalleryPage() {
                         {spotlightPhotos.map((photo, pIdx) => (
                           <button
                             key={photo.id}
-                            onClick={() => {
-                              setFeaturedSpotlightIndex(pIdx);
-                              setSlideProgress(0);
-                            }}
+                            onClick={() => setFeaturedSpotlightIndex(pIdx)}
                             className={`relative w-20 h-14 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${featuredSpotlightIndex === pIdx
                                 ? 'border-primary ring-2 ring-primary/40 scale-105'
                                 : 'border-border opacity-60 hover:opacity-100'
@@ -810,7 +797,7 @@ export default function GalleryPage() {
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.98 }}
                           transition={{ duration: 0.3 }}
-                          className="relative w-full h-full"
+                          className="absolute inset-0"
                         >
                           <Image
                             src={trans.afterImage}
@@ -827,7 +814,7 @@ export default function GalleryPage() {
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.98 }}
                           transition={{ duration: 0.3 }}
-                          className="relative w-full h-full"
+                          className="absolute inset-0"
                         >
                           <Image
                             src={trans.beforeImage}

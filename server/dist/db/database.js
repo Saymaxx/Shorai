@@ -6,40 +6,49 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Database = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const supabase_1 = require("./supabase");
+const supabase_js_1 = require("./supabase.js");
 const DATA_DIR = path_1.default.resolve(process.cwd(), 'server', 'data');
 const DB_FILE = path_1.default.join(DATA_DIR, 'leads.json');
-// Ensure data directory and database file exist
-function initDB() {
-    if (!fs_1.default.existsSync(DATA_DIR)) {
-        fs_1.default.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs_1.default.existsSync(DB_FILE)) {
-        fs_1.default.writeFileSync(DB_FILE, JSON.stringify([], null, 2), 'utf-8');
-    }
-}
-initDB();
 class Database {
-    static readLeads() {
+    static memoryLeads = [];
+    static initialized = false;
+    static safeEnsureDir() {
         try {
-            initDB();
-            const raw = fs_1.default.readFileSync(DB_FILE, 'utf-8');
-            return JSON.parse(raw);
+            if (!fs_1.default.existsSync(DATA_DIR)) {
+                fs_1.default.mkdirSync(DATA_DIR, { recursive: true });
+            }
         }
-        catch (err) {
-            console.error('[DB] Failed to read database:', err);
-            return [];
+        catch {
+            // Read-only filesystem in serverless environments (Vercel)
         }
+    }
+    static readLeads() {
+        if (this.initialized) {
+            return this.memoryLeads;
+        }
+        try {
+            this.safeEnsureDir();
+            if (fs_1.default.existsSync(DB_FILE)) {
+                const raw = fs_1.default.readFileSync(DB_FILE, 'utf-8');
+                this.memoryLeads = JSON.parse(raw);
+            }
+        }
+        catch {
+            // Keep memoryLeads
+        }
+        this.initialized = true;
+        return this.memoryLeads;
     }
     static writeLeads(leads) {
+        this.memoryLeads = leads;
         try {
-            initDB();
+            this.safeEnsureDir();
             fs_1.default.writeFileSync(DB_FILE, JSON.stringify(leads, null, 2), 'utf-8');
             return true;
         }
-        catch (err) {
-            console.error('[DB] Failed to write database:', err);
-            return false;
+        catch {
+            // In serverless, in-memory state is preserved for the lifecycle
+            return true;
         }
     }
     static insertLead(leadData) {
@@ -54,7 +63,7 @@ class Database {
         leads.unshift(newLead);
         this.writeLeads(leads);
         // Asynchronously push to Supabase table
-        Promise.resolve(supabase_1.supabaseServer
+        Promise.resolve(supabase_js_1.supabaseServer
             .from('leads')
             .insert({
             id: newLead.id,

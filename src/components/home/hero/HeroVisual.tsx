@@ -6,7 +6,7 @@ import { Sparkles, Bot, Heart, Cpu, Code2, Rocket, Zap, Activity, Radio, Shield 
 import Robot3DCanvas from '@/components/3d/Robot3D';
 
 interface HeroVisualProps {
-  mousePosition: { x: number; y: number };
+  mousePosition?: { x: number; y: number };
   activeSection?: string;
 }
 

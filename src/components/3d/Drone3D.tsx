@@ -198,7 +198,7 @@ export default function Drone3D({
     <div className="w-full h-full relative flex items-center justify-center">
       <Canvas
         camera={{ position: [0, 0.8, 4.8], fov: 45 }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.7} />

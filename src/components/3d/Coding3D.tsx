@@ -130,7 +130,7 @@ export default function Coding3D({
     <div className="w-full h-full relative flex items-center justify-center">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.6} />
@@ -145,7 +145,7 @@ export default function Coding3D({
         <FloatingSyntaxNodes isExecuting={isExecuting} />
 
         <Sparkles
-          count={80}
+          count={40}
           scale={6}
           size={2}
           speed={isExecuting ? 2 : 0.6}

@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plane, Compass, Wifi, Battery, ShieldAlert, Crosshair, Navigation, Play, Zap, CheckCircle2, Sliders, LucideIcon, ArrowRight, Sparkles } from 'lucide-react';
-import Drone3D, { DroneFlightMode } from '@/components/3d/Drone3D';
 import SectionReveal from '@/components/animations/SectionReveal';
 import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
+import Lazy3DCanvas from '@/components/3d/Lazy3DCanvas';
+import { DroneFlightMode } from '@/components/3d/Drone3D';
+
+const Drone3D = React.lazy(() => import('@/components/3d/Drone3D'));
 
 interface FlightModeOption {
   id: DroneFlightMode;
@@ -149,13 +152,13 @@ export default function DroneEducationSection() {
             </div>
 
             {/* 3D Drone Component */}
-            <div className="w-full h-full relative">
+            <Lazy3DCanvas minHeight="380px" fallbackText="INITIALIZING 3D UAV AVIONICS...">
               <Drone3D
                 flightMode={activeFlightMode}
                 propSpeed={propSpeed}
                 laserActive={activeFlightMode === 'scan'}
               />
-            </div>
+            </Lazy3DCanvas>
 
             {/* Bottom HUD Telemetry Strip */}
             <div className="absolute bottom-4 left-4 right-4 z-20 grid grid-cols-3 gap-2 bg-card/90 border border-border rounded-2xl p-3 text-center backdrop-blur-md shadow-md">

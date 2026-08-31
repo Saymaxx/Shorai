@@ -85,7 +85,7 @@ const KNOWLEDGE_BASE: { keywords: string[]; answer: string; chips?: string[]; li
   },
   {
     keywords: ['contact', 'email', 'phone', 'location', 'reach'],
-    answer: "Reach us at contact@shorai.in or +91 98765 43210. You can also share your info here and we'll call you back!",
+    answer: "Reach us at contact@shorai.in or +91 78806 30963. You can also share your info here and we'll call you back!",
     chips: ['Get in Touch', 'Open Contact Page'],
     link: { url: '/contact', label: 'Contact Page' }
   }

@@ -349,13 +349,11 @@ export default function FutureSkillsEcosystem() {
           display: flex;
           width: max-content;
           animation: skillsMarqueeLeft 36s linear infinite;
-          will-change: transform;
         }
         .skills-marquee-track-right {
           display: flex;
           width: max-content;
           animation: skillsMarqueeRight 36s linear infinite;
-          will-change: transform;
         }
         .skills-marquee-track-left:hover,
         .skills-marquee-track-right:hover {

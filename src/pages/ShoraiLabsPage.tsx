@@ -43,7 +43,7 @@ export default function ShoraiLabsPage() {
       <section className="relative pt-40 sm:pt-48 pb-20 overflow-hidden border-b border-border">
         {/* Ambient background glow & grid pattern */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-[#7928CA]/20 via-[#6366F1]/20 to-[#00D4FF]/20 rounded-full blur-[140px]" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 md:w-[800px] h-48 md:h-[400px] bg-gradient-to-tr from-[#7928CA]/20 via-[#6366F1]/20 to-[#00D4FF]/20 rounded-full blur-[40px] md:blur-[120px]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px]" />
         </div>
 
@@ -168,7 +168,7 @@ export default function ShoraiLabsPage() {
       {/* 5. Closing Lab CTA Strip */}
       <section className="py-24 bg-card border-t border-border relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 md:w-[600px] h-48 md:h-[300px] bg-primary/10 rounded-full blur-[40px] md:blur-[100px]" />
         </div>
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10 text-center">

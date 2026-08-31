@@ -5,3 +5,7 @@
 dist
 server/dist
 .system_generated
+*.zip
+*.tar.gz
+scripts
+wbm

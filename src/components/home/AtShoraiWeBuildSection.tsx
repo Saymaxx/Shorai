@@ -26,20 +26,13 @@ import ContactModal from '@/components/shared/ContactModal';
 import MagneticWrapper from '@/components/shared/MagneticWrapper';
 import { useContent } from '@/context/ContentContext';
 
-// Real 3D Interactive Canvas Models
-import Drone3D from '@/components/3d/Drone3D';
-import AIBrain3D from '@/components/3d/AIBrain3D';
-import Coding3D from '@/components/3d/Coding3D';
-import MarsRover3D from '@/components/3d/MarsRover3D';
+import Lazy3DCanvas from '@/components/3d/Lazy3DCanvas';
 
-function CanvasLoadingSpinner() {
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
-      <RotateCw className="w-5 h-5 animate-spin text-primary" />
-      <span className="text-[10px] font-mono font-bold tracking-wider">INITIALIZING 3D ENGINE...</span>
-    </div>
-  );
-}
+// Dynamic 3D Interactive Canvas Models (Lazy loaded on demand)
+const Drone3D = React.lazy(() => import('@/components/3d/Drone3D'));
+const AIBrain3D = React.lazy(() => import('@/components/3d/AIBrain3D'));
+const Coding3D = React.lazy(() => import('@/components/3d/Coding3D'));
+const MarsRover3D = React.lazy(() => import('@/components/3d/MarsRover3D'));
 
 export default function AtShoraiWeBuildSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -126,13 +119,13 @@ export default function AtShoraiWeBuildSection() {
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
               <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
-                <Suspense fallback={<CanvasLoadingSpinner />}>
+                <Lazy3DCanvas minHeight="250px" fallbackText="INITIALIZING DRONE 3D ENGINE...">
                   <Drone3D 
                     flightMode={droneMode} 
                     propSpeed={isDroneFlying ? 1.5 : 0} 
                     laserActive={droneMode === 'scan'}
                   />
-                </Suspense>
+                </Lazy3DCanvas>
 
                 {/* 3D Canvas Overlay HUD */}
                 <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-sky-500/30 text-xs font-mono text-sky-400 pointer-events-none flex items-center gap-2">
@@ -221,9 +214,9 @@ export default function AtShoraiWeBuildSection() {
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
               <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
-                <Suspense fallback={<CanvasLoadingSpinner />}>
+                <Lazy3DCanvas minHeight="250px" fallbackText="INITIALIZING AI 3D ENGINE...">
                   <AIBrain3D mode={aiTask} speed={1.2} />
-                </Suspense>
+                </Lazy3DCanvas>
 
                 {/* 3D Canvas Overlay HUD */}
                 <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-purple-500/30 text-xs font-mono text-purple-400 pointer-events-none flex items-center gap-2">
@@ -324,12 +317,12 @@ export default function AtShoraiWeBuildSection() {
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
               <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
-                <Suspense fallback={<CanvasLoadingSpinner />}>
+                <Lazy3DCanvas minHeight="250px" fallbackText="INITIALIZING CODE 3D ENGINE...">
                   <Coding3D 
                     isExecuting={isCodeRunning} 
                     language={selectedLanguage} 
                   />
-                </Suspense>
+                </Lazy3DCanvas>
 
                 {/* 3D Canvas Overlay HUD */}
                 <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-emerald-500/30 text-xs font-mono text-emerald-400 pointer-events-none flex items-center gap-2">
@@ -424,12 +417,12 @@ export default function AtShoraiWeBuildSection() {
 
               {/* 3D Model Viewport (Interactive Three.js Canvas) */}
               <div className="relative h-[250px] sm:h-[290px] bg-slate-950/95 border-b border-border overflow-hidden">
-                <Suspense fallback={<CanvasLoadingSpinner />}>
+                <Lazy3DCanvas minHeight="250px" fallbackText="INITIALIZING MARS ROVER 3D ENGINE...">
                   <MarsRover3D 
                     status={armStatus} 
                     speed={roverSpeed === '0.8 m/s' ? 1.5 : roverSpeed === '0.2 m/s' ? 0.6 : 0} 
                   />
-                </Suspense>
+                </Lazy3DCanvas>
 
                 {/* 3D Canvas Overlay HUD */}
                 <div className="absolute top-3.5 left-3.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-amber-500/30 text-xs font-mono text-amber-400 pointer-events-none flex items-center gap-2">

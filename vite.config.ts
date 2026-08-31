@@ -28,6 +28,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    sourcemap: false,
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
@@ -35,8 +36,11 @@ export default defineConfig({
           if (id.includes('node_modules/three') || id.includes('@react-three')) {
             return 'three-vendor';
           }
-          if (id.includes('node_modules/framer-motion') || id.includes('node_modules/gsap')) {
+          if (id.includes('node_modules/framer-motion')) {
             return 'motion-vendor';
+          }
+          if (id.includes('node_modules/@supabase')) {
+            return 'supabase-vendor';
           }
           if (id.includes('node_modules/lucide-react')) {
             return 'icons-vendor';
