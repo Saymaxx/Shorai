@@ -40,7 +40,7 @@ export default function ShoraiLabsPage() {
   return (
     <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300">
       {/* 1. Futuristic Shorai Labs Hero Header */}
-      <section className="relative pt-40 sm:pt-48 pb-20 overflow-hidden border-b border-border">
+      <section className="relative pt-24 sm:pt-36 lg:pt-44 pb-12 sm:pb-16 overflow-hidden border-b border-border">
         {/* Ambient background glow & grid pattern */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-80 md:w-[800px] h-48 md:h-[400px] bg-gradient-to-tr from-[#7928CA]/20 via-[#6366F1]/20 to-[#00D4FF]/20 rounded-full blur-[40px] md:blur-[120px]" />

@@ -10,7 +10,6 @@ import {
   Building2, 
   Phone, 
   Mail, 
-  PlusCircle, 
   FileSpreadsheet, 
   Save, 
   RotateCcw, 
@@ -22,7 +21,6 @@ import {
   AlertCircle,
   Plus,
   Trash2,
-  Zap,
   Sparkles,
   MapPin,
   Image as ImageIcon,
@@ -90,10 +88,7 @@ export default function AdminPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [isImportOpen, setIsImportOpen] = useState(false);
-  const [pasteData, setPasteData] = useState('');
-  const [sheetCsvUrl, setSheetCsvUrl] = useState('');
-  const [importStatus, setImportStatus] = useState('');
+
 
   // CMS Editor State (Deep copy of live content for editing)
   const [editableContent, setEditableContent] = useState<SiteContent>(content);
@@ -222,68 +217,93 @@ export default function AdminPage() {
     const envSecret = (import.meta as any).env?.VITE_ADMIN_SECRET;
     const isDirectMatch = Boolean(envSecret && cleanSecret === envSecret);
 
-    // 1. If password matches configured env secret, grant instant access
     if (isDirectMatch) {
       setIsAuthenticated(true);
       sessionStorage.setItem('shorai_admin_secret', cleanSecret);
     }
 
-    // 2. Query Express backend if available
-    let backendSuccess = false;
+    // Collect leads from all sources into a map (keyed by ID to deduplicate)
+    const allLeadsMap = new Map<string, Lead>();
+    let gotAuthenticated = isDirectMatch;
+
+    // Source 1: Express backend (server/data/leads.json)
     try {
       const res = await fetch('/api/leads', {
         headers: { 'Authorization': `Bearer ${cleanSecret}` },
       });
-
       if (res.ok) {
         const data = await res.json();
-        if (data && data.leads) {
-          setLeads(data.leads || []);
-          setStats(data.stats || { totalLeads: 0, newLeads: 0, contactedLeads: 0, scheduledLeads: 0 });
+        if (data && Array.isArray(data.leads)) {
+          console.log(`[Admin] Express backend returned ${data.leads.length} leads`);
+          data.leads.forEach((l: Lead) => allLeadsMap.set(l.id, l));
           setIsAuthenticated(true);
           sessionStorage.setItem('shorai_admin_secret', cleanSecret);
-          backendSuccess = true;
+          gotAuthenticated = true;
         }
+      } else {
+        console.warn('[Admin] Express /api/leads returned:', res.status);
       }
-    } catch {
-      // Backend not running on server, continue to Supabase
+    } catch (e) {
+      console.warn('[Admin] Express backend unavailable:', e);
     }
 
-    // 3. Query Supabase directly for live leads if authenticated
-    if (isDirectMatch || backendSuccess) {
+    // Source 2: Supabase (cloud DB — runs as long as password is valid)
+    if (gotAuthenticated) {
       try {
         const { supabase } = await import('@/lib/supabaseClient');
-        const { data: sbLeads } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+        const { data: sbLeads, error: sbError } = await supabase
+          .from('leads')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-        if (sbLeads && sbLeads.length > 0) {
-          const mappedLeads: Lead[] = sbLeads.map((l: any) => ({
-            id: String(l.id),
-            name: l.name || 'Anonymous',
-            email: l.email || '',
-            contact: l.contact || '',
-            organisation: l.organisation || '',
-            purpose: l.purpose || 'School Innovation Lab Setup',
-            message: l.message || '',
-            status: (l.status as any) || 'new',
-            createdAt: l.created_at || new Date().toISOString(),
-          }));
-          setLeads(mappedLeads);
-          setStats({
-            totalLeads: mappedLeads.length,
-            newLeads: mappedLeads.filter(l => l.status === 'new').length,
-            contactedLeads: mappedLeads.filter(l => l.status === 'contacted').length,
-            scheduledLeads: mappedLeads.filter(l => l.status === 'scheduled').length,
-          });
+        if (sbError) {
+          console.warn('[Admin] Supabase error:', sbError.message, sbError.code);
+        } else {
+          console.log(`[Admin] Supabase returned ${sbLeads?.length ?? 0} leads`);
+          if (sbLeads && sbLeads.length > 0) {
+            // Supabase wins on ID collision — it's the cloud source of truth
+            sbLeads.forEach((l: any) => {
+              allLeadsMap.set(String(l.id), {
+                id: String(l.id),
+                name: l.name || 'Anonymous',
+                email: l.email || '',
+                contact: l.contact || '',
+                organisation: l.school_name || l.organisation || '',
+                purpose: l.purpose || 'School Innovation Lab Setup',
+                message: l.message || '',
+                status: (l.status as Lead['status']) || 'new',
+                createdAt: l.created_at || new Date().toISOString(),
+                syncedToGoogleSheet: l.synced_to_google_sheet || false,
+              });
+            });
+          }
         }
       } catch (sbErr) {
-        console.warn('[AdminPage] Supabase direct read note:', sbErr);
+        console.warn('[Admin] Supabase fetch exception:', sbErr);
       }
     } else {
       setAuthError('Invalid Admin Secret key. Please check the password.');
     }
 
+    // Only update state if we actually got data from at least one source
+    // Never wipe existing leads if both sources temporarily fail
+    if (allLeadsMap.size > 0) {
+      const mergedLeads = Array.from(allLeadsMap.values()).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setLeads(mergedLeads);
+      setStats({
+        totalLeads: mergedLeads.length,
+        newLeads: mergedLeads.filter(l => l.status === 'new').length,
+        contactedLeads: mergedLeads.filter(l => l.status === 'contacted').length,
+        scheduledLeads: mergedLeads.filter(l => l.status === 'scheduled').length,
+      });
+    }
+    // If allLeadsMap is empty but auth succeeded → means no leads exist yet (don't wipe)
+
     setIsLoading(false);
   };
+
 
   useEffect(() => {
     const saved = sessionStorage.getItem('shorai_admin_secret');
@@ -328,168 +348,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleAutoSyncGoogleSheet = async () => {
-    setIsLoading(true);
-    setImportStatus('🔄 Auto-fetching live records from Google Sheets & Supabase...');
 
-    const fetchedLeads: Lead[] = [];
-
-    // 1. Fetch from Supabase directly
-    try {
-      const { supabase } = await import('@/lib/supabaseClient');
-      const { data: sbLeads } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
-      if (sbLeads && sbLeads.length > 0) {
-        sbLeads.forEach((l: any) => {
-          fetchedLeads.push({
-            id: String(l.id),
-            name: l.name || 'Inquiry',
-            email: l.email || '',
-            contact: l.contact || '',
-            organisation: l.organisation || '',
-            purpose: l.purpose || 'School Innovation Lab Setup',
-            message: l.message || '',
-            status: (l.status as any) || 'new',
-            createdAt: l.created_at || new Date().toISOString(),
-          });
-        });
-      }
-    } catch (err) {
-      console.warn('[Admin] Supabase fetch note:', err);
-    }
-
-    // 2. Fetch from Google Sheet CSV or Web App endpoint
-    const rawTarget = sheetCsvUrl.trim() || ((import.meta as any).env?.VITE_GOOGLE_SCRIPT_URL) || 'https://script.google.com/macros/s/AKfycbxA-MijWckNTGLdZIcn768XLjn75ktRMcHYEqB2rTwHRQRiTwZNwvnkjWy8zGvGFTMwAA/exec';
-    
-    let urlToFetch = rawTarget;
-    if (urlToFetch.includes('docs.google.com/spreadsheets') && !urlToFetch.includes('export?format=csv')) {
-      const match = urlToFetch.match(/\/d\/([a-zA-Z0-9-_]+)/);
-      if (match && match[1]) {
-        urlToFetch = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv`;
-      }
-    }
-
-    try {
-      const res = await fetch(urlToFetch);
-      if (res.ok) {
-        const text = await res.text();
-        if (text.startsWith('[') || text.startsWith('{')) {
-          try {
-            const json = JSON.parse(text);
-            const list = Array.isArray(json) ? json : json.leads || json.data || [];
-            list.forEach((item: any, idx: number) => {
-              fetchedLeads.push({
-                id: item.id || `gs_${Date.now()}_${idx}`,
-                name: item.Name || item.name || 'Inquiry',
-                email: item.Email || item.email || '',
-                contact: item.Contact || item.contact || item.phone || '',
-                organisation: item.Organisation || item.organisation || item.school || '',
-                purpose: item.Purpose || item.purpose || 'School Innovation Lab Setup',
-                message: item.Message || item.message || '',
-                status: (item.Status || item.status || 'new') as any,
-                createdAt: item.Timestamp || item.createdAt || new Date().toISOString(),
-              });
-            });
-          } catch {}
-        } else if (text.includes(',') || text.includes('\t')) {
-          const lines = text.trim().split('\n');
-          for (let i = 1; i < lines.length; i++) {
-            const row = lines[i].split(',').map(s => s.replace(/^"|"$/g, '').trim());
-            if (row.length >= 2) {
-              fetchedLeads.push({
-                id: `csv_${Date.now()}_${i}`,
-                name: row[0] || 'Inquiry',
-                email: row[1] || '',
-                contact: row[2] || '',
-                organisation: row[3] || '',
-                purpose: row[4] || 'School Innovation Lab Setup',
-                message: row[5] || '',
-                status: 'new',
-                createdAt: new Date().toISOString(),
-              });
-            }
-          }
-        }
-      }
-    } catch (sheetErr) {
-      console.warn('[Admin] Direct sheet fetch note:', sheetErr);
-    }
-
-    // 3. Deduplicate and merge with existing leads
-    if (fetchedLeads.length > 0) {
-      const existingKeys = new Set(leads.map(l => `${l.name.toLowerCase()}_${l.contact}_${l.email.toLowerCase()}`));
-      const newUnique = fetchedLeads.filter(l => !existingKeys.has(`${l.name.toLowerCase()}_${l.contact}_${l.email.toLowerCase()}`));
-      const combined = [...newUnique, ...leads];
-
-      setLeads(combined);
-      setStats({
-        totalLeads: combined.length,
-        newLeads: combined.filter(l => l.status === 'new').length,
-        contactedLeads: combined.filter(l => l.status === 'contacted').length,
-        scheduledLeads: combined.filter(l => l.status === 'scheduled').length,
-      });
-
-      setImportStatus(`✨ Successfully fetched and synced ${fetchedLeads.length} live records!`);
-      setTimeout(() => {
-        setIsImportOpen(false);
-        setImportStatus('');
-      }, 2500);
-    } else {
-      setImportStatus('✅ Sync complete (all cloud records are currently up to date).');
-      setTimeout(() => setImportStatus(''), 3000);
-    }
-
-    setIsLoading(false);
-  };
-
-  const handleBatchImport = async () => {
-    if (!pasteData.trim()) return;
-
-    const lines = pasteData.trim().split('\n');
-    const parsedList: any[] = [];
-
-    for (const line of lines) {
-      const parts = line.split('\t').length > 1 ? line.split('\t') : line.split(',');
-      if (parts.length >= 2) {
-        parsedList.push({
-          name: parts[0]?.trim() || 'Inquiry',
-          email: parts[1]?.trim() || '',
-          contact: parts[2]?.trim() || '',
-          organisation: parts[3]?.trim() || '',
-          purpose: parts[4]?.trim() || 'School Innovation Lab Setup',
-          message: parts[5]?.trim() || '',
-        });
-      }
-    }
-
-    if (parsedList.length === 0) {
-      setImportStatus('No valid rows found. Please separate fields by tab or comma.');
-      return;
-    }
-
-    try {
-      setImportStatus(`Importing ${parsedList.length} rows...`);
-      const res = await fetch('/api/leads/import', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${secret}`,
-        },
-        body: JSON.stringify({ leads: parsedList }),
-      });
-
-      if (res.ok) {
-        setImportStatus(`Successfully imported ${parsedList.length} leads!`);
-        setTimeout(() => {
-          setIsImportOpen(false);
-          setPasteData('');
-          setImportStatus('');
-          fetchLeads(secret);
-        }, 1000);
-      }
-    } catch {
-      setImportStatus('Import failed.');
-    }
-  };
 
   const exportCSV = () => {
     if (leads.length === 0) return;
@@ -641,10 +500,10 @@ export default function AdminPage() {
               </div>
 
               {/* Top Navigation Tabs */}
-              <div className="flex flex-wrap items-center bg-muted/60 p-1.5 rounded-2xl border border-border gap-1 text-xs font-mono font-bold">
+              <div className="flex flex-nowrap sm:flex-wrap items-center bg-muted/60 p-1.5 rounded-2xl border border-border gap-1 text-xs font-mono font-bold overflow-x-auto max-w-full touch-scroll pb-1.5 sm:pb-1.5">
                 <button
                   onClick={() => setActiveTab('leads')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'leads' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -654,7 +513,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('home-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'home-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -664,7 +523,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('why-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'why-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -674,7 +533,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('schools-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'schools-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -684,7 +543,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('about-contact-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'about-contact-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -694,7 +553,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('gallery-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'gallery-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -704,7 +563,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('blog-cms')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'blog-cms' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -714,7 +573,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => setActiveTab('media-storage')}
-                  className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`shrink-0 min-h-[38px] px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
                     activeTab === 'media-storage' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -732,28 +591,11 @@ export default function AdminPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2">
                     <button
-                      onClick={handleAutoSyncGoogleSheet}
-                      disabled={isLoading}
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-95 text-white text-xs font-bold font-mono flex items-center gap-2 shadow-md transition-all disabled:opacity-50"
-                    >
-                      <Zap className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : 'text-amber-300'}`} />
-                      <span>{isLoading ? 'Fetching Records...' : '⚡ Auto-Sync Google Sheet & Cloud'}</span>
-                    </button>
-
-                    <button
-                      onClick={() => setIsImportOpen(true)}
-                      className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold font-mono flex items-center gap-1.5 transition-all text-muted-foreground hover:text-foreground"
-                    >
-                      <PlusCircle className="w-3.5 h-3.5" />
-                      <span>Paste Custom Rows</span>
-                    </button>
-
-                    <button
                       onClick={() => fetchLeads(secret)}
                       className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold font-mono flex items-center gap-1.5 transition-all"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-                      <span>Refresh</span>
+                      <span>{isLoading ? 'Refreshing...' : 'Refresh'}</span>
                     </button>
                   </div>
 
@@ -830,7 +672,7 @@ export default function AdminPage() {
                         {filteredLeads.length === 0 ? (
                           <tr>
                             <td colSpan={5} className="py-12 text-center text-muted-foreground font-medium">
-                              No inquiries found. Click <strong>&quot;Import Google Sheet Rows&quot;</strong> above to paste rows from your spreadsheet.
+                              No inquiries yet. New leads from the contact form will appear here automatically.
                             </td>
                           </tr>
                         ) : (
@@ -899,94 +741,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Import & Sync Modal */}
-                {isImportOpen && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="w-full max-w-xl p-6 sm:p-8 rounded-3xl bg-card border-2 border-border shadow-2xl space-y-5">
-                      <div className="flex items-center justify-between border-b border-border pb-3">
-                        <h3 className="text-lg font-black text-foreground flex items-center gap-2">
-                          <FileSpreadsheet className="w-5 h-5 text-emerald-500" />
-                          <span>Google Sheet &amp; Cloud Sync</span>
-                        </h3>
-                        <button onClick={() => setIsImportOpen(false)} className="text-muted-foreground hover:text-foreground">✕</button>
-                      </div>
 
-                      {/* Auto-Fetch Option */}
-                      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-3">
-                        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                          <Zap className="w-4 h-4 text-amber-500" />
-                          <span>Method 1: Automatic Live Sync</span>
-                        </div>
-                        <p className="text-[11px] text-muted-foreground">
-                          Pulls latest records from your connected Google Apps Script Web App &amp; Supabase automatically.
-                        </p>
-                        
-                        <div>
-                          <label className="text-[10px] font-mono font-bold text-muted-foreground uppercase block mb-1">
-                            Google Sheet Public / CSV Link (Optional)
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="https://docs.google.com/spreadsheets/d/... (or leave blank for default)"
-                            value={sheetCsvUrl}
-                            onChange={(e) => setSheetCsvUrl(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs font-mono focus:outline-none focus:border-emerald-500"
-                          />
-                        </div>
-
-                        <button
-                          onClick={handleAutoSyncGoogleSheet}
-                          disabled={isLoading}
-                          className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs font-mono flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
-                        >
-                          <Zap className="w-3.5 h-3.5" />
-                          <span>{isLoading ? 'Fetching...' : 'Fetch & Sync Records Now'}</span>
-                        </button>
-                      </div>
-
-                      {/* Manual Paste Fallback */}
-                      <div className="space-y-2">
-                        <div className="text-xs font-bold text-muted-foreground">
-                          Method 2: Manual Paste from Google Sheet
-                        </div>
-                        <p className="text-[11px] text-muted-foreground">
-                          Copy rows directly from your Google Sheet columns (Name, Email, Contact, School, Purpose, Message) and paste:
-                        </p>
-
-                        <textarea
-                          rows={4}
-                          placeholder="Paste copied table rows here..."
-                          value={pasteData}
-                          onChange={(e) => setPasteData(e.target.value)}
-                          className="w-full p-3 rounded-2xl bg-muted border border-border text-xs font-mono focus:outline-none focus:border-primary"
-                        />
-                      </div>
-
-                      {importStatus && (
-                        <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs font-mono font-bold text-primary">
-                          {importStatus}
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-end gap-3 pt-2">
-                        <button
-                          onClick={() => setIsImportOpen(false)}
-                          className="px-4 py-2 rounded-xl bg-muted text-xs font-bold hover:bg-muted/80"
-                        >
-                          Close
-                        </button>
-                        {pasteData.trim().length > 0 && (
-                          <button
-                            onClick={handleBatchImport}
-                            className="px-5 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold font-mono hover:bg-emerald-600 shadow-md"
-                          >
-                            Process Pasted Rows
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 

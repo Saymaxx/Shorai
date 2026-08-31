@@ -177,7 +177,7 @@ export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
           <span>{article.categoryName}</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-tight leading-[1.12]">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-tight leading-[1.14] break-words">
           {article.title}
         </h1>
 
@@ -220,27 +220,27 @@ export default function ArticleReaderPage({ slug }: ArticleReaderPageProps) {
           <span className="text-xs font-mono font-bold text-muted-foreground mr-1">Share Insight:</span>
           <button
             onClick={handleWhatsAppShare}
-            className="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
+            className="px-3.5 py-2 min-h-[40px] rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
           >
             <span>WhatsApp</span>
           </button>
           <button
             onClick={handleLinkedInShare}
-            className="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
+            className="px-3.5 py-2 min-h-[40px] rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
           >
             <LinkedInIcon className="w-3.5 h-3.5" />
             <span>LinkedIn</span>
           </button>
           <button
             onClick={handleTwitterShare}
-            className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
+            className="px-3.5 py-2 min-h-[40px] rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
           >
             <TwitterIcon className="w-3.5 h-3.5" />
             <span>X</span>
           </button>
           <button
             onClick={handleCopyShare}
-            className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border text-xs font-mono font-bold flex items-center gap-1.5 transition-all ml-auto hover:scale-105"
+            className="px-3.5 py-2 min-h-[40px] rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border text-xs font-mono font-bold flex items-center gap-1.5 transition-all hover:scale-105"
           >
             {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedLink ? 'Copied' : 'Copy Link'}</span>

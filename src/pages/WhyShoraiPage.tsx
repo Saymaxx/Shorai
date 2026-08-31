@@ -144,7 +144,7 @@ export default function WhyShoraiPage() {
               return (
                 <div
                   key={`${slide.id}-${index}`}
-                  className={`relative shrink-0 w-[460px] sm:w-[620px] md:w-[760px] lg:w-[860px] h-[340px] sm:h-[440px] md:h-[540px] lg:h-[600px] rounded-3xl overflow-hidden border-2 ${slide.borderColor} shadow-2xl group transition-all duration-500 hover:scale-[1.015] bg-card`}
+                  className={`relative shrink-0 w-[min(460px,88vw)] sm:w-[620px] md:w-[760px] lg:w-[860px] h-[320px] sm:h-[440px] md:h-[540px] lg:h-[600px] rounded-3xl overflow-hidden border-2 ${slide.borderColor} shadow-2xl group transition-all duration-500 hover:scale-[1.015] bg-card`}
                 >
                   <Image
                     src={slide.image}
@@ -193,7 +193,7 @@ export default function WhyShoraiPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 w-full text-center relative z-20 my-auto">
           
           <SectionReveal delay={0.08}>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.1] drop-shadow-sm">
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight text-foreground mb-4 leading-[1.1] drop-shadow-sm break-words">
               {hero.title} <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">
                 {hero.titleGradient}
@@ -227,11 +227,11 @@ export default function WhyShoraiPage() {
 
           {/* CTAs */}
           <SectionReveal delay={0.2}>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 w-full sm:w-auto">
               <MagneticWrapper>
                 <button
                   onClick={() => setIsContactOpen(true)}
-                  className="px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-xl flex items-center gap-2.5 transition-all hover:scale-105"
+                  className="w-full sm:w-auto px-8 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-xl flex items-center justify-center gap-2.5 transition-all hover:scale-105 text-center"
                 >
                   <Rocket className="w-4 h-4" />
                   <span>{hero.primaryButtonText}</span>

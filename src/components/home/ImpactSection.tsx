@@ -28,7 +28,7 @@ export default function ImpactSection() {
                   initial={{ opacity: 0, scale: 0.7 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
                   transition={{ duration: 0.8, delay: index * 0.15, type: "spring", bounce: 0.3 }}
-                  className="text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] mb-2"
+                  className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] mb-2"
                 >
                   {stat.value}
                 </motion.div>

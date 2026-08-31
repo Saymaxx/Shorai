@@ -130,7 +130,13 @@ export default function RobotGuideUI() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto max-w-[calc(100vw-1.5rem)]">
+    <div 
+      className="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto max-w-[calc(100vw-1.5rem)]"
+      style={{
+        bottom: 'max(1.25rem, env(safe-area-inset-bottom, 1.25rem))',
+        right: 'max(1.25rem, env(safe-area-inset-right, 1.25rem))',
+      }}
+    >
 
       {/* ── Expanded HUD Panel ─────────────────────────────────── */}
       <AnimatePresence>

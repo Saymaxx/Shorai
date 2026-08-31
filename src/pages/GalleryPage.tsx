@@ -1089,7 +1089,7 @@ export default function GalleryPage() {
 
                 <button
                   onClick={() => setSelectedImageIndex(null)}
-                  className="w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 flex items-center justify-center text-white transition-all shadow-lg"
+                  className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 flex items-center justify-center text-white transition-all shadow-lg"
                   aria-label="Close Lightbox"
                 >
                   <X className="w-5 h-5" />
@@ -1123,7 +1123,7 @@ export default function GalleryPage() {
 
             {/* Main Lightbox Frame */}
             <div
-              className="relative w-full max-w-5xl max-h-[88vh] overflow-y-auto rounded-3xl bg-card border-2 border-primary/40 shadow-[0_0_60px_rgba(99,102,241,0.3)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 pointer-events-auto"
+              className="relative w-full max-w-5xl max-h-[90dvh] overflow-y-auto rounded-3xl bg-card border-2 border-primary/40 shadow-[0_0_60px_rgba(99,102,241,0.3)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 pointer-events-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Photo Display */}

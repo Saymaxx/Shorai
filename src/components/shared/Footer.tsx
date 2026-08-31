@@ -310,10 +310,10 @@ export default function Footer() {
               <MagneticWrapper>
                 <button
                   onClick={() => setIsContactOpen(true)}
-                  className="w-full h-14 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                  className="w-full min-h-[52px] py-3 px-3.5 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs tracking-wide shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02] text-center"
                 >
                   <span>To know more about us contact us</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
               </MagneticWrapper>
 
@@ -322,9 +322,9 @@ export default function Footer() {
                   href={varanasiLoc.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full h-14 rounded-2xl bg-card hover:bg-muted border border-border hover:border-primary/50 text-foreground font-bold text-xs tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                  className="w-full min-h-[52px] py-3 px-3.5 rounded-2xl bg-card hover:bg-muted border border-border hover:border-primary/50 text-foreground font-bold text-xs tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] text-center"
                 >
-                  <Navigation className="w-4 h-4 text-amber-500" />
+                  <Navigation className="w-4 h-4 text-amber-500 shrink-0" />
                   <span>Get Exact Pinpoint Directions</span>
                 </a>
               </MagneticWrapper>

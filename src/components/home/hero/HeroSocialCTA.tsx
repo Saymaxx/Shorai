@@ -124,7 +124,7 @@ export default function HeroSocialCTA() {
             </div>
 
             {/* Right Social Action Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 w-full lg:w-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 w-full lg:w-auto">
               {socialLinks.map((social, idx) => {
                 const Icon = social.icon;
                 return (
@@ -134,7 +134,7 @@ export default function HeroSocialCTA() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`group relative flex flex-col items-start justify-between p-5 sm:p-6 rounded-3xl bg-card hover:bg-muted/50 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-2 hover:shadow-xl w-full sm:w-[170px] lg:w-[185px] min-h-[160px] overflow-hidden`}
+                        className={`group relative flex flex-col items-start justify-between p-5 sm:p-6 rounded-3xl bg-card hover:bg-muted/50 border border-border ${social.borderHover} transition-all duration-300 hover:-translate-y-2 hover:shadow-xl w-full sm:w-full md:w-[160px] lg:w-[185px] min-h-[160px] overflow-hidden`}
                       >
                         {/* Top icon and link arrow */}
                         <div className="flex items-center justify-between w-full relative z-10">

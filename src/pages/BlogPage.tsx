@@ -408,7 +408,7 @@ export default function BlogPage() {
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={handlePrevStage}
-                  className="w-8 h-8 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-colors shadow-sm"
+                  className="min-w-[44px] min-h-[44px] rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-colors shadow-sm"
                   aria-label="Previous Stage"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -418,7 +418,7 @@ export default function BlogPage() {
                 </span>
                 <button
                   onClick={handleNextStage}
-                  className="w-8 h-8 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-colors shadow-sm"
+                  className="min-w-[44px] min-h-[44px] rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-colors shadow-sm"
                   aria-label="Next Stage"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -638,7 +638,7 @@ export default function BlogPage() {
                     </p>
 
                     {/* Author Chip & CTA */}
-                    <div className="pt-3 border-t border-border flex flex-wrap items-center justify-between gap-4">
+                    <div className="pt-3 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
                       {authorsMap.get(currentFeatured.authorId) && (
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full overflow-hidden relative border border-primary/40">
@@ -662,7 +662,7 @@ export default function BlogPage() {
 
                       <Link
                         href={`/blog/${currentFeatured.slug}`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] text-white text-xs font-black shadow-lg hover:opacity-95 transition-all hover:scale-105"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] text-white text-xs font-black shadow-lg hover:opacity-95 transition-all hover:scale-105 text-center"
                       >
                         <span>Read Full Publication</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -833,10 +833,10 @@ export default function BlogPage() {
                       {/* Top Bookmark Button */}
                       <button
                         onClick={(e) => toggleBookmark(article.id, e)}
-                        className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/75 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 transition-transform z-10"
+                        className="absolute top-3.5 right-3.5 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-black/75 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:scale-110 transition-transform z-10"
                         aria-label="Bookmark"
                       >
-                        <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'text-amber-400 fill-amber-400' : 'text-white'}`} />
+                        <Bookmark className={`w-4 h-4 ${isBookmarked ? 'text-amber-400 fill-amber-400' : 'text-white'}`} />
                       </button>
 
                       {/* Hover Info Reveal Overlay */}

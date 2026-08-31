@@ -11,9 +11,13 @@ export default function GlobalMouseFollower() {
   const { theme } = useTheme();
 
   useEffect(() => {
-    // Respect user reduced-motion preference: 0 extra listeners or follower orbs
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
+    // Respect user reduced-motion preference and touch devices (phones, tablets, touchscreens)
+    if (typeof window !== 'undefined') {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isTouchOnly = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
+      if (prefersReduced || isTouchOnly) {
+        return;
+      }
     }
 
     setIsMounted(true);

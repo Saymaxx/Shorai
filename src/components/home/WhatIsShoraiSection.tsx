@@ -95,11 +95,11 @@ export default function WhatIsShoraiSection() {
 
             {/* Action CTAs */}
             <SectionReveal delay={0.2}>
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
                 <MagneticWrapper>
                   <Link
                     href="/schools"
-                    className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#7928CA] to-[#6366F1] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                    className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#7928CA] to-[#6366F1] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-center"
                   >
                     <span>Explore School Labs</span>
                     <ArrowRight className="w-4 h-4" />
@@ -109,7 +109,7 @@ export default function WhatIsShoraiSection() {
                 <MagneticWrapper>
                   <Link
                     href="/contact"
-                    className="px-7 py-3.5 rounded-2xl bg-card border border-border text-foreground hover:text-primary font-bold text-xs sm:text-sm shadow-sm hover:border-primary/40 transition-all flex items-center gap-2"
+                    className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-card border border-border text-foreground hover:text-primary font-bold text-xs sm:text-sm shadow-sm hover:border-primary/40 transition-all flex items-center justify-center gap-2 text-center"
                   >
                     <span>Schedule School Demo</span>
                     <ArrowRight className="w-4 h-4" />
@@ -140,15 +140,15 @@ export default function WhatIsShoraiSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
 
                   {/* Floating Badge 1 (Top Left in the Quarter-Circle curve) */}
-                  <div className="absolute top-6 left-6 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Smart Robotics Class</span>
+                  <div className="absolute top-4 sm:top-6 left-4 sm:left-6 max-w-[calc(100%-2rem)] z-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-[11px] sm:text-xs font-bold text-foreground">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span className="truncate">Smart Robotics Class</span>
                   </div>
 
                   {/* Floating Badge 2 (Bottom Right) */}
-                  <div className="absolute bottom-5 right-5 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
-                    <Bot className="w-3.5 h-3.5 text-primary" />
-                    <span>Autonomous Robotics &amp; Drones</span>
+                  <div className="absolute bottom-4 sm:bottom-5 right-4 sm:right-5 max-w-[calc(100%-2rem)] z-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-[11px] sm:text-xs font-bold text-foreground">
+                    <Bot className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <span className="truncate">Autonomous Robotics &amp; Drones</span>
                   </div>
                 </div>
 

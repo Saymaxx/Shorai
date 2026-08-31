@@ -33,14 +33,14 @@ export default function SchoolLabEstimator() {
                 Institutional Summary
               </h3>
             </div>
-            <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-xs font-mono font-bold flex items-center gap-1.5 w-fit">
-              <ShieldCheck className="w-4 h-4" />
+            <div className="px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-[11px] sm:text-xs font-mono font-bold flex items-center gap-1.5 w-fit flex-wrap">
+              <ShieldCheck className="w-4 h-4 shrink-0" />
               <span>NEP 2020 READY // CBSE &amp; ICSE</span>
             </div>
           </div>
 
           {/* 4 Metric Output Boxes */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mb-8">
             
             <div className="p-5 rounded-2xl bg-muted/40 border border-border text-center sm:text-left">
               <div className="text-2xl sm:text-3xl font-black text-foreground font-mono mb-1">

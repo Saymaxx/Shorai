@@ -66,14 +66,13 @@ export default function AboutSEGAcademy() {
                       <span>LEGACY OF EXCELLENCE</span>
                     </div>
                   </div>
-
-                  {/* Bottom Strip Badge */}
-                  <div className="absolute bottom-5 left-5 right-5 z-10 p-3 rounded-2xl bg-card/90 backdrop-blur-md border border-border flex items-center justify-between text-xs font-bold text-foreground">
+                                    {/* Bottom Strip Badge */}
+                  <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 right-3 sm:right-5 z-10 p-2.5 sm:p-3 rounded-2xl bg-card/90 backdrop-blur-md border border-border flex items-center justify-between text-xs font-bold text-foreground">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                      <span>Govt. Registered (MCA)</span>
+                      <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <span className="truncate">Govt. Registered (MCA)</span>
                     </div>
-                    <span className="font-mono text-[10px] text-muted-foreground">15+ YEARS</span>
+                    <span className="font-mono text-[10px] text-muted-foreground shrink-0 ml-1">15+ YEARS</span>
                   </div>
 
                 </div>
@@ -91,13 +90,13 @@ export default function AboutSEGAcademy() {
               </div>
             </SectionReveal>
 
-            <SectionReveal delay={0.1}>
+            <SectionReveal delay={0.08}>
               <h2 className="shorai-heading mb-4">
-                About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">SEG Academy</span>
+                {seg.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{seg.titleGradient}</span>
               </h2>
             </SectionReveal>
 
-            <SectionReveal delay={0.15}>
+            <SectionReveal delay={0.12}>
               <p className="shorai-subheading text-base sm:text-lg text-foreground/90 mb-2">
                 {seg.narrative1}
               </p>
@@ -107,7 +106,7 @@ export default function AboutSEGAcademy() {
             </SectionReveal>
 
             {/* 4 Feature Credentials Grid */}
-            <SectionReveal delay={0.2}>
+            <SectionReveal delay={0.18}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-6">
                 <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-card border border-border shadow-sm">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -129,7 +128,7 @@ export default function AboutSEGAcademy() {
             </SectionReveal>
 
             {/* Inspiring Philosophy Quote */}
-            <SectionReveal delay={0.25}>
+            <SectionReveal delay={0.24}>
               <div className="p-4 sm:p-5 rounded-2xl bg-muted/40 border border-border mb-8 flex items-start gap-3 w-full">
                 <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Quote className="w-4 h-4" />
@@ -147,13 +146,13 @@ export default function AboutSEGAcademy() {
 
             {/* Action Buttons */}
             <SectionReveal delay={0.3}>
-              <div className="flex flex-wrap items-center gap-4 w-full">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
                 <MagneticWrapper>
                   <a
                     href="https://www.segacademy.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md inline-flex items-center justify-center gap-2 transition-all hover:scale-105"
+                    className="w-full sm:w-auto px-7 h-13 rounded-2xl bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md inline-flex items-center justify-center gap-2 transition-all hover:scale-105 text-center"
                   >
                     <span>To know more about us</span>
                     <ArrowRight className="w-4 h-4" />
@@ -163,7 +162,7 @@ export default function AboutSEGAcademy() {
                 <MagneticWrapper>
                   <button
                     onClick={() => navigate('/schools')}
-                    className="px-6 h-13 rounded-2xl bg-card hover:bg-muted border border-border text-foreground font-bold text-xs sm:text-sm tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105"
+                    className="w-full sm:w-auto px-6 h-13 rounded-2xl bg-card hover:bg-muted border border-border text-foreground font-bold text-xs sm:text-sm tracking-wide shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-105 text-center"
                   >
                     <span>Explore School Labs</span>
                     <Rocket className="w-4 h-4 text-primary" />

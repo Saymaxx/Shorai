@@ -554,7 +554,7 @@ export default function ContactPage() {
                       href={siteConfig.social.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-xl bg-muted/60 hover:bg-pink-500 hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
+                      className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl bg-muted/60 hover:bg-pink-500 hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
                       aria-label="Instagram"
                     >
                       <InstagramIcon className="w-4 h-4" />
@@ -564,7 +564,7 @@ export default function ContactPage() {
                       href={siteConfig.social.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-xl bg-muted/60 hover:bg-red-600 hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
+                      className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl bg-muted/60 hover:bg-red-600 hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
                       aria-label="YouTube"
                     >
                       <YouTubeIcon className="w-4 h-4" />
@@ -574,7 +574,7 @@ export default function ContactPage() {
                       href={siteConfig.social.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-xl bg-muted/60 hover:bg-[#0A66C2] hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
+                      className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl bg-muted/60 hover:bg-[#0A66C2] hover:text-white border border-border flex items-center justify-center text-foreground/70 transition-all hover:scale-110 shadow-sm"
                       aria-label="LinkedIn"
                     >
                       <LinkedInIcon className="w-4 h-4" />
@@ -641,7 +641,7 @@ export default function ContactPage() {
             </SectionReveal>
 
             <SectionReveal delay={0.1}>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground mb-4">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4 break-words">
                 {cReach.title}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">{cReach.titleGradient}</span>
               </h2>
             </SectionReveal>

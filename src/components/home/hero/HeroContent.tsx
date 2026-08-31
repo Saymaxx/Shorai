@@ -22,7 +22,7 @@ export default function HeroContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="font-black tracking-[-0.03em] leading-[1.04] mb-3.5 flex flex-col text-foreground"
-        style={{ fontSize: 'clamp(36px, 4.2vw, 66px)' }}
+        style={{ fontSize: 'clamp(28px, 4.2vw, 66px)' }}
       >
         <span>{hero.titleLine1}</span>
         <span className="flex items-center flex-wrap">

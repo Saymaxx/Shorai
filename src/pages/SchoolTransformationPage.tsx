@@ -60,7 +60,7 @@ export default function SchoolTransformationPage() {
           <SectionReveal delay={0.1}>
             <h1 
               className="font-black tracking-tight text-white mb-6 leading-tight max-w-4xl mx-auto drop-shadow-md"
-              style={{ fontSize: 'clamp(38px, 5vw, 68px)' }}
+              style={{ fontSize: 'clamp(28px, 5vw, 68px)' }}
             >
               {hero.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7928CA] via-[#6366F1] to-[#00D4FF]">

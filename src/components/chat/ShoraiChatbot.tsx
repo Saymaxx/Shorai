@@ -564,7 +564,13 @@ Instructions:
   };
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto">
+    <div 
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto"
+      style={{
+        bottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',
+        right: 'max(1rem, env(safe-area-inset-right, 1rem))',
+      }}
+    >
       
       {/* ── Chat Window ────────────────────────────────────────── */}
       <AnimatePresence>

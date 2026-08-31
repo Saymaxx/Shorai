@@ -287,13 +287,14 @@ export default function CampusStoryPage({ slug }: CampusStoryPageProps) {
           >
             <button
               onClick={() => setSelectedPhotoIndex(null)}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center hover:bg-black transition-colors"
+              className="absolute top-4 sm:top-6 right-4 sm:right-6 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-black/75 border border-white/20 text-white flex items-center justify-center hover:bg-black transition-colors z-50 shadow-lg"
+              aria-label="Close Lightbox"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div
-              className="relative w-full max-w-4xl max-h-[85vh] rounded-3xl overflow-hidden bg-card border-2 border-primary/40 shadow-2xl"
+              className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto rounded-3xl overflow-hidden bg-card border-2 border-primary/40 shadow-2xl touch-scroll"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative aspect-[16/10] w-full bg-black">
@@ -305,22 +306,24 @@ export default function CampusStoryPage({ slug }: CampusStoryPageProps) {
                 />
               </div>
 
-              <div className="p-6 bg-card border-t border-border flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-black text-foreground">{activePhoto.title}</h3>
+              <div className="p-4 sm:p-6 bg-card border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="space-y-0.5">
+                  <h3 className="text-sm sm:text-base font-black text-foreground">{activePhoto.title}</h3>
                   <p className="text-xs text-muted-foreground">{activePhoto.caption}</p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
                   <button
                     onClick={() => setSelectedPhotoIndex((selectedPhotoIndex - 1 + albumPhotos.length) % albumPhotos.length)}
-                    className="p-2 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-colors"
+                    className="min-w-[44px] min-h-[44px] p-2.5 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-colors flex items-center justify-center"
+                    aria-label="Previous Photo"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setSelectedPhotoIndex((selectedPhotoIndex + 1) % albumPhotos.length)}
-                    className="p-2 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-colors"
+                    className="min-w-[44px] min-h-[44px] p-2.5 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-colors flex items-center justify-center"
+                    aria-label="Next Photo"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>

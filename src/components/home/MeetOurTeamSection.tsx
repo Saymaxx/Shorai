@@ -197,8 +197,8 @@ export default function MeetOurTeamSection() {
         </div>
 
         {/* ── 6 CORE VALUE PILLARS (ROW) ── */}
-        <div className="rounded-3xl p-6 sm:p-8 bg-card/75 backdrop-blur-xl border-2 border-border shadow-xl mb-14 sm:mb-18">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+        <div className="rounded-3xl p-5 sm:p-8 bg-card/75 backdrop-blur-xl border-2 border-border shadow-xl mb-14 sm:mb-18">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-6">
             {CORE_VALUES.map((val, idx) => {
               const Icon = val.icon;
               return (
@@ -237,11 +237,11 @@ export default function MeetOurTeamSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {TEAM_MEMBERS.map((member, idx) => (
               <div 
                 key={idx}
-                className="group rounded-3xl p-5 bg-card/80 backdrop-blur-md border-2 border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1.5"
+                className="group rounded-3xl p-4 sm:p-5 bg-card/80 backdrop-blur-md border-2 border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1.5"
               >
                 {/* Hexagon Photo Frame */}
                 <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-4 rounded-3xl overflow-hidden border-3 shadow-lg group-hover:scale-105 transition-transform duration-500" style={{ borderColor: member.color }}>

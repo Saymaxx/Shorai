@@ -123,10 +123,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="sticky sm:absolute top-3.5 right-3.5 ml-auto mr-3.5 sm:mr-0 z-50 w-9 h-9 rounded-full bg-muted/90 hover:bg-muted border border-border flex items-center justify-center text-foreground/80 hover:text-foreground hover:scale-105 transition-all shadow-sm"
+              className="sticky sm:absolute top-3.5 right-3.5 ml-auto mr-3.5 sm:mr-0 z-50 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-muted/90 hover:bg-muted border border-border flex items-center justify-center text-foreground/80 hover:text-foreground hover:scale-105 transition-all shadow-sm"
               aria-label="Close dialog"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
             <div className="grid grid-cols-1 md:grid-cols-12 min-h-0 md:min-h-[460px]">
@@ -179,7 +179,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.contact.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#25D366] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="WhatsApp"
                     title="WhatsApp"
                   >
@@ -190,7 +190,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#E1306C] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="Instagram"
                     title="Instagram"
                   >
@@ -201,7 +201,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#FF0000] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="YouTube"
                     title="YouTube"
                   >
@@ -212,7 +212,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     href={siteConfig.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
+                    className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-[#0A66C2] border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                     aria-label="LinkedIn"
                     title="LinkedIn"
                   >

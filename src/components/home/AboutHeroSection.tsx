@@ -103,7 +103,7 @@ export default function AboutHeroSection() {
 
             {/* Top-Left Diagonal Floating Large Rounded Image */}
             <SectionReveal delay={0.1}>
-              <div className="relative w-[280px] sm:w-[340px] lg:w-[380px] h-[280px] sm:h-[340px] lg:h-[380px] rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:-translate-x-8 sm:-translate-y-4 z-10">
+              <div className="relative w-[min(280px,75vw)] sm:w-[340px] lg:w-[380px] aspect-square rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:-translate-x-8 sm:-translate-y-4 z-10">
                 <Image
                   src="/images/shorai-catalog-robotics-iot.jpg"
                   alt="Indian students learning coding and robotics"
@@ -117,7 +117,7 @@ export default function AboutHeroSection() {
 
             {/* Bottom-Right Diagonal Overlapping Large Rounded Image */}
             <SectionReveal delay={0.16}>
-              <div className="relative w-[240px] sm:w-[300px] lg:w-[330px] h-[240px] sm:h-[300px] lg:h-[330px] rounded-full overflow-hidden border-4 border-[#FF3D7F]/60 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:translate-x-12 sm:-translate-y-20 z-20">
+              <div className="relative w-[min(240px,65vw)] sm:w-[300px] lg:w-[330px] aspect-square rounded-full overflow-hidden border-4 border-[#FF3D7F]/60 shadow-2xl bg-card hover:scale-105 transition-all duration-500 group sm:translate-x-12 sm:-translate-y-20 z-20">
                 <Image
                   src="/images/shorai-quadrant-robotics.jpg"
                   alt="Indian student assembling robotics chassis"

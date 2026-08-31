@@ -88,9 +88,9 @@ export default function HeroVisual({ activeSection = 'hero' }: HeroVisualProps) 
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.92 }}
           transition={{ type: 'spring', damping: 18, stiffness: 260 }}
-          className="absolute -top-3 sm:-top-5 z-30 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-card/95 border border-primary/30 shadow-[0_12px_30px_rgba(99,102,241,0.25)] backdrop-blur-2xl flex items-center gap-2 pointer-events-none whitespace-nowrap text-center max-w-[90%]"
+          className="absolute -top-3 sm:-top-5 z-30 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-card/95 border border-primary/30 shadow-[0_12px_30px_rgba(99,102,241,0.25)] backdrop-blur-2xl flex items-center gap-2 pointer-events-none whitespace-normal sm:whitespace-nowrap text-center max-w-[92%]"
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
           <span className="text-[11px] sm:text-sm font-bold text-foreground tracking-tight">
             {DIALOGUES[dialogueIndex]}
           </span>

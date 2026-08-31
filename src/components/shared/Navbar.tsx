@@ -73,6 +73,11 @@ export default function Navbar() {
             ? 'py-3 sm:py-3.5 bg-background/95 dark:bg-background/95 backdrop-blur-2xl border-b border-border shadow-lg' 
             : 'py-4 sm:py-5 bg-background/90 dark:bg-background/90 backdrop-blur-xl border-b border-border/60 shadow-sm'
         }`}
+        style={{
+          paddingTop: scrolled 
+            ? 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' 
+            : 'max(1rem, env(safe-area-inset-top, 1rem))'
+        }}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
@@ -341,7 +346,7 @@ export default function Navbar() {
               transition={{ duration: 0.25 }}
               className="fixed top-[65px] left-0 w-full max-h-[calc(100dvh-65px)] overflow-y-auto bg-card/98 backdrop-blur-3xl border-b border-border shadow-2xl lg:hidden z-40 touch-scroll"
             >
-              <div className="p-5 sm:p-6 flex flex-col gap-2 pb-10">
+              <div className="p-5 sm:p-6 flex flex-col gap-2 pb-[calc(2.5rem+env(safe-area-inset-bottom,0px))]">
                 <div className="text-[11px] font-mono font-black text-muted-foreground uppercase tracking-widest px-2 mb-1">
                   Navigation
                 </div>

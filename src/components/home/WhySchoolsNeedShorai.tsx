@@ -65,15 +65,15 @@ export default function WhySchoolsNeedShorai() {
                 />
                 
                 {/* Floating Interactive Pill 1: NEP 2020 */}
-                <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>NEP 2020 Aligned Innovation Hub</span>
+                <div className="absolute top-3.5 sm:top-4 left-3.5 sm:left-4 max-w-[calc(100%-1.75rem)] z-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-[11px] sm:text-xs font-bold text-foreground">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span className="truncate">NEP 2020 Aligned Innovation Hub</span>
                 </div>
 
                 {/* Floating Interactive Pill 2: AI & Drones */}
-                <div className="absolute bottom-4 right-4 z-10 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
-                  <Bot className="w-3.5 h-3.5 text-primary" />
-                  <span>AI Robotics &amp; Autonomous Drones</span>
+                <div className="absolute bottom-3.5 sm:bottom-4 right-3.5 sm:right-4 max-w-[calc(100%-1.75rem)] z-10 px-3 sm:px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border shadow-lg flex items-center gap-2 text-[11px] sm:text-xs font-bold text-foreground">
+                  <Bot className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="truncate">AI Robotics &amp; Autonomous Drones</span>
                 </div>
               </div>
 
@@ -104,7 +104,7 @@ export default function WhySchoolsNeedShorai() {
                   <MagneticWrapper>
                     <button
                       onClick={() => setIsContactOpen(true)}
-                      className="px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA] text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-105 transition-all inline-flex items-center gap-2"
+                      className="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA] text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-105 transition-all inline-flex items-center justify-center gap-2 text-center"
                     >
                       <span>Request an On-Campus Lab Consultation</span>
                       <ArrowRight className="w-4 h-4" />
@@ -168,11 +168,11 @@ export default function WhySchoolsNeedShorai() {
               </h3>
             </div>
 
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 w-full sm:w-auto">
               <MagneticWrapper>
                 <button
                   onClick={() => setIsContactOpen(true)}
-                  className="px-7 h-13 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA] hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-[0_10px_25px_rgba(255,107,0,0.4)] flex items-center gap-2 transition-all hover:scale-105"
+                  className="w-full sm:w-auto px-6 sm:px-7 min-h-[48px] py-3 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#FF3D7F] to-[#7928CA] hover:opacity-95 text-white font-bold text-xs sm:text-sm tracking-wide shadow-[0_10px_25px_rgba(255,107,0,0.4)] flex items-center justify-center gap-2 transition-all hover:scale-105 text-center"
                 >
                   <span>To know more about us contact us</span>
                   <ArrowRight className="w-4 h-4" />

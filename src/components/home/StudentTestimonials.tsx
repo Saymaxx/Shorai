@@ -118,7 +118,7 @@ export default function StudentTestimonials() {
             return (
               <div
                 key={`${item.id}-${idx}`}
-                className="w-[320px] sm:w-[380px] shrink-0 rounded-3xl p-6 sm:p-7 bg-card/85 backdrop-blur-md border border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+                className="w-[min(320px,85vw)] sm:w-[380px] shrink-0 rounded-3xl p-5 sm:p-7 bg-card/85 backdrop-blur-md border border-border/80 hover:border-primary/50 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
               >
                 {/* Subtle top color highlight */}
                 <div 

@@ -128,7 +128,7 @@ export default function InstitutionalFAQSection() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id as any)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border ${
+                className={`px-3.5 sm:px-4 py-2 min-h-[38px] rounded-full text-xs font-bold transition-all border inline-flex items-center justify-center ${
                   selectedCategory === cat.id
                     ? 'bg-primary text-white border-primary shadow-sm'
                     : 'bg-card hover:bg-muted text-muted-foreground border-border'
