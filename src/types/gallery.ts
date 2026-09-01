@@ -18,6 +18,7 @@ export interface GalleryItem {
   date: string; // e.g. "August 2026"
   category: ExperienceCategory;
   imageUrl: string;
+  videoUrl?: string;
   highResUrl?: string;
   aspectRatio?: 'square' | 'wide' | 'portrait' | 'landscape';
   tags: string[];

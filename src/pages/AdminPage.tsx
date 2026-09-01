@@ -3584,7 +3584,7 @@ export default function AdminPage() {
                           state: 'Uttar Pradesh',
                           date: 'August 2026',
                           category: 'robotics_ai',
-                          imageUrl: '/images/robotics_teacher_smart_class.jpg',
+                          imageUrl: '/images/shorai-images/shorai-smart-class-coding-lecture.jpg',
                           tags: ['Robotics', 'Students', 'Lab'],
                         };
                         setGalleryData({
@@ -3768,7 +3768,7 @@ export default function AdminPage() {
                         categoryName: 'NEP 2020 & Policy',
                         tags: ['NEP 2020', 'STEM', 'Robotics'],
                         authorId: blogData.authors[0]?.id || 'author-1',
-                        coverImage: '/images/robotics_teacher_smart_class.jpg',
+                        coverImage: '/images/shorai-images/shorai-smart-class-coding-lecture.jpg',
                         readingTimeMinutes: 5,
                         publishedDate: 'August 26, 2026',
                         status: 'draft',

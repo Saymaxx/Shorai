@@ -294,7 +294,7 @@ export default function GalleryPage() {
                 />
 
                 <Image
-                  src="/images/robotics_teacher_smart_class.jpg"
+                  src="/images/shorai-images/shorai-smart-class-coding-lecture.jpg"
                   alt="Autonomous Robotics Lab"
                   fill
                   className="object-cover group-hover:scale-115 transition-transform duration-700 ease-out"
@@ -309,7 +309,7 @@ export default function GalleryPage() {
           </motion.div>
         </div>
 
-        {/* Right Side: UAV Drone Aerodynamics (Harmonized Cyan/Teal/Sky Blue Palette) */}
+        {/* Right Side: Tactile Breadboard & STEM Electronics */}
         <div className="hidden xl:block absolute -right-3 2xl:right-0 top-1/2 -translate-y-1/2 z-20 pointer-events-auto">
           <motion.div
             animate={{ y: [0, -14, 0] }}
@@ -318,7 +318,7 @@ export default function GalleryPage() {
             onClick={() => setSelectedImageIndex(1)}
             className="group relative cursor-pointer"
           >
-            {/* Continuous Reverse Rotating Outer Gradient Ring - Customized to Drone Sky/Cyan/Teal Telemetry */}
+            {/* Continuous Reverse Rotating Outer Gradient Ring - Customized to STEM Cyan/Teal */}
             <motion.div
               animate={{ rotate: -360 }}
               transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
@@ -336,8 +336,8 @@ export default function GalleryPage() {
                 />
 
                 <Image
-                  src="/images/shorai-quadrant-drone.jpg"
-                  alt="UAV Drone Aerodynamics"
+                  src="/images/shorai-images/shorai-student-breadboard-wiring.jpg"
+                  alt="Tactile STEM Electronics Lab"
                   fill
                   className="object-cover group-hover:scale-115 transition-transform duration-700 ease-out"
                 />
@@ -1126,16 +1126,26 @@ export default function GalleryPage() {
               className="relative w-full max-w-5xl max-h-[90dvh] overflow-y-auto rounded-3xl bg-card border-2 border-primary/40 shadow-[0_0_60px_rgba(99,102,241,0.3)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 pointer-events-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Photo Display */}
-              <div className="lg:col-span-8 relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[520px] bg-black">
-                <Image
-                  src={activeLightboxItem.imageUrl}
-                  alt={activeLightboxItem.title}
-                  fill
-                  className="object-contain"
-                  sizes="100vw"
-                  priority
-                />
+              {/* Photo / Video Display */}
+              <div className="lg:col-span-8 relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[520px] bg-black flex items-center justify-center">
+                {activeLightboxItem.videoUrl ? (
+                  <video
+                    src={activeLightboxItem.videoUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full max-h-[70vh] object-contain"
+                  />
+                ) : (
+                  <Image
+                    src={activeLightboxItem.imageUrl}
+                    alt={activeLightboxItem.title}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                    priority
+                  />
+                )}
               </div>
 
               {/* Sidebar Metadata */}
